@@ -13,7 +13,7 @@ require('dotenv').config();
 const config = require("./jsonFiles/config.json");
 client.config = config;
 client.config.token = process.env.TOKEN
-client.config.dbpath = process.env.DBPATH
+client.config.dbpath = encodeURI(process.env.DBPATH)
 
 const rawdata = fs.readFileSync(__dirname + '/jsonFiles/emojis.json');
 const emoji_data = JSON.parse(rawdata);
