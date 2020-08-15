@@ -8,16 +8,14 @@ const client = new Discord.Client();
 
 
 
-require('dotenv').config();
+require('dotenv').config({ path: './secrets.env' });
 
 let config = require("./jsonFiles/config.json");
 
-config.token = process.env.TOKEN;
-const boturi = encodeURI(process.env.ATLAS_URI)
-config.dbpath = boturi;
-
+config.token = process.env.TOKEN
+config.dbpath = process.env.DBPATH
 client.config = config;
-
+console.log(config)
 const rawdata = fs.readFileSync(__dirname + '/jsonFiles/emojis.json');
 const emoji_data = JSON.parse(rawdata);
 client.emoji_data = emoji_data;
