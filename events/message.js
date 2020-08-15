@@ -58,18 +58,18 @@ module.exports = (client, message) => {
       }
       
 
-    var cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
-    if(!cache_raw){
-        client.recache()
-    }
-    var cache = JSON.parse(cache_raw);
+    var cache_raw = null;
+    var cache = null;
 
-    if(!cache){
+    try{
+        var cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
+        var cache = JSON.parse(cache_raw);
+        
+    } catch(err){
         client.recache()
+        return
     }
-    if(!cache.timestamp){
-        client.recache()
-    }
+    
 
     const utc_time = new Date().getTime()
     const recache_time = 60 * 1000

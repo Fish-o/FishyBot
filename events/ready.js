@@ -1,5 +1,6 @@
 
 module.exports = (client) => {
+    client.recache()
     client.sendinfo('Bot gone online')
 	console.log('I am ready to serve you!');
 	client.user.setStatus('online');
