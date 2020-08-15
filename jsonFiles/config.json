@@ -1,0 +1,9 @@
+{
+    "name":"Vr gang bot",
+    "version":"2.0.0",
+    "description":"The bot for The Vr Gang",
+    "main":"index.js",
+    "author":"Fish",
+    "master":"325893549071663104",
+    "prefix":"vr!"
+}

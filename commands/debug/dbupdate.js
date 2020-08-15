@@ -1,0 +1,233 @@
+const fs = require('fs');
+const MongoClient = require('mongodb').MongoClient;
+
+exports.run = (client, message, args) => {
+    if(message.author.id !== '325893549071663104'){
+        return message.channel.send("You don't have the permissions to use this command!");
+    }
+
+    let rawdata = fs.readFileSync(__dirname + '/../../jsonFiles/config.json');
+	let config = JSON.parse(rawdata);
+	
+	var guildID = message.guild.id;
+	var guild = client.guilds.cache.get(guildID);
+
+	const uri = config['dbpath'];
+
+
+
+
+
+
+
+    return message.channel.send("NO DONT I HATE U GO AWAY ")
+
+
+
+
+	// Get old data
+	var user_list_promise = new Promise(function(resolve, reject){
+		var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+		mongoClient.connect(err => {
+			console.log('...conect');
+			if (err) throw err;
+			const collection = mongoClient.db("botdb").collection("users");
+			collection.find().toArray(function(err, result) {
+				console.log('...find');
+				if (err) {console.error(err); throw err};
+				console.log(result);
+			
+				
+				//let new_results = [];
+				//for(i = 0; i < result.length; i++){
+				//	new_results.push(JSON.stringify({	id: result[i].id,
+				//						guild: result[i].guild}));
+				//}
+				mongoClient.close();
+				console.log('...close');
+				setTimeout(function(){
+					resolve(result);
+				}, 500);
+					
+			});
+		});
+	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// Get guilds
+	
+	user_list_promise.then( function(value) {
+		old_db_data = value;
+		
+		client.guilds.cache.forEach(element => {
+			function in_guild(member){
+				return member.guild == element.id;
+			}
+
+			old_db_guild = old_db_data.filter(in_guild);
+
+			var guildObject = {
+					id : element.id,
+					users:{},
+					prefix:"!",
+					allow_say:true
+			}
+
+			old_db_guild.forEach(guild_member => {
+				var usernames = null;
+				console.log('\n#####################################\n')
+				console.log()
+				if(guild_member.data){
+					usernames = guild_member.data.usernames;
+				}
+				var userObject = {
+				
+					warns:guild_member.warns,
+					data:{
+						"usernames":usernames,
+						"region":null 
+					}
+				
+				}
+				userId = guild_member.id;
+				guildObject.users[userId] = userObject;
+
+			})
+			
+
+
+			// Push new Guild object with users to db
+			const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+			mongoClient.connect(err => {
+				if (err) console.log(err);
+				const collection = mongoClient.db("botdb").collection("v2");
+				// perform actions on the collection object
+				collection.insertOne(guildObject, function(err, res) {
+					if (err) throw err;
+					console.log("1 document inserted");
+					mongoClient.close();
+				});
+				
+			});
+
+
+		});
+	});
+	
+	
+
+
+
+
+
+
+
+
+
+	/*
+
+    var user_list_promise = new Promise(function(resolve, reject){
+		var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+		mongoClient.connect(err => {
+			console.log('...conect');
+			if (err) throw err;
+			const collection = mongoClient.db("botdb").collection("users");
+			collection.find({}).toArray(function(err, result) {
+				console.log('...find');
+				console.log(result);
+				if (err) {console.error(err); throw err};
+				console.log(result);
+			
+				
+				//let new_results = [];
+				//for(i = 0; i < result.length; i++){
+				//	new_results.push(JSON.stringify({	id: result[i].id,
+				//						guild: result[i].guild}));
+				//}
+				mongoClient.close();
+				console.log('...close');
+				setTimeout(function(){
+					resolve(result);
+				}, 500);
+					
+			});
+		});
+	});
+
+
+
+
+	
+	user_list_promise.then( function(value) {
+        db_list = value;
+        console.log(db_list);
+
+		guild.members.fetch().then(members => {
+			members.forEach(member_raw => {
+                let current_member = member_raw.user
+				let db_current_member = db_list.find((user) => user.id == current_member.id && user.guild == message.guild.id);
+                if(!db_current_member){return console.log(db_current_member)}
+                
+                var userObject = {
+					id : current_member.id,
+					guild : message.guild.id,
+					warns : [],
+					data:{
+						usernames:{}
+                    }
+                }
+                if(db_current_member.usernames){
+                    userObject.data.usernames = db_current_member.usernames
+                }
+				
+				const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+                mongoClient.connect(err => {
+                    if (err) console.log(err);
+                    const collection = mongoClient.db("botdb").collection("users");
+                    // perform actions on the collection object
+                    collection.replaceOne({id:current_member.id, guild:message.guild.id}, userObject, function(err, res) {
+                        if (err) throw err;
+                        console.log("1 document replaced");
+                        mongoClient.close();
+                    });
+                    
+                });
+				
+
+            });
+        });
+
+		
+        
+    });*/
+}
+exports.conf = {
+    enabled: true,
+    guildOnly: false,
+    aliases: [],
+    perms: [
+        ''
+    ]
+  };
+  
+const path = require("path")
+exports.help = {
+    category: __dirname.split(path.sep).pop(),
+    name:"dbupdate",
+    description: "This is not supposed to be used.",
+    usage: ""
+};

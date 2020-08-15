@@ -1,0 +1,28 @@
+{
+    "name": "fishybot",
+    "version": "2.1.0",
+    "description": "A crappy discord bot",
+    "dependencies": {
+        "bad-words": "^3.0.3",
+        "cached-request": "^3.0.0",
+        "chart.js": "^2.9.3",
+        "discord.js": "^12.2.0",
+        "enmap": "^5.4.1",
+        "forever": "^3.0.0",
+        "geolib": "^3.3.1",
+        "grapheme-splitter": "^1.0.4",
+        "log-timestamp": "^0.3.0",
+        "moment": "^2.27.0",
+        "mongodb": "^3.6.0",
+        "ms": "^2.1.2",
+        "plotly": "^1.0.6",
+        "random-puppy": "^1.1.0",
+        "request": "^2.88.2",
+        "string-similarity": "^4.0.2",
+        "vega": "^5.13.0"
+    },
+    "scripts": {
+        "build": "node index.js"
+    },
+    "main": "index.js"
+}
