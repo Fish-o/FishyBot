@@ -11,7 +11,7 @@ const status = {
 };
 
 exports.run = (client, message, args) =>{
-    
+    console.log(client.config.dbpath)
     let rawconfig = fs.readFileSync(__dirname + '/../../jsonFiles/config.json');
     const config = JSON.parse(rawconfig);
     var permissions = [];
