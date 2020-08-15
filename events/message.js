@@ -42,7 +42,7 @@ module.exports = (client, message) => {
       
       
       // Saving the message
-      try{
+      /*try{
           if (message.author.bot) return;
           var date = new Date();
           var Day = date.getDate() + "-" + date.getMonth()+1 + "-" + date.getFullYear();
@@ -55,7 +55,7 @@ module.exports = (client, message) => {
       
       catch (e){
           console.log("Error saving message")
-      }
+      }*/
       
 
     var cache_raw = null;
