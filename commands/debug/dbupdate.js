@@ -6,13 +6,12 @@ exports.run = (client, message, args) => {
         return message.channel.send("You don't have the permissions to use this command!");
     }
 
-    let rawdata = fs.readFileSync(__dirname + '/../../jsonFiles/config.json');
-	let config = JSON.parse(rawdata);
+    
 	
 	var guildID = message.guild.id;
 	var guild = client.guilds.cache.get(guildID);
 
-	const uri = config['dbpath'];
+	const uri = client.config.dbpath
 
 
 

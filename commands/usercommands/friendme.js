@@ -4,8 +4,7 @@ exports.run = (client, message, args) => {
     //return message.channel.send('This wont work for now, as the database is being worked on, sorry for the inconvenience.')
     let rawdata = fs.readFileSync(__dirname + '/../../jsonFiles/emojis.json');
     const emoji_data = JSON.parse(rawdata);
-    let rawconfig = fs.readFileSync(__dirname + '/../../jsonFiles/config.json');
-    const config = JSON.parse(rawconfig);
+    
 
     var member = message.author
 
@@ -42,7 +41,7 @@ exports.run = (client, message, args) => {
                             const username = collected.first().content;
                             const platform = key;
 
-                            const uri = config['dbpath'];
+                            const uri = client.config.dbpath;
                             // ############### Promise
                             var guild_promise = new Promise(function(resolve, reject){
                                 var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});

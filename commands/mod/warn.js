@@ -44,10 +44,9 @@ exports.run = (client, message, args) => {
     
 
 
-    let rawdata = fs.readFileSync(__dirname + '/../../jsonFiles/config.json');
-    const config = JSON.parse(rawdata);
+    
 
-    const uri = config['dbpath'];
+    const uri = client.config.dbpath;
     const guildID = message.guild.id;
     const member = message.mentions.users.first()
     const memberID = member.id.toString();
@@ -60,7 +59,7 @@ exports.run = (client, message, args) => {
     if(action == 'list'){
         //var data = fs.readFileSync(config['dbpath']),user_data;
 
-        const uri = config['dbpath'];
+       
 	
         
         var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});

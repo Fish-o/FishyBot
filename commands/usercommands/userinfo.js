@@ -11,9 +11,8 @@ const status = {
 };
 
 exports.run = (client, message, args) =>{
-    console.log(client.config.dbpath)
-    let rawconfig = fs.readFileSync(__dirname + '/../../jsonFiles/config.json');
-    const config = JSON.parse(rawconfig);
+    
+
     var permissions = [];
     var warnings = 'None';
    
@@ -69,7 +68,7 @@ exports.run = (client, message, args) =>{
     if(member.user.id == message.guild.ownerID){
         acknowledgements = 'Server Owner';
     }
-    const uri = config['dbpath']
+    const uri = client.config.dbpath
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
         if (err) throw err;
