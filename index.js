@@ -90,7 +90,7 @@ fs.readdir("./commands/", (direrr, dirs) =>{
 console.log('should have done shit')
 
 
-client.recache = function (){
+client.recache = async function (){
     const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {

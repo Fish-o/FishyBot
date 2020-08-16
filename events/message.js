@@ -13,6 +13,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 module.exports = (client, message) => {
+    console.log("Message event")
     if(message.content.includes("🥔") || message.content.toLowerCase().includes("potato")){
         message.react("🥔")
     } 
@@ -75,55 +76,9 @@ module.exports = (client, message) => {
 
 
 
-
-
-
-
-    //cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
-    //cache = JSON.parse(cache_raw);
-    
-    
-
-    /*if(!cache.timestamp){
-        var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-		mongoClient.connect(err => {
-			console.log('...conect');
-			if (err) throw err;
-			const collection = mongoClient.db("botdb").collection("v2");
-			collection.find({}).toArray(function(err, result) {
-				console.log('...find');
-				if (err) {console.error(err); throw err};
-				console.log(result);
-			
-				
-				//let new_results = [];
-				//for(i = 0; i < result.length; i++){
-				//	new_results.push(JSON.stringify({	id: result[i].id,
-				//						guild: result[i].guild}));
-				//}
-				mongoClient.close();
-                console.log('...close');
-                
-                var jsonData = JSON.stringify(result);
-                var fs = require('fs');
-                fs.writeFile(__dirname + '/../jsonFiles/cache.json', jsonData, function(err) {
-                    if (err) {
-                        console.log(err);
-                    }
-                });
-                cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
-                cache = JSON.parse(cache_raw);
-				//setTimeout(function(){
-				//	resolve(result);
-				//}, 250);
-					
-			});
-		});
-
-    }*/
     if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == '325893549071663104')){
         
-
+        // Updating member count
         cache.data.forEach(cache_guild => {
             if(cache_guild.member_count_channel){
                 try{
@@ -135,8 +90,6 @@ module.exports = (client, message) => {
                             channel_count.setName(`Members: ${memberCount}` )
                         }
                     }
-                    
-                    
                 }
                 catch(err){
                     console.log(err)
@@ -144,11 +97,18 @@ module.exports = (client, message) => {
                 }
             }
         })
+        // Recaching
         client.recache()
     }
+
+
     if(!message.guild){console.log(message)}
-    if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return console.log('EROROROROROROORRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')}
-    if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)[0]){
+
+    // Find guild in cache
+    //if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return client.recache()}
+
+    // If no guild was found, add a new one
+    if(!cache.data.find(db_guild => db_guild.id == message.guild.id)){
         const guild = message.guild;
         guild.members.fetch().then((member_list) => {
     
@@ -202,38 +162,9 @@ module.exports = (client, message) => {
     
     }
     else{
+        console.log("Get prefix")
+        // Get prefix
         const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
-
-        
-
-        /*
-        var user_list_promise = new Promise(function(resolve, reject){
-            var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                console.log('...conect');
-                if (err) throw err;
-                const collection = mongoClient.db("botdb").collection("v2");
-                collection.find({}).toArray(function(err, result) {
-                    console.log('...find');
-                    if (err) {console.error(err); throw err};
-                    console.log(result);
-                
-                    
-                    //let new_results = [];
-                    //for(i = 0; i < result.length; i++){
-                    //	new_results.push(JSON.stringify({	id: result[i].id,
-                    //						guild: result[i].guild}));
-                    //}
-                    mongoClient.close();
-                    console.log('...close');
-                    setTimeout(function(){
-                        resolve(result);
-                    }, 250);
-                        
-                });
-            });
-        });*/
-        
         
     
         // Ignore messages not starting with the prefix (in config.json)
@@ -254,9 +185,10 @@ module.exports = (client, message) => {
         // Our standard argument/command name definition.
         
         
-    
+        
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {
+            console.log("Start running command")
             cmd = client.commands.get(command);
         } else if (client.aliases.has(command)) {
             cmd = client.commands.get(client.aliases.get(command));
@@ -298,6 +230,6 @@ module.exports = (client, message) => {
             }, 1500);
         }
     }
-  
+    console.log("End")
 //})
 };
