@@ -7,8 +7,7 @@ cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
 
 
 
-const fs = require('fs');
-require('log-timestamp');
+const fs = require('fs');;
 var stringSimilarity = require('string-similarity');
 
 

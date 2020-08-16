@@ -91,6 +91,7 @@ console.log('should have done shit')
 
 
 client.recache = async function (){
+    console.log("recache start")
     const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
@@ -111,6 +112,7 @@ client.recache = async function (){
             fs.writeFile(__dirname + '/jsonFiles/cache.json', jsonData, function(err) {
                 if (err) {
                     console.log(err);
+                    console.log("recache end")
                 }
             }); 
         });
