@@ -22,10 +22,6 @@
         "string-similarity": "^4.0.2",
         "vega": "^5.13.0"
     },
-    "scripts": {
-        "build": "node index.js"
-       
-        
-    },
+    
     "main": "index.js"
 }
