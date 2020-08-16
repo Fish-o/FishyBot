@@ -3,7 +3,7 @@ const Discord = module.require('discord.js');
 const request = require('request');
 cachedRequest = require('cached-request')(request);
 cacheDirectory = "/../../jsonFiles/cache/vrml/";
-cachedRequest.setCacheDirectory(cacheDirectory);
+cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
 
 
 
