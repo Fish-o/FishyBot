@@ -13,7 +13,6 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 module.exports = (client, message) => {
-    console.log("Message event")
     if(message.content.includes("🥔") || message.content.toLowerCase().includes("potato")){
         message.react("🥔")
     } 
@@ -162,7 +161,6 @@ module.exports = (client, message) => {
     
     }
     else{
-        console.log("Get prefix")
         // Get prefix
         const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
         
@@ -188,7 +186,7 @@ module.exports = (client, message) => {
         
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {
-            console.log("Start running command")
+            
             cmd = client.commands.get(command);
         } else if (client.aliases.has(command)) {
             cmd = client.commands.get(client.aliases.get(command));
@@ -230,6 +228,6 @@ module.exports = (client, message) => {
             }, 1500);
         }
     }
-    console.log("End")
+
 //})
 };

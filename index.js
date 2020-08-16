@@ -91,18 +91,14 @@ console.log('should have done shit')
 
 
 client.recache = async function (){
-    console.log("recache start")
     const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
-        console.log('...conect');
         if (err) throw err;
         const collection = mongoClient.db("botdb").collection("v2");
         collection.find({}).toArray(function(err, result) {
-            console.log('...find');
             if (err) {console.error(err); throw err};
             mongoClient.close();
-            console.log('...close');
             var data = {timestamp:new Date().getTime(),
                 data:result}
 
@@ -112,8 +108,8 @@ client.recache = async function (){
             fs.writeFile(__dirname + '/jsonFiles/cache.json', jsonData, function(err) {
                 if (err) {
                     console.log(err);
-                    console.log("recache end")
                 }
+                console.log('recached')
             }); 
         });
     });
