@@ -7,7 +7,7 @@
         "cached-request": "^3.0.0",
 
         "chart.js": "^2.9.3",
-        "canvas":"1.6.13",
+        "canvas":"1.6.5",
 
         
         "chartjs-node":"^1.7.1",
