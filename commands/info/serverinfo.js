@@ -80,7 +80,7 @@ exports.run = async (client, message, args) =>{
 
     var canvas = createCanvas(2000,2000)//600, 400)
     var ctx = canvas.getContext('2d')
-    console.log(JSON.stringify(ctx))
+    //console.log(JSON.stringify(ctx))
     new Chart(ctx, {
         type: 'line',
         
@@ -139,7 +139,7 @@ exports.run = async (client, message, args) =>{
 
 
     var IMAGE = `${__dirname}/../../images/${message.guild.id}.png`; //"https://quickchart.io/chart?c="+encodeURIComponent(JSON.stringify(myChart));
-    //console.log(IMAGE)
+    console.log(IMAGE)
 
     let sicon = message.guild.iconURL;
     let serverembed = new Discord.MessageEmbed()
