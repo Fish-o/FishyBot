@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 var moment = require('moment'); // require
 
-const { createCanvas, loadImage } = require('canvas')
+//const { createCanvas, loadImage } = require('canvas')
+const { CanvasRenderService } = require('chartjs-node-canvas');
 const Chart = require('chart.js');
 
 exports.run = async (client, message, args) =>{
@@ -78,10 +79,10 @@ exports.run = async (client, message, args) =>{
     console.log(Object.keys(nice_data))
     console.log(Object.values(nice_data))
 
-    var canvas = createCanvas(600,400)//600, 400)
-    var ctx = canvas.getContext('2d')
+    //var canvas = createCanvas(600,400)//600, 400)
+    //var ctx = canvas.getContext('2d')
     //console.log(JSON.stringify(ctx))
-    new Chart(ctx, {
+    const configuration = {
         type: 'line',
         
         data: {
@@ -130,11 +131,16 @@ exports.run = async (client, message, args) =>{
                 }]
             }
         }
-    });
+    };
 
-    var buf = canvas.toBuffer();
-    await fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, buf);
-   
+    //var buf = canvas.toBuffer();
+    
+    
+    
+    
+    const canvasRenderService = new CanvasRenderService(400, 400)
+    const to_buffer_rendered = await canvasRenderService.renderToBuffer(configuration);
+    await fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);
 
 
 
