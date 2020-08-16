@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
-var vega = require('vega')
 var moment = require('moment'); // require
+const ChartjsNode = require('chartjs-node');
+
 exports.run = async (client, message, args) =>{
     
       
@@ -68,64 +69,13 @@ exports.run = async (client, message, args) =>{
     })
 
 
-    let vega_chart = {
-        "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-        "mark": {"type": "area", "color": "#0084FF", "interpolate": "monotone"},
-        "encoding": {
-          "x": {
-            "field": "date",
-            "type": "temporal",
-            "timeUnit": "yearmonthdate",
-            "axis": {"title": "Date"}
-          },
-          "y": {
-            "field": "users",
-            "type": "quantitative",
-            "axis": {"title": "Users"}
-          },
-          "opacity": {"value": 1}
-        },
-        "width": 1200,
-        "height": 600,
-        "data": {
-          "values": nice_array
-        },
-        "config": {}
-    }
-    var view = new vega
-        .View(vega.parse(vega_chart))
-        .renderer('none')
-        .initialize();
-
-    const canvas = await view.toCanvas()
-    fs.writeFile(`/../../chart${message.guild.id}.png`, canvas.toBuffer())
-
-    /*.then(function (canvas) {
-          // process node-canvas instance for example, generate a PNG stream to write var
-          // stream = canvas.createPNGStream();
-          console.log('Writing PNG to file...')
-          fs.writeFile('stackedBarChart.png', canvas.toBuffer())
-        })
-        .catch(function (err) {
-          console.log("Error writing PNG to file:")
-          console.error(err)
-        });*/
-
-    /*const getDateXObj = rangeLen => ({
-    field: 'date',
-    type: `${rangeLen > 30 ? 'temporal' : 'ordinal'}`,
-    timeUnit: 'yearmonthdate',
-    axis: {
-        title: 'Date',
-        labelAngle: -45,
-    },
-    });*/
+    
     
 
     console.log(nice_data)
     console.log(Object.keys(nice_data))
     console.log(Object.values(nice_data))
-    var myChart = {
+    var chartJsOptions = {
         type: 'line',
         
         data: {
@@ -176,7 +126,34 @@ exports.run = async (client, message, args) =>{
         }
     }
 
-    //var IMAGE = "https://quickchart.io/chart?c="+encodeURIComponent(JSON.stringify(myChart));
+    
+    // 600x600 canvas size
+    var chartNode = new ChartjsNode(600, 600);
+    const imagefile = await chartNode.drawChart(chartJsOptions)
+        .then(() => {
+            // chart is created
+        
+            // get image as png buffer
+            return chartNode.getImageBuffer('image/png');
+        })
+        .then(buffer => {
+            Array.isArray(buffer) // => true
+            // as a stream
+            return chartNode.getImageStream('image/png');
+        })
+        .then(streamResult => {
+            // using the length property you can do things like
+            // directly upload the image to s3 by using the
+            // stream and length properties
+            streamResult.stream // => Stream object
+            streamResult.length // => Integer length of stream
+            // write to a file
+            return chartNode.writeImageToFile('image/png', `${__dirname}/../../images/${message.guild.id}.png`);
+        })
+
+
+
+    var IMAGE = `${__dirname}/../../images/${message.guild.id}.png`; //"https://quickchart.io/chart?c="+encodeURIComponent(JSON.stringify(myChart));
     //console.log(IMAGE)
 
     let sicon = message.guild.iconURL;
