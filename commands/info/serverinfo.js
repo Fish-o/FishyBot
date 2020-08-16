@@ -1,5 +1,7 @@
 const Discord = require('discord.js');
 var moment = require('moment'); // require
+
+var Canvas = require('canvas');
 const ChartjsNode = require('chartjs-node');
 
 exports.run = async (client, message, args) =>{
@@ -75,6 +77,8 @@ exports.run = async (client, message, args) =>{
     console.log(nice_data)
     console.log(Object.keys(nice_data))
     console.log(Object.values(nice_data))
+
+
     var chartJsOptions = {
         type: 'line',
         
