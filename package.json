@@ -23,7 +23,8 @@
         "vega": "^5.13.0"
     },
     "scripts": {
-        "release": "node index.js"
+        "build":"npm install",
+        "start": "node index.js"
     },
     "main": "index.js"
 }
