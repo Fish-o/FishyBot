@@ -78,7 +78,7 @@ exports.run = async (client, message, args) =>{
     console.log(Object.keys(nice_data))
     console.log(Object.values(nice_data))
 
-    var canvas = createCanvas(2000,2000)//600, 400)
+    var canvas = createCanvas(600,400)//600, 400)
     var ctx = canvas.getContext('2d')
     //console.log(JSON.stringify(ctx))
     new Chart(ctx, {
