@@ -3,7 +3,7 @@ var moment = require('moment'); // require
 
 //const { createCanvas, loadImage } = require('canvas')
 const { CanvasRenderService } = require('chartjs-node-canvas');
-const Chart = require('chart.js');
+//const Chart = require('chart.js');
 
 exports.run = async (client, message, args) =>{
     
@@ -140,7 +140,7 @@ exports.run = async (client, message, args) =>{
     
     const canvasRenderService = new CanvasRenderService(400, 400)
     const to_buffer_rendered = await canvasRenderService.renderToBuffer(configuration);
-    await fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);
+    fs.writeFileSync(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);
 
 
 
