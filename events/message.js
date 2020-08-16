@@ -13,7 +13,6 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 module.exports = (client, message) => {
-    console.log(client.config.dbpath)
     if(message.content.includes("🥔") || message.content.toLowerCase().includes("potato")){
         message.react("🥔")
     } 
