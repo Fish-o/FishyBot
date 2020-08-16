@@ -63,14 +63,6 @@ fs.readdir("./commands/", (direrr, dirs) =>{
                 props.conf.aliases.forEach(alias => {
                     client.aliases.set(alias, props.help.name);
                 });
-            
-            
-                /*
-                let props = require(path+file);
-                let commandName = file.split(".")[0];
-                console.log(`Attempting to load command ${commandName}`);
-                client.commands.set(commandName, props);
-                */
             });
         });
 
@@ -82,12 +74,6 @@ fs.readdir("./commands/", (direrr, dirs) =>{
 
 
 
-
-
-
-
-
-console.log('should have done shit')
 
 
 client.recache = async function (){
