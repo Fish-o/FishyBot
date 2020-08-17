@@ -9,17 +9,17 @@ exports.run = (client, message, args) => {
     
 	
 	var guildID = message.guild.id;
-	var guild = client.guilds.cache.get(guildID);
+	//var guild = client.guilds.cache.get(guildID);
 
 	const uri = client.config.dbpath
 
 
-    db_user_id_list.forEach(usr_id =>{
+    /*db_user_id_list.forEach(usr_id =>{
         let usr = db_user_list[usr_id]
         console.log(usr.data.usernames)
         if(usr.data.usernames === null){not_in_db.push(usr_id)}
 
-    })
+    })*/
 
 
 
