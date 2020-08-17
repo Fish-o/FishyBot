@@ -14,23 +14,21 @@ exports.run = (client, message, args) => {
 	const uri = client.config.dbpath
 
 
+    db_user_id_list.forEach(usr_id =>{
+        let usr = db_user_list[usr_id]
+        console.log(usr.data.usernames)
+        if(usr.data.usernames === null){not_in_db.push(usr_id)}
+
+    })
 
 
 
-
-
-    return message.channel.send("NO DONT I HATE U GO AWAY ")
-
-
-
-
-	// Get old data
-	var user_list_promise = new Promise(function(resolve, reject){
+    var user_list_promise = new Promise(function(resolve, reject){
 		var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 		mongoClient.connect(err => {
 			console.log('...conect');
 			if (err) throw err;
-			const collection = mongoClient.db("botdb").collection("users");
+			const collection = mongoClient.db("botdb").collection("v2");
 			collection.find().toArray(function(err, result) {
 				console.log('...find');
 				if (err) {console.error(err); throw err};
@@ -51,6 +49,44 @@ exports.run = (client, message, args) => {
 			});
 		});
 	});
+
+    user_list_promise.then(value => {
+        db_data = value;
+        
+        db_path.forEach(db_guild => {
+
+            Object.keys(db_guild.users).forEach(userId =>{
+                if(db_guild.users[userId].data.usernames === null){
+                    db_guild.users[userId].data.usernames = {};
+                }
+            })
+
+        
+        
+            // Push new Guild object with users to db
+            const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+            mongoClient.connect(err => {
+                if (err) console.log(err);
+                const collection = mongoClient.db("botdb").collection("test");
+                // perform actions on the collection object
+                collection.insertOne(db_guild, function(err, res) {
+                    if (err) throw err;
+                    console.log("1 document inserted");
+                    mongoClient.close();
+                });
+                
+            });
+        })
+
+    })
+
+    return message.channel.send("NO DONT I HATE U GO AWAY ")
+
+
+
+
+	
+	
 
 
 
