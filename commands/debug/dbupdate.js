@@ -56,7 +56,7 @@ exports.run = (client, message, args) => {
         db_data.forEach(db_guild => {
 
             Object.keys(db_guild.users).forEach(userId =>{
-                if(!db_guild.users.data){
+                if(db_guild.users.data === undefined){
                     db_guild.users[userId].data = {
                         usernames:{},
                         region:null
