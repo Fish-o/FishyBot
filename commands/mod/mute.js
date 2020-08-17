@@ -19,12 +19,15 @@ exports.run = async (bot, message, args) => {
             reason: 'Used for muting people',
           })
         
-      
+        const overwrites =  [
+            {
+              id: muterole.id, 
+              deny: ['SEND_MESSAGES','ADD_REACTIONS']
+            }
+          ]   
+    
       message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.overwritePermissions(muterole, {
-          SEND_MESSAGES: false,
-          ADD_REACTIONS: false
-        });
+        await channel.overwritePermissions(overwrites);
       });
     }catch(e){
       console.log(e.stack);
