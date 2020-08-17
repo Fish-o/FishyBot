@@ -74,7 +74,7 @@ exports.run = (client, message, args) => {
                 if (err) console.log(err);
                 const collection = mongoClient.db("botdb").collection("test");
                 // perform actions on the collection object
-                collection.insertOne(db_guild, function(err, res) {
+                collection.replaceOne({id:db_guild.id}, db_guild, function(err, res) {
                     if (err) throw err;
                     console.log("1 document inserted");
                     mongoClient.close();
