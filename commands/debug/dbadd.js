@@ -126,29 +126,29 @@ exports.run = (client, message, args) => {
             })
 
             let not_in_db = [];
-            db_user_id_list.forEach(usr_id =>{
+            /*db_user_id_list.forEach(usr_id =>{
                 let usr = db_user_list[usr_id]
                 console.log(usr.data.usernames)
                 if(usr.data.usernames === null){not_in_db.push(usr_id)}
 
-            })
+            })*/
            
             
             guild_user_list.forEach(guild_user =>{
                 guild_user_id_list.push(guild_user.id)
                 if(!db_user_id_list.includes(guild_user.id)){
-                    not_in_db.push(guild_user.id)
+                    //not_in_db.push(guild_user.id)
                 }
             })
 
             
-            not_in_db = [...new Set(not_in_db)];
+            //not_in_db = [...new Set(not_in_db)];
             
             
             //console.log(guild_user_id_list);
             //console.log(db_user_id_list);
-            console.log(not_in_db);
-            //var not_in_db = guild_user_id_list.filter(userID => {!db_user_id_list.includes(userID)});
+            //console.log(not_in_db);
+            not_in_db = guild_user_id_list.filter(userID => {!db_user_id_list.includes(userID)});
             
             let new_users = db_user_list;
 
@@ -166,7 +166,7 @@ exports.run = (client, message, args) => {
             const locate = "users"
             let value = { $set: {[locate]: new_users}};
 
-            client.updatedb(client.config.dbpath, {id:message.guild.id}, value, `Fixxed \`${not_in_db.length}\` users`, message.channel)
+            client.updatedb({id:message.guild.id}, value, `Fixxed \`${not_in_db.length}\` users`, message.channel)
 
 
 
