@@ -72,7 +72,7 @@ exports.run = (client, message, args) => {
             const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
             mongoClient.connect(err => {
                 if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("test");
+                const collection = mongoClient.db("botdb").collection("v2");
                 // perform actions on the collection object
                 collection.replaceOne({id:db_guild.id}, db_guild, function(err, res) {
                     if (err) throw err;
