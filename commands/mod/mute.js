@@ -27,7 +27,10 @@ exports.run = async (bot, message, args) => {
           ]   
     
       message.guild.channels.cache.forEach(async (channel, id) => {
-        await channel.overwritePermissions(overwrites);
+        await channel.updateOverwrite(muterole.id, {
+            SEND_MESSAGES:false,
+            ADD_REACTIONS:false
+        });
       });
     }catch(e){
       console.log(e.stack);
