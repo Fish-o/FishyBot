@@ -80,7 +80,7 @@ exports.run = (client, message, args) => {
 
     })
 
-    return message.channel.send("NO DONT I HATE U GO AWAY ")
+
 
 
 
@@ -104,7 +104,7 @@ exports.run = (client, message, args) => {
 
 
 	// Get guilds
-	
+	/*
 	user_list_promise.then( function(value) {
 		old_db_data = value;
 		
@@ -171,7 +171,7 @@ exports.run = (client, message, args) => {
 
 
 
-
+*/
 
 	/*
 
