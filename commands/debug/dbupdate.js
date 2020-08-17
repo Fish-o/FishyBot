@@ -53,7 +53,7 @@ exports.run = (client, message, args) => {
     user_list_promise.then(value => {
         db_data = value;
         
-        db_path.forEach(db_guild => {
+        db_data.forEach(db_guild => {
 
             Object.keys(db_guild.users).forEach(userId =>{
                 if(db_guild.users[userId].data.usernames === null){
