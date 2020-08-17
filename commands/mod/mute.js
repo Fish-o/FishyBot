@@ -11,7 +11,7 @@ exports.run = async (bot, message, args) => {
   //start of create role
   if(!muterole){
     try{
-        muterole = await guild.roles.create({
+        muterole = await message.guild.roles.create({
             data: {
                 name: 'muted',
                 color: '#707070',
