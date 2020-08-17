@@ -3,10 +3,9 @@ const fs = require('fs');
 
 const MongoClient = require('mongodb').MongoClient;
 module.exports = (client, member) =>{
-	let rawdata = fs.readFileSync(__dirname + '/../jsonFiles/config.json');
-    const config = JSON.parse(rawdata);
+	
 
-    const uri = config['dbpath'];
+    const uri = client.config.dbpath;
 	let current_member = member
 
 	/*		
@@ -96,7 +95,7 @@ module.exports = (client, member) =>{
 			db_data[guildID].users[new_user_id] = userObject;
 		})
 
-		const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+		/*const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
 		mongoClient.connect(err => {
 			if (err) console.log(err);
 			const collection = mongoClient.db("botdb").collection("users");
@@ -106,7 +105,7 @@ module.exports = (client, member) =>{
 				console.log("1 document replaced");
 				mongoClient.close();
 			});
-		});
+		});*/
 	});
 
 
