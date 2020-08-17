@@ -11,11 +11,15 @@ exports.run = async (bot, message, args) => {
   //start of create role
   if(!muterole){
     try{
-      muterole = await message.guild.createRole({
-        name: "muted",
-        color: "#000000",
-        permissions:[]
-      })
+        muterole = await guild.roles.create({
+            data: {
+                name: 'muted',
+                color: '#707070',
+            },
+            reason: 'Used for muting people',
+          })
+        
+      
       message.guild.channels.cache.forEach(async (channel, id) => {
         await channel.overwritePermissions(muterole, {
           SEND_MESSAGES: false,
