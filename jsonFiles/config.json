@@ -1,7 +1,7 @@
 {
-    "name":"Vr gang bot",
-    "version":"2.0.0",
-    "description":"The bot for The Vr Gang",
+    "name":"FishyBot",
+    "version":"1.2.0",
+    "description":"its kinda fishy :p",
     "main":"index.js",
     "author":"Fish",
     "master":"325893549071663104",
