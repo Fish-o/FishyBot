@@ -63,15 +63,43 @@ exports.run = async (client, message, args) => {
     Embed.setColor('#0055ff')
     Embed.setTitle(`**${player_name}**'s echo stats`);
     Embed.setImage('https://www.vhv.rs/dpng/d/126-1260749_echo-arena-vr-disc-hd-png-download.png')
-    Embed.addFields(
+    /*Embed.addFields(
 		{ name: 'Level', value: user_stats.level},
 		{ name: 'Games on record', value: user_stats.game_count},
-        { name: 'Goals Avg', value: user_stats.total_goals / user_stats.game_count},
-        { name: 'Assists Avg', value: user_stats.total_assists / user_stats.game_count},
-        { name: 'Saves Avg', value: user_stats.total_saves / user_stats.game_count},
-        { name: 'Stuns Avg', value: user_stats.total_stuns / user_stats.game_count},
+        { name: 'Goals Avg', value: Math.round(user_stats.total_goals / user_stats.game_count*100)/100},
+        { name: 'Assists Avg', value: Math.round(user_stats.total_assists / user_stats.game_count*100)/100},
+        { name: 'Saves Avg', value: Math.round(user_stats.total_saves / user_stats.game_count*100)/100},
+        { name: 'Stuns Avg', value: Math.round(user_stats.total_stuns / user_stats.game_count*100)/100},
         { name: 'Wins', value: `${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%`},
-	);
+    );*/
+    Embed.addFields(
+        {name: "Echo stats", value: 
+        
+`Level: 
+${user_stats.level}
+
+Games on record:
+${user_stats.game_count}
+
+Goals Avg:
+${Math.round(user_stats.total_goals / user_stats.game_count*100)/100}
+
+Assists Avg:
+${Math.round(user_stats.total_assists / user_stats.game_count*100)/100}
+
+Saves Avg:
+${Math.round(user_stats.total_saves / user_stats.game_count*100)/100}
+
+Stuns Avg:
+${Math.round(user_stats.total_stuns / user_stats.game_count*100)/100}
+
+Win rate:
+${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%
+ `
+    
+    }
+
+    )
     if(vrml_stats){
         Embed.addFields(
             { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type !vrml ${vrml_stats.team_name}, or !vrml ${player_name} to get more info`},
