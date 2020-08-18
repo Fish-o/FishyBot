@@ -59,7 +59,7 @@ exports.run = async (client, message, args) => {
 
     const Embed = new Discord.MessageEmbed()
 
-    Embed.setAuthor("Powered by IgniteVR Metrics", 'https://ignitevr.gg/wp-content/uploads/2019/09/primary_Optimized.png', `https://ignitevr.gg/stats/${player_name}`);
+    Embed.setAuthor("Powered by IgniteVR Metrics", 'https://ignitevr.gg/wp-content/uploads/2019/09/primary_Optimized.png', `https://ignitevr.gg/stats/player/${player_name}`);
     Embed.setColor('#0055ff')
     Embed.setTitle(`**${player_name}**'s echo stats`);
     //Embed.setThumbnail(`${__dirname}/../../images/echo_disc.png`)
