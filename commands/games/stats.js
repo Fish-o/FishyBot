@@ -40,8 +40,46 @@ exports.run = async (client, message, args) => {
         return message.channel.send('Please enter a oculus username')
     }
 
+    // Get data
     let player_stats = await getPlayerStats(args[0])
+
+    // Return if nothing was found
+    if(player_stats.player === []){
+        return message.channel.send("Could not find user")
+    }
+
+
+
+
+    
+
+    const user_stats = player_stats.player[0]
+    const vrml_stats = player_stats.vrml_player[0]
+    const player_name = player_stats.player[0].player_name
+
+    const Embed = new Discord.MessageEmbed()
+
+    Embed.setAuthor("Powered by IgniteVR Metrics", 'https://ignitevr.gg/wp-content/uploads/2019/09/primary_Optimized.png', `https://ignitevr.gg/stats/${player_name}`);
+    Embed.setColor('#0055ff')
+    Embed.setTitle(`**${player_name}**'s echo stats`);
+    Embed.setImage('https://www.vhv.rs/dpng/d/126-1260749_echo-arena-vr-disc-hd-png-download.png')
+    Embed.addFields(
+		{ name: 'Level', value: user_stats.level},
+		{ name: 'Games on record', value: user_stats.game_count},
+        { name: 'Goals Avg', value: user_stats.total_goals / user_stats.game_count},
+        { name: 'Assists Avg', value: user_stats.total_assists / user_stats.game_count},
+        { name: 'Saves Avg', value: user_stats.total_saves / user_stats.game_count},
+        { name: 'Stuns Avg', value: user_stats.total_stuns / user_stats.game_count},
+        { name: 'Wins', value: `${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%`},
+	);
+    if(vrml_stats){
+        Embed.addFields(
+            { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type !vrml ${vrml_stats.team_name}, or !vrml ${player_name} to get more info`},
+        );
+    }
     console.log(player_stats)
+    message.channel.send(Embed)
+    
 }
 
 exports.conf = {
