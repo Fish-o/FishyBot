@@ -71,8 +71,8 @@ exports.run = async (client, message, args) => {
     Embed.attachFiles(attachment)
     Embed.setThumbnail('attachment://sample.png')
     Embed.addFields(
-		{ name: 'Level', value: user_stats.level},
-		{ name: 'Games on record', value: user_stats.game_count},
+		{ name: 'Level', value: user_stats.level, inline: true},
+		{ name: 'Games on record', value: user_stats.game_count, inline: true},
         { name: 'Goals Avg', value: Math.round(user_stats.total_goals / user_stats.game_count*100)/100, inline: true},
         { name: 'Assists Avg', value: Math.round(user_stats.total_assists / user_stats.game_count*100)/100, inline: true},
         { name: 'Saves Avg', value: Math.round(user_stats.total_saves / user_stats.game_count*100)/100, inline: true},
