@@ -14,8 +14,8 @@ let config = require("./jsonFiles/config.json");
 
 config.token = process.env.TOKEN
 config.dbpath = process.env.DBPATH
-if(process.env.PREFIX){
-    config.prefix = process.env.PREFIX;
+if(process.env.prefix){
+    config.prefix = process.env.prefix;
 }
 client.config = config;
 console.log(config)
