@@ -116,7 +116,7 @@ exports.run = async(client, message, args) => {
             let player = TeamPlayer_team.Players.find(player => player.Name.toLowerCase() == team_name.toLowerCase() )
 
             if(player){
-                team_name = TeamPlayer_team.name;
+                team_name = TeamPlayer_team.Name;
                 team_name_url = team_name.split(' ').join('%20');
                 team = TeamPlayer_team;
                 console.log('set player')
@@ -141,6 +141,10 @@ exports.run = async(client, message, args) => {
         team = all_teams.TeamPlayers.find(team => team.Name == team_name)
         message.channel.send(`Could not find exact team, going with: \`${team_name}\` (${Math.round(ratings.bestMatch.rating*100)}% sure)`)
     }
+
+    if(!team){
+        return message.channel.send("Could not find a team")
+    }
     
     const players = team.Players
 
@@ -153,7 +157,6 @@ exports.run = async(client, message, args) => {
         // I set the ttl (time before recaching) lowwer for the stats
         doRequest(stats_url, 5*60*1000)
     ])
-    console.log('did requests')
     // Return a message if no logo was found
     if(!logos[0].Logo){return message.channel.send('Something went wrong')}
 
@@ -228,7 +231,6 @@ exports.run = async(client, message, args) => {
 
 
 
-    console.log('start with embed')
     // Set the description
     const description = `Games played: ${stats.GP}\nWins: ${stats.W}\nLosses: ${stats.L}\nPoints: ${stats.PTS}\nMMR: ${stats.MMR}`
 
@@ -283,11 +285,9 @@ exports.run = async(client, message, args) => {
     // Add timestamp  
     embed.setTimestamp()
     
-    console.log('gonna send it')
     // Send the embed!
     message.channel.send(embed);
 
-    console.log("End team")
     //}
 
     /*
