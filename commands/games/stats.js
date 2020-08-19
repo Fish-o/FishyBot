@@ -71,8 +71,8 @@ exports.run = async (client, message, args) => {
     Embed.attachFiles(attachment)
     Embed.setThumbnail('attachment://sample.png')
     Embed.addFields(
-		{ name: 'Level', value: user_stats.level},
-		{ name: 'Games on record', value: user_stats.game_count},
+        { name: 'Games on record', value: user_stats.game_count},
+		{ name: 'Level', value: user_stats.level, inline: true},
         { name: 'Goals Avg', value: Math.round(user_stats.total_goals / user_stats.game_count*100)/100, inline: true},
         { name: 'Assists Avg', value: Math.round(user_stats.total_assists / user_stats.game_count*100)/100, inline: true},
         { name: 'Saves Avg', value: Math.round(user_stats.total_saves / user_stats.game_count*100)/100, inline: true},
@@ -109,7 +109,7 @@ ${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%
     )*/
     console.log(vrml_stats)
     
-    if(vrml_stats){
+    if(!Array.isArray(vrml_stats)){
         console.log('vrml found')
         Embed.addFields(
             { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type !vrml ${vrml_stats.team_name}, or !vrml ${player_name} to get more info`},

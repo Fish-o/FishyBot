@@ -14,14 +14,6 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 module.exports = (client, message) => {
-    if(message.content.includes("🥔") || message.content.toLowerCase().includes("potato")){
-        message.react("🥔")
-    } 
-    if(message.content.toLowerCase().includes("fish")){
-        message.react("🐟")
-    }
-
-
     if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
         client.destroy()
