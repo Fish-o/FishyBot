@@ -7,7 +7,7 @@ cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
 
 
 
-function getPlayerStats(player, ttl= 10*60*1000) {
+function getPlayerStats(player, token, ttl= 10*60*1000) {
     return new Promise(function (resolve, reject) {
 
         let url = `https://ignitevr.gg/cgi-bin/EchoStats.cgi/get_player_stats?player_name=${player}&fuzzy_search=true`
@@ -18,7 +18,7 @@ function getPlayerStats(player, ttl= 10*60*1000) {
             ttl:ttl,
             json: true,
             headers: {
-                "x-api-key":process.env.igniteapi,
+                "x-api-key":token,
                 'User-Agent': 'FishyBot'
             }
         };
@@ -40,22 +40,23 @@ exports.run = async (client, message, args) => {
         return message.channel.send('Please enter a oculus username')
     }
 
-
+    
     // Get data
-    let player_stats = await getPlayerStats(args[0])
+    let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
 
     // Return if nothing was found
     if(player_stats.player === []){
         return message.channel.send("Could not find user")
     }
 
-
+    console.log(player_stats)
+    console.log(client.config.igniteapi)
 
     message.channel.send("This is not done yet, please leave feedback with !feedback")
     
 
     const user_stats = player_stats.player[0]
-    const vrml_stats = player_stats.vrml_player[0]
+    const vrml_stats = player_stats.vrml_player
     const player_name = player_stats.player[0].player_name
 
 
@@ -105,7 +106,9 @@ ${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%
 
     )*/
     console.log(vrml_stats)
+    
     if(vrml_stats){
+        console.log('vrml found')
         Embed.addFields(
             { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type !vrml ${vrml_stats.team_name}, or !vrml ${player_name} to get more info`},
         );
