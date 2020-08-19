@@ -2,7 +2,8 @@ const active = new Map();
 const talkedRecently = new Set();
 const Discord = require('discord.js');
 var fs = require("fs");
-const path = require("path")
+const path = require("path");
+const { config } = require('process');
 const MongoClient = require('mongodb').MongoClient;
 
 
@@ -21,7 +22,7 @@ module.exports = (client, message) => {
     }
 
 
-    if(message.content == 'botshut' && message.author.id == client.master){
+    if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
         client.destroy()
     } else if(message.content == 'botsenduptime' && message.author.id == client.master){
