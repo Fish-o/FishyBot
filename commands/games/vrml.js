@@ -85,7 +85,7 @@ exports.run = async(client, message, args) => {
     */
     
     //if(action == 'team'){
-    console.log("start command")
+    console.log("start for real command")
 
 
     // Get the comming matches and all the teams.
@@ -113,13 +113,14 @@ exports.run = async(client, message, args) => {
 
     // If no team was found, look if argument is player in team
     if(!team){
-        TeamPlayer.forEach(TeamPlayer_team => {
+        all_teams.TeamPlayer.forEach(TeamPlayer_team => {
             let player = TeamPlayer_team.Players.find(player => player.Name.toLowerCase() == team_name.toLowerCase() )
 
             if(player){
-                team_name = TeamPlayer_team.name
-                team_name_url = team_name.split(' ').join('%20')
-                team = TeamPlayer_team
+                team_name = TeamPlayer_team.name;
+                team_name_url = team_name.split(' ').join('%20');
+                team = TeamPlayer_team;
+                console.log('set player')
             }
 
         })
