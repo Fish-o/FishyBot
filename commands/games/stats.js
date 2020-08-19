@@ -37,7 +37,7 @@ function getPlayerStats(player, token, ttl= 10*60*1000) {
 
 exports.run = async (client, message, args) => {
     if(!args[0]){
-        return message.channel.send('Please enter a oculus username')
+        return message.channel.send('Please enter an Oculus username')
     }
 
     
@@ -45,8 +45,8 @@ exports.run = async (client, message, args) => {
     let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
 
     // Return if nothing was found
-    if(player_stats.player === []){
-        return message.channel.send("Could not find user")
+    if(!player_stats.player[0]){
+        return message.channel.send("Could not find user in the ignite database")
     }
 
     console.log(player_stats)
@@ -58,6 +58,8 @@ exports.run = async (client, message, args) => {
     const user_stats = player_stats.player[0]
     const vrml_stats = player_stats.vrml_player
     const player_name = player_stats.player[0].player_name
+
+
 
 
     const attachment = new Discord.MessageAttachment(`${__dirname}/../../images/echo_disc.png`, 'sample.png');
