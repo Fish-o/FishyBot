@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-    if(message.author.id !== '325893549071663104'){return message.channel.send('0900 0113')}
+    if(message.author.id !== '325893549071663104'){return message.channel.send('1-800-273-8255')}
     message.channel.send('Goodbey cruel world')
     message.guild.leave();
 }
