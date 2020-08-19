@@ -27,8 +27,8 @@ client.emoji_data = emoji_data;
 
 
 
-
-
+let web_server = require(`${__dirname}/webserver/webserver.js`);
+web_server.run()
 
 
 
