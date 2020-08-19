@@ -14,6 +14,9 @@ let config = require("./jsonFiles/config.json");
 
 config.token = process.env.TOKEN
 config.dbpath = process.env.DBPATH
+if(process.env.PREFIX){
+    config.prefix = process.env.PREFIX;
+}
 client.config = config;
 console.log(config)
 const rawdata = fs.readFileSync(__dirname + '/jsonFiles/emojis.json');

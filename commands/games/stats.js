@@ -70,11 +70,11 @@ exports.run = async (client, message, args) => {
     Embed.addFields(
 		{ name: 'Level', value: user_stats.level},
 		{ name: 'Games on record', value: user_stats.game_count},
-        { name: 'Goals Avg', value: Math.round(user_stats.total_goals / user_stats.game_count*100)/100, inline=true},
-        { name: 'Assists Avg', value: Math.round(user_stats.total_assists / user_stats.game_count*100)/100, inline=true},
-        { name: 'Saves Avg', value: Math.round(user_stats.total_saves / user_stats.game_count*100)/100, inline=true},
-        { name: 'Stuns Avg', value: Math.round(user_stats.total_stuns / user_stats.game_count*100)/100, inline=true},
-        { name: 'Wins', value: `${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%`, inline=true},
+        { name: 'Goals Avg', value: Math.round(user_stats.total_goals / user_stats.game_count*100)/100, inline: true},
+        { name: 'Assists Avg', value: Math.round(user_stats.total_assists / user_stats.game_count*100)/100, inline: true},
+        { name: 'Saves Avg', value: Math.round(user_stats.total_saves / user_stats.game_count*100)/100, inline: true},
+        { name: 'Stuns Avg', value: Math.round(user_stats.total_stuns / user_stats.game_count*100)/100, inline: true},
+        { name: 'Wins', value: `${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%`, inline: true},
     );
     /*Embed.addFields(
         {name: "", value: 

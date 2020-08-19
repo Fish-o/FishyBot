@@ -23,5 +23,5 @@ jobs:
           DBPATH: ${{ secrets.DBPATH }}
           TOKEN: ${{ secrets.TOKEN }}
           ingiteapi: ${{ secrets.IGNITEAPI }}
-      
+          prefix: 't!'      
 
