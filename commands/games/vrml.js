@@ -72,9 +72,8 @@ exports.run = async(client, message, args) => {
     
     
 
-    if(!args){return}
-    const action = args[0].toLowerCase()
-    args.shift()
+    if(!args[0]){return message.channel.send('Please enter a team name')}
+
 
     /*
         Todo:
@@ -104,7 +103,7 @@ exports.run = async(client, message, args) => {
     var team_name_url = args.join('%20')
     
     // Return a message if not team name was entered
-    if(!team_name){return message.channel.send('Enter a team name')}
+    if(!team_name){return message.channel.send('Please enter a team name')}
     
 
     // Find team in the team list
