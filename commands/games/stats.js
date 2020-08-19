@@ -7,7 +7,7 @@ cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
 
 
 
-function getPlayerStats(player, ttl= 10*60*1000) {
+function getPlayerStats(player, token, ttl= 10*60*1000) {
     return new Promise(function (resolve, reject) {
 
         let url = `https://ignitevr.gg/cgi-bin/EchoStats.cgi/get_player_stats?player_name=${player}&fuzzy_search=true`
@@ -18,7 +18,7 @@ function getPlayerStats(player, ttl= 10*60*1000) {
             ttl:ttl,
             json: true,
             headers: {
-                "x-api-key":client.config.igniteapi,
+                "x-api-key":token,
                 'User-Agent': 'FishyBot'
             }
         };
@@ -42,7 +42,7 @@ exports.run = async (client, message, args) => {
 
     
     // Get data
-    let player_stats = await getPlayerStats(args[0])
+    let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
 
     // Return if nothing was found
     if(player_stats.player === []){
