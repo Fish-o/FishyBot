@@ -17,7 +17,7 @@ config.dbpath = process.env.DBPATH
 if(process.env.prefix){
     config.prefix = process.env.prefix;
 }
-config.igniteapi = process.env.igniteapi
+config.igniteapi = process.env.igniteapi;
 
 client.config = config;
 console.log(config)

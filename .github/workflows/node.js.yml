@@ -22,6 +22,6 @@ jobs:
       env:
           DBPATH: ${{ secrets.DBPATH }}
           TOKEN: ${{ secrets.TOKEN }}
-          ingiteapi: ${{ secrets.IGNITEAPI }}
+          igniteapi: ${{ secrets.IGNITEAPI }}
           prefix: 't!'      
 
