@@ -46,7 +46,7 @@ module.exports = (client, member) =>{
 			collection.find({}).toArray(function(err, result) {
 				console.log('...find');
 				if (err) {console.error(err); throw err};
-				console.log(result);
+				
 			
 				
 				//let new_results = [];
@@ -150,7 +150,7 @@ module.exports = (client, member) =>{
             collection.find({id:member.guild.id}).toArray(function(err, result) {
                 console.log('...find');
                 if (err) {console.error(err); throw err};
-                console.log(result);
+                
             
                 
                 //let new_results = [];

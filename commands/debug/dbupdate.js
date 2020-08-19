@@ -32,7 +32,7 @@ exports.run = (client, message, args) => {
 			collection.find().toArray(function(err, result) {
 				console.log('...find');
 				if (err) {console.error(err); throw err};
-				console.log(result);
+				
 			
 				
 				//let new_results = [];
@@ -188,9 +188,9 @@ exports.run = (client, message, args) => {
 			const collection = mongoClient.db("botdb").collection("users");
 			collection.find({}).toArray(function(err, result) {
 				console.log('...find');
-				console.log(result);
+				
 				if (err) {console.error(err); throw err};
-				console.log(result);
+				
 			
 				
 				//let new_results = [];

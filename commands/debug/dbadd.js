@@ -32,7 +32,7 @@ exports.run = (client, message, args) => {
 			collection.find({id:guildID}).toArray(function(err, result) {
 				console.log('...find');
 				if (err) {console.error(err); throw err};
-				console.log(result);
+				
 			
 				
 				//let new_results = [];

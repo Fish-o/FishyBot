@@ -40,6 +40,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send('Please enter a oculus username')
     }
 
+
     // Get data
     let player_stats = await getPlayerStats(args[0])
 
@@ -64,17 +65,16 @@ exports.run = async (client, message, args) => {
     Embed.setAuthor("Powered by IgniteVR Metrics", 'https://ignitevr.gg/wp-content/uploads/2019/09/primary_Optimized.png', `https://ignitevr.gg/stats/player/${player_name}`);
     Embed.setColor('#0055ff')
     Embed.setTitle(`**${player_name}**'s echo stats`);
-    //Embed.setThumbnail()
     Embed.attachFiles(attachment)
     Embed.setThumbnail('attachment://sample.png')
     Embed.addFields(
 		{ name: 'Level', value: user_stats.level},
 		{ name: 'Games on record', value: user_stats.game_count},
-        { name: 'Goals Avg', value: Math.round(user_stats.total_goals / user_stats.game_count*100)/100},
-        { name: 'Assists Avg', value: Math.round(user_stats.total_assists / user_stats.game_count*100)/100},
-        { name: 'Saves Avg', value: Math.round(user_stats.total_saves / user_stats.game_count*100)/100},
-        { name: 'Stuns Avg', value: Math.round(user_stats.total_stuns / user_stats.game_count*100)/100},
-        { name: 'Wins', value: `${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%`},
+        { name: 'Goals Avg', value: Math.round(user_stats.total_goals / user_stats.game_count*100)/100, inline=true},
+        { name: 'Assists Avg', value: Math.round(user_stats.total_assists / user_stats.game_count*100)/100, inline=true},
+        { name: 'Saves Avg', value: Math.round(user_stats.total_saves / user_stats.game_count*100)/100, inline=true},
+        { name: 'Stuns Avg', value: Math.round(user_stats.total_stuns / user_stats.game_count*100)/100, inline=true},
+        { name: 'Wins', value: `${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%`, inline=true},
     );
     /*Embed.addFields(
         {name: "", value: 
@@ -104,6 +104,7 @@ ${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%
     }
 
     )*/
+    console.log(vrml_stats)
     if(vrml_stats){
         Embed.addFields(
             { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type !vrml ${vrml_stats.team_name}, or !vrml ${player_name} to get more info`},
