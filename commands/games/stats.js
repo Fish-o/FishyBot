@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send('Please enter a oculus username')
     }
 
-
+    
     // Get data
     let player_stats = await getPlayerStats(args[0])
 
@@ -49,7 +49,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send("Could not find user")
     }
 
-
+    console.log(player_stats)
 
     message.channel.send("This is not done yet, please leave feedback with !feedback")
     
