@@ -56,7 +56,7 @@ exports.run = async (client, message, args) => {
     
 
     const user_stats = player_stats.player[0]
-    const vrml_stats = player_stats.vrml_player[0]
+    const vrml_stats = player_stats.vrml_player
     const player_name = player_stats.player[0].player_name
 
 
