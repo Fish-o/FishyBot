@@ -114,7 +114,7 @@ exports.run = async(client, message, args) => {
     // If no team was found, look if argument is player in team
     if(!team){
         TeamPlayer.forEach(TeamPlayer_team => {
-            let player = TeamPlayer_team.Players.find(player => player.name.toLowerCase() == team_name.toLowerCase() )
+            let player = TeamPlayer_team.Players.find(player => player.Name.toLowerCase() == team_name.toLowerCase() )
 
             if(player){
                 team_name = TeamPlayer_team.name
