@@ -95,7 +95,6 @@ client.recache = async function (){
                 if (err) {
                     console.log(err);
                 }
-                console.log('recached')
             }); 
         });
     });
