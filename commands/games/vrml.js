@@ -36,7 +36,6 @@ function doRequest(url, ttl= 10*60*1000) {
 
 
 exports.run = async(client, message, args) => {
-    console.log("Start command")
     /*
         args[0], actions:
         
@@ -84,7 +83,6 @@ exports.run = async(client, message, args) => {
     */
     
     //if(action == 'team'){
-    console.log("start for real command")
 
 
     // Get the comming matches and all the teams.
@@ -110,7 +108,7 @@ exports.run = async(client, message, args) => {
     let team = all_teams.TeamPlayers.find(team => team.Name == team_name)
 
 
-    // If no team was found, look if argument is player in team
+    // If no team was found, look if argument is player in a team
     if(!team){
         all_teams.TeamPlayers.forEach(TeamPlayer_team => {
             let player = TeamPlayer_team.Players.find(player => player.Name.toLowerCase() == team_name.toLowerCase() )
@@ -126,7 +124,7 @@ exports.run = async(client, message, args) => {
     }
 
 
-    // If no team was found, get the team that is most simular to the team name enterd
+    // If still no team was found, get the team that is most simular to the team name enterd
     if(!team){
         let all_team_names = []
         all_teams.TeamPlayers.forEach(TeamPlayer =>{
@@ -227,10 +225,6 @@ exports.run = async(client, message, args) => {
     })
     
 
-
-
-
-
     // Set the description
     const description = `Games played: ${stats.GP}\nWins: ${stats.W}\nLosses: ${stats.L}\nPoints: ${stats.PTS}\nMMR: ${stats.MMR}`
 
@@ -287,63 +281,6 @@ exports.run = async(client, message, args) => {
     
     // Send the embed!
     message.channel.send(embed);
-
-    //}
-
-    /*
-        Todo:
-         .Level
-
-    
-    
-    if(action == 'player' || action == 'user'){
-        //var msg = await message.channel.send('Loading...')
-        const user_name = args.join(' ')
-        const user_name_url = args.join('%20')
-        
-        
-
-        const all_team_url = 'https://vrmasterleague.com/Services.asmx/GetTeamPlayersStats?game=echoarena&activeOnly=false&includeRetired=false'
-        const all_teams = await doRequest(all_team_url)
-        //console.log(all_teams.TeamPlayers)
-        const users_team = all_teams.TeamPlayers.filter(team => team.Players.filter(player => player.Name == user_name)[0] )[0]
-        const team_user_stats = users_team.Players.filter(user => user.Name == user_name)[0]
-        console.log(users_team)
-        if(!users_team){
-            //msg.delete()
-            return message.channel.send('Could not find user')
-        }
-
-
-        const matches_url = 'https://vrmasterleague.com/Services.asmx/GetMatchesThisWeek?game=echoarena&max=100'
-        const matches = await doRequest(matches_url)
-        const users_team_matches = matches.filter(match => match.HomeTeam == users_team.Name || match.AwayTeam == users_team.Name)
-        
-
-
-        const embed = new Discord.MessageEmbed()
-        embed.setColor('#0099ff')
-        embed.setTitle(user_name)
-        //embed.setAuthor(stats.DivisionName, stats.DivisionLogo)
-            
-        //embed.setThumbnail(logos[0].Logo)
-        embed.setDescription(team_user_stats.Nationality)
-        
-        users_team_matches.forEach(users_team_match => {
-
-            embed.addFields(
-                { name: users_team_match.DateScheduled, value: `${users_team_match.HomeTeam} vs ${users_team_match.AwayTeam}`, inline: true },
-            )
-        });
-        
-            
-            //.setTimestamp()
-            
-        
-        message.channel.send(embed);
-        //msg.delete()
-
-    }*/
 
 }
 
