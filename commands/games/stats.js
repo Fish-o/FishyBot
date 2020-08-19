@@ -18,7 +18,7 @@ function getPlayerStats(player, ttl= 10*60*1000) {
             ttl:ttl,
             json: true,
             headers: {
-                "x-api-key":process.env.igniteapi,
+                "x-api-key":client.config.igniteapi,
                 'User-Agent': 'FishyBot'
             }
         };
@@ -50,7 +50,7 @@ exports.run = async (client, message, args) => {
     }
 
     console.log(player_stats)
-    console.log(process.env.igniteapi)
+    console.log(client.config.igniteapi)
 
     message.channel.send("This is not done yet, please leave feedback with !feedback")
     
