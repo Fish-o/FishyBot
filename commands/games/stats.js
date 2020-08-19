@@ -37,7 +37,7 @@ function getPlayerStats(player, token, ttl= 10*60*1000) {
 
 exports.run = async (client, message, args) => {
     if(!args[0]){
-        return message.channel.send('Please enter a oculus username')
+        return message.channel.send('Please enter an Oculus username')
     }
 
     
@@ -46,7 +46,7 @@ exports.run = async (client, message, args) => {
 
     // Return if nothing was found
     if(!player_stats.player[0]){
-        return message.channel.send("Could not find user in ignite database")
+        return message.channel.send("Could not find user in the ignite database")
     }
 
     console.log(player_stats)
