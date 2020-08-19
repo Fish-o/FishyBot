@@ -50,6 +50,7 @@ exports.run = async (client, message, args) => {
     }
 
     console.log(player_stats)
+    console.log(process.env.igniteapi)
 
     message.channel.send("This is not done yet, please leave feedback with !feedback")
     
