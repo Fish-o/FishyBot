@@ -68,7 +68,7 @@ exports.conf = {
     guildOnly: false,
     aliases: ['preferences','setting','change'],
     perms: [
-        'MANAGE_ROLES_OR_PERMISSIONS'
+        'MANAGE_ROLES'
     ]
 };
   
