@@ -85,7 +85,7 @@ exports.run = async(client, message, args) => {
     */
     
     //if(action == 'team'){
-    console.log("start team")
+    console.log("start command")
 
 
     // Get the comming matches and all the teams.
@@ -153,7 +153,7 @@ exports.run = async(client, message, args) => {
         // I set the ttl (time before recaching) lowwer for the stats
         doRequest(stats_url, 5*60*1000)
     ])
-    
+    console.log('did requests')
     // Return a message if no logo was found
     if(!logos[0].Logo){return message.channel.send('Something went wrong')}
 
@@ -228,7 +228,7 @@ exports.run = async(client, message, args) => {
 
 
 
-
+    console.log('start with embed')
     // Set the description
     const description = `Games played: ${stats.GP}\nWins: ${stats.W}\nLosses: ${stats.L}\nPoints: ${stats.PTS}\nMMR: ${stats.MMR}`
 
@@ -282,7 +282,8 @@ exports.run = async(client, message, args) => {
     
     // Add timestamp  
     embed.setTimestamp()
-        
+    
+    console.log('gonna send it')
     // Send the embed!
     message.channel.send(embed);
 
