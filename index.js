@@ -14,6 +14,9 @@ let config = require("./jsonFiles/config.json");
 
 config.token = process.env.TOKEN
 config.dbpath = process.env.DBPATH
+if(process.env.prefix){
+    config.prefix = process.env.prefix;
+}
 client.config = config;
 console.log(config)
 const rawdata = fs.readFileSync(__dirname + '/jsonFiles/emojis.json');
@@ -95,7 +98,6 @@ client.recache = async function (){
                 if (err) {
                     console.log(err);
                 }
-                console.log('recached')
             }); 
         });
     });
