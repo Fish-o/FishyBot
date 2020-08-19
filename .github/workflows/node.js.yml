@@ -18,13 +18,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: '12.x'
-
-    - env:
-        DBPATH: ${{ secrets.DBPATH }}
-        TOKEN: ${{ secrets.TOKEN }}
-        ingiteapi: ${{ secrets.igniteapi }}
-        
-        
+      
     - name: Install dependencies
       run: npm install
-    - run: npm test
+
+    - name: run
+    	env:
+        DBPATH: ${{ secrets.DBPATH }}
+        TOKEN: ${{ secrets.TOKEN }}
+        ingiteapi: ${{ secrets.IGNITEAPI }}
+      run: npm test
