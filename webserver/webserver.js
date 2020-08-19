@@ -1,6 +1,6 @@
 var http = require('http');
 var fs = require('fs');
-var index = fs.readFileSync('./index.html');
+var index = fs.readFileSync(__dirname+'/index.html');
 
 module.exports = {
     run: function (){
