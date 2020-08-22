@@ -165,13 +165,13 @@ module.exports = (client, message) => {
     
         // Ignore messages not starting with the prefix from the guild, or the global one
         if (message.content.indexOf(client.config.prefix) == 0 ){
-            var args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
-            var command = args.shift().toLowerCase();
+            args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
+            command = args.shift().toLowerCase();
         }
 
         else if (message.content.indexOf(guild_prefix) == 0){   
-            var args = message.content.slice(guild_prefix.length).trim().split(/ +/g);
-            var command = args.shift().toLowerCase();
+            args = message.content.slice(guild_prefix.length).trim().split(/ +/g);
+            command = args.shifst().toLowerCase();
         } 
 
         // Handeling auto commands (commands not needing a prefix)
