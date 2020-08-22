@@ -19,7 +19,7 @@ exports.run = (client, message) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    activations: dad_activations,
+    activations: ['i am', 'im', 'i\'m'],
     perms: []
   };
   
