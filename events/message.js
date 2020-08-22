@@ -177,6 +177,7 @@ module.exports = (client, message) => {
         // Handeling auto commands (commands not needing a prefix)
         else {
             Object.keys(client.auto_activations).forEach(activation_key =>{
+                console.log(`Cycling thru options: ${activation_key}`)
                 if(message.content.includes(activation_key)){
                     console.log('Found auto command match')
                     cmd = client.commands.get(client.auto_activations.get(activation_key))
