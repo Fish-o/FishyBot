@@ -15,7 +15,7 @@ exports.run = (client, message, args) =>{
             const locate_string = "member_count_channel" 
             var values = { $set: {[locate_string]:mention_channel.id}}
 
-            client.updatedb(client.config.dbpath, query, values, `Set the member counter to **${mention_channel.name}**`, message.channel)
+            client.updatedb(query, values, `Set the member counter to **${mention_channel.name}**`, message.channel)
             client.recache()
 
         } /*else if(message.guild.channels.find(channel => channel.id === cachedID)){
@@ -40,7 +40,7 @@ exports.run = (client, message, args) =>{
         const locate_string = "member_count_channel" 
         var values = { $set: {[locate_string]:null}}
 
-        client.updatedb(client.config.dbpath, query, values, `Disabled the member counter`, message.channel)
+        client.updatedb(query, values, `Disabled the member counter`, message.channel)
         client.recache()
     }
 
@@ -60,7 +60,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"membercount",
     description: "Shows how many members your server has!",
-    usage: "!membercount [#channel]"
+    usage: "!membercount [on/off] [#channel]"
 };
 
 /*
