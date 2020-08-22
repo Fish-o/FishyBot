@@ -40,6 +40,11 @@ fs.readdir("./events/", (err, files) => {
 //client.commands = new Enmap();
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
+
+client.auto_commands = new Discord.Collection();
+client.auto_activations = new Discord.Collection();
+
+
 client.bypass = false;
 client.master = client.config.master
 
@@ -69,7 +74,31 @@ fs.readdir("./commands/", (direrr, dirs) =>{
     })
 })
 
+fs.readdir("./auto_commands/", (direrr, dirs) =>{
+    if (direrr) {
+        return console.log('Unable to scan directory: ' + err);
+    }
+    console.log(dirs)
+    
+    dirs.forEach(dir => {
+        const path = "./auto_commands/"+dir+"/";
+        fs.readdir(path, (err, files) => {
+            if (err) return console.error(err);
+            files.forEach(file => {
+                if (!file.endsWith(".js")) return;
+            
+                let props = require(path+file);
+                console.log(`Loading auto_commands: ${props.help.name}`);
+                client.auto_commands.set(props.help.name, props);
 
+                props.conf.activations.forEach(alias => {
+                    client.auto_activations.set(alias, props.help.name);
+                });
+            });
+        });
+
+    })
+})
 
 
 
