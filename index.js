@@ -91,6 +91,7 @@ fs.readdir("./auto_commands/", (direrr, dirs) =>{
                 client.auto_commands.set(props.help.name, props);
 
                 props.conf.activations.forEach(alias => {
+                    console.log(alias)
                     client.auto_activations.set(alias, props.help.name);
                 });
             });
