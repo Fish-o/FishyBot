@@ -171,7 +171,7 @@ module.exports = (client, message) => {
 
         else if (message.content.indexOf(guild_prefix) == 0){   
             args = message.content.slice(guild_prefix.length).trim().split(/ +/g);
-            command = args.shifst().toLowerCase();
+            command = args.shift().toLowerCase();
         } 
 
         // Handeling auto commands (commands not needing a prefix)
