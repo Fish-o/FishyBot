@@ -81,7 +81,7 @@ fs.readdir("./auto_commands/", (direrr, dirs) =>{
     console.log(dirs)
     
     dirs.forEach(dir => {
-        const path = "./auto_commands/"+dir+"/";
+        const path = `./auto_commands/${dir}/`;
         fs.readdir(path, (err, files) => {
             if (err) return console.error(err);
             files.forEach(file => {
