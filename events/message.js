@@ -178,9 +178,11 @@ module.exports = (client, message) => {
         else {
             Object.keys(client.auto_activations).forEach(activation_key =>{
                 if(message.content.includes(activation_key)){
+                    console.log('Found auto command match')
                     cmd = client.commands.get(client.auto_activations.get(activation_key))
                     // If that command doesn't exist, silently exit and do nothing
                     if (!cmd) return;
+                    console.log('start running auto command')
                     cmd.run(client, message, ops);
                 }
             })
