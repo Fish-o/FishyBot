@@ -9,7 +9,7 @@ exports.run = (client, message) => {
             let start = message.content.slice(index + dad_activation.length)
             let final = start.split(/[,.]/)[0]
             console.log(final)
-            return message.channel.send(`Hi ${final}, I'm dad!`);
+            message.channel.send(`Hi ${final}, I'm dad!`);
         }
     })
 }
