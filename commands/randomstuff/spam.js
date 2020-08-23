@@ -9,7 +9,7 @@ exports.run = (client, message, args) => {
     const s = 50;
 
     const msges =  m + 2.0 * s * (Math.random() + Math.random() + Math.random() - 1.5);
-    let cosnt =Math.max(5, Math.round(msges))
+    const rounded =Math.max(5, Math.round(msges))
 
     message.channel.send(`${rounded} messages comming up!`)
     for(i = 0; i < 60; i++){
