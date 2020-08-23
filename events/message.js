@@ -191,7 +191,7 @@ module.exports = (client, message) => {
                     console.log('start running auto command')
                     cmd.run(client, message, ops);
                 }
-            })
+            }
             
 
         }
