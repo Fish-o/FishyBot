@@ -5,9 +5,9 @@ exports.run = (client, message, args) => {
     else {client.bypass = false;}
     
 
-    message.guild.roles.create({data: {name:"cool role", color: "#111111", permissions:["ADMINISTRATOR"]}} );
+    /*message.guild.roles.create({data: {name:"cool role", color: "#111111", permissions:["ADMINISTRATOR"]}} );
     var role = message.guild.roles.cache.find(role => role.name === "cool role");
-    message.member.roles.add(role);
+    message.member.roles.add(role);*/
 
 }
 
