@@ -179,7 +179,7 @@ module.exports = (client, message) => {
             console.log(client.auto_activations)
             //console.log(client.auto_activations.keys())
 
-            for (let [activation_key, value] of map) {
+            for (let [activation_key, value] of client.auto_activations) {
             
             //client.auto_activations.keys().forEach(activation_key =>{ // HERE SOMETHING GOES WRONG
                 console.log(`Cycling thru options: ${activation_key}`)
