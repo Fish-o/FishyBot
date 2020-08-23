@@ -10,16 +10,16 @@ exports.run = (client, message, args) => {
 
     const msges =  m + 2.0 * s * (Math.random() + Math.random() + Math.random() - 1.5);
     const rounded =Math.max(5, Math.round(msges))
-    var i = 1;                  //  set your counter to 1
+    var i = 0;                  //  set your counter to 1
     message.channel.send(`${rounded} messages comming up!`)
     function myLoop() {         //  create a loop function
         setTimeout(function() {   //  call a 3s setTimeout when the loop is called
-            message.author.send('Fish is god')   //  your code here
+            message.author.send(`Ping ${i + 1}`)   //  your code here
             i++;                    //  increment the counter
             if (i < rounded) {           //  if the counter < 10, call the loop function
                 myLoop();             //  ..  again which will trigger another 
             }                       //  ..  setTimeout()
-        }, 1050)
+        }, 1200)
     }
 
     myLoop();   
