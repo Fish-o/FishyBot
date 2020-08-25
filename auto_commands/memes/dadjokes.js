@@ -1,6 +1,6 @@
 
 
-exports.run = (client, message) => {
+exports.run = (client, message) => {    
     const dad_activations = ['i am', 'im', 'i\'m']
     console.log('In auto command')
     dad_activations.forEach(dad_activation =>{
@@ -28,6 +28,6 @@ const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"Dad joke maker",
-    description: "Hi son, im dad!"
+    description: "Hi son, im dad! \nTo turn this off, go to !settings dadjokes off, or !settings all_auto off"
 }
 

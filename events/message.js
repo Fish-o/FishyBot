@@ -176,8 +176,10 @@ module.exports = (client, message) => {
 
         // Handeling auto commands (commands not needing a prefix)
         else {
+            if(!client.allow_test("all_auto", message.guild.id)){return}
             for (let [activation_key, value] of client.auto_activations) {
                 if(message.content.toLowerCase().includes(activation_key)){
+                    if(!client.allow_test(value, message.guild.id)){return}
                     cmd = client.auto_commands.get(value)
                     // If that command doesn't exist, silently exit and do nothing
                     if (!cmd) return;
@@ -191,7 +193,7 @@ module.exports = (client, message) => {
 
         // Our standard argument/command name definition.
         if (!command) return;
-        
+        if(!client.allow_test(command, message.guild.id)){return}
         
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {

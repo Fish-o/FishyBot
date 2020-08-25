@@ -101,7 +101,16 @@ fs.readdir("./auto_commands/", (direrr, dirs) =>{
 
 
 
+client.allow_test = function(cmd_name, guild_id){
+    let cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
+    let cache = JSON.parse(cache_raw);
 
+    const locate_string = cmd_name
+    
+    let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
+    if(guild_cache.settings[locate_string] == false){return false}
+    return true
+}
 
 
 client.recache = async function (){

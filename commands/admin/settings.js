@@ -8,55 +8,52 @@ exports.run = (client, message, args) => {
     var action = args[1];
     var guildID = message.guild.id;
     
+    auto_commands = ['dadjokes']
     
     if(command == 'say'){
-
-        //if(action == 'toggle'){
-
-        //}
+        const locate_string = "settings.allow_say"
         if(action == 'off' || !action){
             var guildQuery = {id: guildID};
-            const locate_string = "allow_say"
-
             var newnewvalues = { $set: {[locate_string]:false}}
 
-
-            var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("v2");
-                collection.updateOne(guildQuery, newnewvalues, function(err, res) {
-                    if (err) throw err;
-                    console.log("1 document updated");
-                    mongoClient.close();
-                    message.channel.send("Disabled the say command")
-                    client.recache()
-                });
-            });
+            client.updatedb(guildQuery, newnewvalues, "Disabled the `say` command", message.channel)
             
         }else if(action == 'on'){
             var guildQuery = {id: guildID};
-            const locate_string = "allow_say"
-
             var newnewvalues = { $set: {[locate_string]:true}}
 
 
-            var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("v2");
-                collection.updateOne(guildQuery, newnewvalues, function(err, res) {
-                    if (err) throw err;
-                    console.log("1 document updated");
-                    mongoClient.close();
-                    message.channel.send("Enabled the say command")
-                    client.recache()
-                });
-            });
-            
+            client.updatedb(guildQuery, newnewvalues, "Enabled the `say` command", message.channel)
         }
+    } else if(command == 'all_auto'){
+        const locate_string = "settings.all_auto"
+        if(action == 'off' || !action){
+            var guildQuery = {id: guildID};
+            var newnewvalues = { $set: {[locate_string]:false}}
+            client.updatedb(guildQuery, newnewvalues, "Disabled all auto commands", message.channel)
+            
+        }else if(action == 'on'){
+            var guildQuery = {id: guildID};
+            var newnewvalues = { $set: {[locate_string]:true}}
+            client.updatedb(guildQuery, newnewvalues, "Enabled all auto commands", message.channel)
+        }
+    } else {
+        auto_commands.forEach(auto_command => {
+            if(command == auto_command){
+                const locate_string = "settings."+auto_command
 
-
+                if(action == 'off' || !action){
+                    var guildQuery = {id: guildID};
+                    var newnewvalues = { $set: {[locate_string]:false}}
+                    client.updatedb(guildQuery, newnewvalues, `Disabled the \`${auto_command}\` auto command`, message.channel)
+                    
+                }else if(action == 'on'){
+                    var guildQuery = {id: guildID};
+                    var newnewvalues = { $set: {[locate_string]:true}}
+                    client.updatedb(guildQuery, newnewvalues, `Enabled the \`${auto_command}\` auto command`, message.channel)
+                }
+            }
+        });
     }
 
     
@@ -76,6 +73,16 @@ const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"settings",
-    description: "w.i.p.",
-    usage: "!settings [text]"
+    description: `Allows admins to turn sertain features off or on. 
+    Current settings:
+    say
+        allows people without perms to let the bot say things with !say
+    
+    all_auto
+        all auto commands
+    
+    dadjokes
+        its stupid ik
+    `,
+    usage: "!settings [setting] [off/on]"
 };

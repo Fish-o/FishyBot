@@ -55,7 +55,7 @@ exports.run = (client, message, args) => {
         
         db_data.forEach(db_guild => {
 
-            Object.keys(db_guild.users).forEach(userId =>{
+            /*Object.keys(db_guild.users).forEach(userId =>{
                 if(db_guild.users[userId].data === undefined){
                     db_guild.users[userId].data = {
                         usernames:{},
@@ -64,7 +64,10 @@ exports.run = (client, message, args) => {
                 }else if(db_guild.users[userId].data.usernames === null){
                     db_guild.users[userId].data.usernames = {};
                 }
-            })
+            })*/
+            db_guild.settings = {}
+            db_guild.settings.say = db_guild.allow_say
+            delete db_guild.allow_say 
 
         
         
@@ -72,7 +75,7 @@ exports.run = (client, message, args) => {
             const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
             mongoClient.connect(err => {
                 if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("v2");
+                const collection = mongoClient.db("botdb").collection("test");
                 // perform actions on the collection object
                 collection.replaceOne({id:db_guild.id}, db_guild, function(err, res) {
                     if (err) throw err;
