@@ -179,11 +179,14 @@ module.exports = (client, message) => {
             console.log(client.auto_activations)
             for (let [activation_key, value] of client.auto_activations) {
                 if(message.content.includes(activation_key)){
+                    console.log(activation_key)
+                    console.log(value)
                     cmd = client.auto_commands.get(value)
                     // If that command doesn't exist, silently exit and do nothing
                     if (!cmd) return;
                     console.log('start running auto command')
                     cmd.run(client, message, ops);
+                    console.log("ran command")
                 }
             }
             
