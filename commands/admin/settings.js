@@ -37,26 +37,26 @@ exports.run = (client, message, args) => {
             var guildQuery = {id: guildID};
             var newnewvalues = { $set: {[locate_string]:false}}
 
-            client.updatedb(guildQuery, newnewvalues, "Disabled the `say` command", message.channel)
+            client.updatedb(guildQuery, newnewvalues, "Disabled the `say` command, it might take some time to apply the settings.", message.channel)
             
         }else if(action == 'on'){
             var guildQuery = {id: guildID};
             var newnewvalues = { $set: {[locate_string]:true}}
 
 
-            client.updatedb(guildQuery, newnewvalues, "Enabled the `say` command", message.channel)
+            client.updatedb(guildQuery, newnewvalues, "Enabled the `say` command, it might take some time to apply the settings.", message.channel)
         }
     } else if(command == 'all_auto'){
         const locate_string = "settings.all_auto"
         if(action == 'off' || !action){
             var guildQuery = {id: guildID};
             var newnewvalues = { $set: {[locate_string]:false}}
-            client.updatedb(guildQuery, newnewvalues, "Disabled all auto commands", message.channel)
+            client.updatedb(guildQuery, newnewvalues, "Disabled all auto commands, it might take some time to apply the settings.", message.channel)
             
         }else if(action == 'on'){
             var guildQuery = {id: guildID};
             var newnewvalues = { $set: {[locate_string]:true}}
-            client.updatedb(guildQuery, newnewvalues, "Enabled all auto commands", message.channel)
+            client.updatedb(guildQuery, newnewvalues, "Enabled all auto commands, it might take some time to apply the settings.", message.channel)
         }
     } else {
         auto_commands.forEach(auto_command => {
@@ -66,19 +66,17 @@ exports.run = (client, message, args) => {
                 if(action == 'off' || !action){
                     var guildQuery = {id: guildID};
                     var newnewvalues = { $set: {[locate_string]:false}}
-                    client.updatedb(guildQuery, newnewvalues, `Disabled the \`${auto_command}\` auto command`, message.channel)
+                    client.updatedb(guildQuery, newnewvalues, `Disabled the \`${auto_command}\` auto command, it might take some time to apply the settings.`, message.channel)
                     
                 }else if(action == 'on'){
                     var guildQuery = {id: guildID};
                     var newnewvalues = { $set: {[locate_string]:true}}
-                    client.updatedb(guildQuery, newnewvalues, `Enabled the \`${auto_command}\` auto command`, message.channel)
+                    client.updatedb(guildQuery, newnewvalues, `Enabled the \`${auto_command}\` auto command, it might take some time to apply the settings.`, message.channel)
                 }
             }
         });
     }
-
-    
-    console.log('setting done')
+    client.recache()
 }
 
 exports.conf = {
