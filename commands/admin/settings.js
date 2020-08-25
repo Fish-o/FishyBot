@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
         let cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
         let cache = JSON.parse(cache_raw);
     
-        const locate_string = cmd_name
+        
         
         let commands=['If a command is not listed then it is enabled by defualt']
 
