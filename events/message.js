@@ -119,7 +119,7 @@ module.exports = (client, message) => {
             member_list.forEach(guild_member => {
                 
                 console.log('\n#####################################\n')
-                console.log()
+                
                 
                 var userObject = {
                 
@@ -176,17 +176,12 @@ module.exports = (client, message) => {
 
         // Handeling auto commands (commands not needing a prefix)
         else {
-            console.log(client.auto_activations)
             for (let [activation_key, value] of client.auto_activations) {
-                if(message.content.includes(activation_key)){
-                    console.log(activation_key)
-                    console.log(value)
+                if(message.content.toLowerCase().includes(activation_key)){
                     cmd = client.auto_commands.get(value)
                     // If that command doesn't exist, silently exit and do nothing
                     if (!cmd) return;
-                    console.log('start running auto command')
                     cmd.run(client, message, ops);
-                    console.log("ran command")
                 }
             }
             
