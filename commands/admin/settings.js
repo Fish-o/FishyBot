@@ -1,6 +1,6 @@
 var fs = require("fs");
 const MongoClient = require('mongodb').MongoClient;
-exports.run = (client, message, args) => {
+exports.run = async (client, message, args) => {
     const uri = client.config.dbpath;
     if(!args[0]){return}
 
