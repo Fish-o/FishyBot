@@ -18,7 +18,7 @@ exports.run = (client, message, args) => {
         
         let commands=['If a command is not listed then it is enabled by defualt']
 
-        let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
+        let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guildID)
         Object.keys(guild_cache.settings).forEach(setting =>{
             let status = 'enabled'
             if(guild_cache.settings[setting] == false){
