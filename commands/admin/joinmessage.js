@@ -199,7 +199,7 @@ exports.run = (client, message, args) =>{
                                     const locate = "joinMsg"
                                     const value = {$set: {[locate]:join_object}}
 
-                                    client.updatedb(client.config.dbpath, {id:message.guild.id}, value, 'Changed the message!', message.channel)// = function(query, value, msg = '', channel = null) {
+                                    client.updatedb({id:message.guild.id}, value, 'Changed the message!', message.channel)// = function(query, value, msg = '', channel = null) {
                                     return 0
                                 }
 
@@ -232,7 +232,7 @@ exports.run = (client, message, args) =>{
                                     const locate = "joinMsg"
                                     const value = {$set: {[locate]:join_object}}
 
-                                    client.updatedb(client.config.dbpath, {id:message.guild.id}, value, 'Changed the message!', message.channel)
+                                    client.updatedb({id:message.guild.id}, value, 'Changed the message!', message.channel)
 
                                 });
 
@@ -301,7 +301,7 @@ exports.run = (client, message, args) =>{
         const locate = "joinMsg"
         const value = {$set: {[locate]:undefined}}
 
-        client.updatedb(client.config.dbpath, {id:message.guild.id}, value, 'Deleted the join message!', message.channel)
+        client.updatedb({id:message.guild.id}, value, 'Deleted the join message!', message.channel)
 
     }
 };
