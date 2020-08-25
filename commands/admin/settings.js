@@ -9,8 +9,29 @@ exports.run = (client, message, args) => {
     var guildID = message.guild.id;
     
     auto_commands = ['dadjokes']
+
+    if(command == 'list'){
+        let cache_raw = fs.readFileSync(__dirname + '/jsonFiles/cache.json');
+        let cache = JSON.parse(cache_raw);
     
-    if(command == 'say'){
+        const locate_string = cmd_name
+        
+        let commands=['If a command is not listed then it is enabled by defualt']
+
+        let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
+        Object.keys(guild_cache.settings).forEach(setting =>{
+            let status = 'enabled'
+            if(guild_cache.settings[setting] == false){
+                status = 'disabled'
+            }
+            commands.push(`${setting}: ${status}}`)
+        })
+        message.channel.send(commands.join("\n"))
+
+    }
+
+
+    else if(command == 'say'){
         const locate_string = "settings.allow_say"
         if(action == 'off' || !action){
             var guildQuery = {id: guildID};
@@ -69,7 +90,8 @@ exports.conf = {
     ]
 };
   
-const path = require("path")
+const path = require("path");
+const { cpuUsage } = require("process");
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"settings",
@@ -84,5 +106,5 @@ exports.help = {
     dadjokes
         its stupid ik
     `,
-    usage: "!settings [setting] [off/on]"
+    usage: "!settings [setting/list] [off/on]"
 };
