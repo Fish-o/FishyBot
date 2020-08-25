@@ -1,6 +1,6 @@
 
 module.exports = (client) => {
-    var guildID = message.guild.id;
+    //var guildID = message.guild.id;
 	//var guild = client.guilds.cache.get(guildID);
 
 	const uri = client.config.dbpath
