@@ -24,7 +24,7 @@ exports.run = (client, message, args) => {
             if(guild_cache.settings[setting] == false){
                 status = 'disabled'
             }
-            commands.push(`${setting}: ${status}}`)
+            commands.push(`${setting}: ${status}`)
         })
         message.channel.send(commands.join("\n"))
 
