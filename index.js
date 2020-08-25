@@ -109,6 +109,7 @@ client.allow_test = function(cmd_name, guild_id){
     
     let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
     if(guild_cache.settings[locate_string] == false){return false}
+    console.log(guild_cache.settings[locate_string])
     return true
 }
 
