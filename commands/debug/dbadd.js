@@ -135,9 +135,9 @@ exports.run = (client, message, args) => {
            
             
             guild_user_list.forEach(guild_user =>{
-                guild_user_id_list.push(guild_user.id)
+                //guild_user_id_list.push(guild_user.id)
                 if(!db_user_id_list.includes(guild_user.id)){
-                    //not_in_db.push(guild_user.id)
+                    not_in_db.push(guild_user.id)
                 }
             })
 
@@ -148,7 +148,7 @@ exports.run = (client, message, args) => {
             //console.log(guild_user_id_list);
             //console.log(db_user_id_list);
             //console.log(not_in_db);
-            not_in_db = guild_user_id_list.filter(userID => {!db_user_id_list.includes(userID)});
+            //not_in_db = guild_user_id_list.filter(userID => {!db_user_id_list.includes(userID)});
             
             let new_users = db_user_list;
 
