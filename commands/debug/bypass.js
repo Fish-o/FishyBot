@@ -3,8 +3,6 @@ exports.run = (client, message, args) => {
 
     if(!client.bypass){client.bypass = true;}
     else {client.bypass = false;}
-    
-
 }
 
 

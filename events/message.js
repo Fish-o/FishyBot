@@ -14,42 +14,49 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 module.exports = (client, message) => {
+    // Fall back options to shut down the bot
     if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
         client.destroy()
     } else if(message.content == 'botsenduptime' && message.author.id == client.master){
         client.sendinfo(`Uptime: ${client.uptime / 1000}`)
     }
+
+    // Getting database uri
     const uri = client.config.dbpath;
+    
+    // I have no idea what this does
     let ops = {
         active: active
-      }
-      var args;
-      var command;
-      var cmd;
-      
-      // Ignore all bots
-      if (message.author.bot) return;
-      if (message.channel instanceof Discord.DMChannel) return message.reply("This bot does not support DM messages");
-      
-      
-      // Saving the message
-      /*try{
-          if (message.author.bot) return;
-          var date = new Date();
-          var Day = date.getDate() + "-" + date.getMonth()+1 + "-" + date.getFullYear();
-          var Time = date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
-          fs.appendFile('./logs/'+ Day + '.log', '\n['+Time +']  User: \"' + message.member.user.tag+'\" Content: \"'+ message.content +'\" Raw: '+JSON.stringify(message), function (err) {
-          if (err) throw err;
-          //console.log('Saved!');
-          })  
-      }
-      
-      catch (e){
-          console.log("Error saving message")
-      }*/
-      
+    }
 
+    // Defining some stuff
+    let args;
+    let command;
+    let cmd;
+    
+    // Ignore all bots
+    if (message.author.bot) return;
+    if (message.channel instanceof Discord.DMChannel) return message.reply("This bot does not support DM messages");
+    
+    
+    // Saving the message
+    /*try{
+        if (message.author.bot) return;
+        var date = new Date();
+        var Day = date.getDate() + "-" + date.getMonth()+1 + "-" + date.getFullYear();
+        var Time = date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
+        fs.appendFile('./logs/'+ Day + '.log', '\n['+Time +']  User: \"' + message.member.user.tag+'\" Content: \"'+ message.content +'\" Raw: '+JSON.stringify(message), function (err) {
+        if (err) throw err;
+        //console.log('Saved!');
+        })  
+    }
+    
+    catch (e){
+        console.log("Error saving message")
+    }*/
+    
+    // Getting cache
     var cache_raw = null;
     var cache = null;
 
@@ -63,11 +70,9 @@ module.exports = (client, message) => {
     }
     
 
+    // Recaching if the time since it was last cached is shorter then recache_time
     const utc_time = new Date().getTime()
     const recache_time = 60 * 1000
-
-
-
     if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == '325893549071663104')){
         
         // Updating member count
@@ -114,7 +119,7 @@ module.exports = (client, message) => {
             member_list.forEach(guild_member => {
                 
                 console.log('\n#####################################\n')
-                console.log()
+                
                 
                 var userObject = {
                 
@@ -158,28 +163,40 @@ module.exports = (client, message) => {
         const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
         
     
-        // Ignore messages not starting with the prefix (in config.json)
-        
+        // Ignore messages not starting with the prefix from the guild, or the global one
         if (message.content.indexOf(client.config.prefix) == 0 ){
-            var args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
-            var command = args.shift().toLowerCase();
+            args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
+            command = args.shift().toLowerCase();
         }
 
         else if (message.content.indexOf(guild_prefix) == 0){   
-            var args = message.content.slice(guild_prefix.length).trim().split(/ +/g);
-            var command = args.shift().toLowerCase();
-        }
+            args = message.content.slice(guild_prefix.length).trim().split(/ +/g);
+            command = args.shift().toLowerCase();
+        } 
 
-        else { return 0;}
+        // Handeling auto commands (commands not needing a prefix)
+        else {
+            if(!client.allow_test("all_auto", message.guild.id)){return}
+            for (let [activation_key, value] of client.auto_activations) {
+                if(message.content.toLowerCase().includes(activation_key)){
+                    if(!client.allow_test(value, message.guild.id)){return}
+                    cmd = client.auto_commands.get(value)
+                    // If that command doesn't exist, silently exit and do nothing
+                    if (!cmd) return;
+                    cmd.run(client, message, ops);
+                }
+            }
+            
+
+        }
 
 
         // Our standard argument/command name definition.
-        
-        
+        if (!command) return;
+        if(!client.allow_test(command, message.guild.id)){return}
         
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {
-            
             cmd = client.commands.get(command);
         } else if (client.aliases.has(command)) {
             cmd = client.commands.get(client.aliases.get(command));

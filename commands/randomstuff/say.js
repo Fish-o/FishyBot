@@ -8,13 +8,6 @@ exports.run = (client, message, args) => {
     //message.channel.send('').catch(console.error);
 	// makes the bot say something and delete the message. As an example, it's open to anyone to use. 
 	// To get the "message" itself we join the `args` back into a string with spaces: 
-    
-    let cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
-    let cache = JSON.parse(cache_raw);
-    
-    let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
-    if(guild_cache.allow_say == false){return}
-    
 
 	let sayMessage = args.join(" ");
 	if (sayMessage.includes('@everyone') && !message.member.hasPermission("ADMINISTRATOR")){

@@ -20,7 +20,6 @@ if(process.env.prefix){
 config.igniteapi = process.env.igniteapi;
 
 client.config = config;
-console.log(config)
 const rawdata = fs.readFileSync(__dirname + '/jsonFiles/emojis.json');
 const emoji_data = JSON.parse(rawdata);
 client.emoji_data = emoji_data;
@@ -40,6 +39,11 @@ fs.readdir("./events/", (err, files) => {
 //client.commands = new Enmap();
 client.commands = new Discord.Collection();
 client.aliases = new Discord.Collection();
+
+client.auto_commands = new Discord.Collection();
+client.auto_activations = new Discord.Collection();
+
+
 client.bypass = false;
 client.master = client.config.master
 
@@ -69,11 +73,48 @@ fs.readdir("./commands/", (direrr, dirs) =>{
     })
 })
 
+fs.readdir("./auto_commands/", (direrr, dirs) =>{
+    if (direrr) {
+        return console.log('Unable to scan directory: ' + err);
+    }
+    console.log(dirs)
+    
+    dirs.forEach(dir => {
+        const path = `./auto_commands/${dir}/`;
+        fs.readdir(path, (err, files) => {
+            if (err) return console.error(err);
+            files.forEach(file => {
+                if (!file.endsWith(".js")) return;
+            
+                let props = require(path+file);
+                console.log(`Loading auto_commands: ${props.help.name}`);
+                client.auto_commands.set(props.help.name, props);
+
+                props.conf.activations.forEach(alias => {
+                    client.auto_activations.set(alias, props.help.name);
+                });
+            });
+        });
+
+    })
+})
 
 
 
+client.allow_test = function(cmd_name, guild_id){
+    let cache_raw = fs.readFileSync(__dirname + '/jsonFiles/cache.json');
+    let cache = JSON.parse(cache_raw);
 
-
+    const locate_string = cmd_name
+    
+    let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
+    console.log(guild_cache.settings)
+    console.log(cmd_name)
+    console.log(guild_cache.settings[cmd_name])
+    if(guild_cache.settings[cmd_name] == false){return false}
+    
+    return true
+}
 
 
 client.recache = async function (){

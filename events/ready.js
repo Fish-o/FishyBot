@@ -1,4 +1,6 @@
-
+var fs = require("fs");
+const path = require("path");
+const MongoClient = require('mongodb').MongoClient;
 module.exports = (client) => {
     client.recache()
     client.sendinfo('Bot gone online')
