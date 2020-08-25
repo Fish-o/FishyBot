@@ -9,7 +9,17 @@ exports.run = (client, message, args) => {
     var guildID = message.guild.id;
     
     auto_commands = ['dadjokes']
+    if(command == 'global' && message.author.id == '325893549071663104'){
+        const locate_string = "settings."+action
+        let guilds = await client.guilds.fetch()
+        guild_user_list.forEach(guild =>{
+            var guildQuery = {id: guild.id};
+            var newnewvalues = { $set: {[locate_string]:false}}
+            client.updatedb(guildQuery, newnewvalues, "done some shit", message.channel)
+        })
+        
 
+    }
     if(command == 'list'){
         let cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
         let cache = JSON.parse(cache_raw);
