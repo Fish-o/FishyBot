@@ -1,4 +1,6 @@
-
+var fs = require("fs");
+const path = require("path");
+const MongoClient = require('mongodb').MongoClient;
 module.exports = (client) => {
     //var guildID = message.guild.id;
 	//var guild = client.guilds.cache.get(guildID);
