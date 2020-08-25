@@ -32,7 +32,7 @@ exports.run = (client, message, args) => {
 
 
     else if(command == 'say'){
-        const locate_string = "settings.allow_say"
+        const locate_string = "settings.say"
         if(action == 'off' || !action){
             var guildQuery = {id: guildID};
             var newnewvalues = { $set: {[locate_string]:false}}

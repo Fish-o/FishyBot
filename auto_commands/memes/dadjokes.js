@@ -27,7 +27,7 @@ exports.conf = {
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
-    name:"Dad joke maker",
+    name:"dadjokes",
     description: "Hi son, im dad! \nTo turn this off, go to !settings dadjokes off, or !settings all_auto off"
 }
 
