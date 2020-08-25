@@ -11,8 +11,8 @@ exports.run = async (client, message, args) => {
     auto_commands = ['dadjokes']
     if(command == 'global' && message.author.id == '325893549071663104'){
         const locate_string = "settings."+action
-        let guilds = await client.guilds.fetch()
-        guild_user_list.forEach(guild =>{
+        let guilds = client.guilds.cache
+        guilds.forEach(guild =>{
             var guildQuery = {id: guild.id};
             var newnewvalues = { $set: {[locate_string]:false}}
             client.updatedb(guildQuery, newnewvalues, "done some shit", message.channel)
