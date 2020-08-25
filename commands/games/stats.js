@@ -51,8 +51,6 @@ exports.run = async (client, message, args) => {
 
     console.log(player_stats)
     console.log(client.config.igniteapi)
-
-    message.channel.send("This is not done yet, please leave feedback with !feedback")
     
 
     const user_stats = player_stats.player[0]
