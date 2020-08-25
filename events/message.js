@@ -195,7 +195,7 @@ module.exports = (client, message) => {
 
 
         // Our standard argument/command name definition.
-        
+        if (!command) return;
         
         
         // Grab the command data from the client.commands Enmap

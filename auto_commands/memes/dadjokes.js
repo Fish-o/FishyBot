@@ -1,6 +1,7 @@
-const dad_activations = ['i am', 'im', 'i\'m']
+
 
 exports.run = (client, message) => {
+    const dad_activations = ['i am', 'im', 'i\'m']
     console.log('In auto command')
     dad_activations.forEach(dad_activation =>{
         let index = message.content.toLowerCase().indexOf(dad_activation)
