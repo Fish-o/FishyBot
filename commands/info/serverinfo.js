@@ -150,7 +150,7 @@ exports.run = async (client, message, args) =>{
     }
     let sicon = message.guild.iconURL;
     let serverembed = new Discord.MessageEmbed()
-        .setImage(`/../../chart${message.guild.id}.png`)
+        .setImage(IAMGE)
         .setAuthor(`${message.guild.name} - Informations`, message.guild.iconURL)
         .setColor("#15f153")
         .addField('Server owner', message.guild.owner, true)
