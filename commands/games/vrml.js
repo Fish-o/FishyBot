@@ -7,7 +7,7 @@ cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
 
 
 
-const fs = require('fs');;
+const fs = require('fs');
 var stringSimilarity = require('string-similarity');
 
 
@@ -183,7 +183,7 @@ exports.run = async(client, message, args) => {
     }
     else if(team.Group=="Americas West"){
         //UTC−08:00 PST
-        time_name = 'PST';
+        time_name = 'PDT';
         time_modifier = "America/California";
         time_format = "en-US";
         
@@ -191,7 +191,7 @@ exports.run = async(client, message, args) => {
         //UTC+10:00
         time_name = "AEST"
         time_modifier = "Australia/Victoria"
-        time_modifier = "en-AU";
+        time_format = "en-AU";
     }
 
     //  Time formatting:
