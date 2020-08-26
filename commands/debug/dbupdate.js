@@ -65,9 +65,11 @@ exports.run = (client, message, args) => {
                     db_guild.users[userId].data.usernames = {};
                 }
             })*/
-            db_guild.settings = {}
-            db_guild.settings.say = db_guild.allow_say
-            delete db_guild.allow_say 
+            if(db_guild.settings == undefined){
+                db_guild.settings == {}
+            }
+            //db_guild.settings.say = db_guild.allow_say
+            
 
         
         
@@ -75,7 +77,7 @@ exports.run = (client, message, args) => {
             const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
             mongoClient.connect(err => {
                 if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("test");
+                const collection = mongoClient.db("botdb").collection("v2");
                 // perform actions on the collection object
                 collection.replaceOne({id:db_guild.id}, db_guild, function(err, res) {
                     if (err) throw err;
