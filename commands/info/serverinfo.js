@@ -138,9 +138,9 @@ exports.run = async (client, message, args) =>{
     
     
     
-    const canvasRenderService = new CanvasRenderService(400, 400)
+    /*const canvasRenderService = new CanvasRenderService(400, 400)
     const to_buffer_rendered = await canvasRenderService.renderToBuffer(configuration);
-    fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);
+    fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);*/
 
     var IMAGE = "https://cdn.pixabay.com/photo/2015/07/09/19/32/dog-838281_960_720.jpg"
 
