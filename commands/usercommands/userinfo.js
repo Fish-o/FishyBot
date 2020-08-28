@@ -82,7 +82,23 @@ exports.run = (client, message, args) =>{
             var usernames = '';
             var usernameDict = {};
 
-        
+            
+            if(!db_user.data){
+                var query = {id: message.guild.id};
+                const locate_string = `users.${member.id}`
+                var userObject = {
+                    warns:[],
+                    data:{
+                        usernames:{},
+                        region:null 
+                    }
+                }
+                var values = { $set: {[locate_string]:userObject}}
+
+                client.updatedb(query, values, "Something went wrong, this should have fixxed it, try doing it again! If it still wont work, then contact Fish#2455", message.channel)
+                
+            }
+
             if(db_user.data.usernames){
                 usernames = '';
                 usernameDict = db_user.data.usernames;

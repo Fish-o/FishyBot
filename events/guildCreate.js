@@ -35,10 +35,6 @@ module.exports = (client, guild) => {
         }
 
         member_list.forEach(guild_member => {
-            
-            console.log('\n#####################################\n')
-            console.log()
-            
             var userObject = {
             
                 warns:[],
