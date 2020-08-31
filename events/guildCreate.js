@@ -5,13 +5,11 @@ module.exports = (client, guild) => {
     client.sendinfo('event: guild create')
     console.log(`[GUILD JOIN] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
 
-    let rawdata = fs.readFileSync(__dirname + '/../jsonFiles/config.json');
-	let config = JSON.parse(rawdata);
 	
 	var guildID = guild.id;
     //var guild = client.guilds.cache.get(guildID);
     
-    const uri = config['dbpath'];
+    const uri = client.config.dbpath;
 
 
     // Get guilds
