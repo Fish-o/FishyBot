@@ -31,7 +31,9 @@ module.exports = (client, guild) => {
                 id : guild.id,
                 users:{},
                 prefix:"!",
-                allow_say:true
+                settings:{
+                    "dadjokes":false
+                }
         }
 
         member_list.forEach(guild_member => {
