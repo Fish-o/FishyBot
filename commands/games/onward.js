@@ -94,8 +94,8 @@ exports.run = async(client, message, args) => {
 
 
     // Get the comming matches and all the teams.
-    const all_team_url = 'https://vrmasterleague.com/Services.asmx/GetTeamPlayersStats?game=echoarena&activeOnly=false&includeRetired=false'
-    const matches_url = 'https://vrmasterleague.com/Services.asmx/GetMatchesThisWeek?game=echoarena&max=100'
+    const all_team_url = 'https://vrmasterleague.com/Services.asmx/GetTeamPlayersStats?game=onward&activeOnly=false&includeRetired=false'
+    const matches_url = 'https://vrmasterleague.com/Services.asmx/GetMatchesThisWeek?game=onward&max=100'
     
 
     // Make request them both at the same time
