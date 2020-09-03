@@ -1,5 +1,5 @@
-exports.run = async(client, message, args) => {
-    message.channel.send('Did you mean !echo or !onward?')
+exports.run = async (client, message, args) => {
+    message.channel.send('did you mean !echo, or !onward?')
 }
 
 exports.conf = {
@@ -7,14 +7,14 @@ exports.conf = {
     guildOnly: false,
     aliases: [],
     perms: [
-
+        
     ]
-};
+  };
   
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
-    name:"vmrl",
+    name:"vrml",
     description: "blank",
     usage: "blank"
 };

@@ -1,7 +1,5 @@
 exports.run = async (client, message, args) => {
-
     message.channel.send('did you mean !echostats?')
-    
 }
 
 exports.conf = {
