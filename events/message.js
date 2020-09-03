@@ -72,7 +72,7 @@ module.exports = (client, message) => {
 
     // Recaching if the time since it was last cached is shorter then recache_time
     const utc_time = new Date().getTime()
-    const recache_time = 60 * 1000
+    const recache_time = 20 * 1000
     if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == '325893549071663104')){
         
         // Updating member count

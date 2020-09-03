@@ -29,14 +29,12 @@ module.exports = (client, guild) => {
                 id : guild.id,
                 users:{},
                 prefix:"!",
-                settings:{}
+                settings:{
+                    "dadjokes":false
+                }
         }
 
         member_list.forEach(guild_member => {
-            
-            console.log('\n#####################################\n')
-            console.log()
-            
             var userObject = {
             
                 warns:[],

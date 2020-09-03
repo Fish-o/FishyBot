@@ -7,7 +7,7 @@ cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
 
 
 
-const fs = require('fs');;
+const fs = require('fs');
 var stringSimilarity = require('string-similarity');
 
 
@@ -37,6 +37,9 @@ function doRequest(url, ttl= 10*60*1000) {
 
 exports.run = async(client, message, args) => {
     /*
+    http://vrmasterleague.com/Services.asmx/GetTeamPlayersStats?game=onward&activeOnly=false&includeRetired=false
+    https://vrmasterleague.com/Services.asmx/GetTeamStats?game=onward&teamName=MAYHEM
+
         args[0], actions:
         
         user
@@ -183,7 +186,7 @@ exports.run = async(client, message, args) => {
     }
     else if(team.Group=="Americas West"){
         //UTC−08:00 PST
-        time_name = 'PST';
+        time_name = 'PDT';
         time_modifier = "America/California";
         time_format = "en-US";
         
@@ -191,7 +194,7 @@ exports.run = async(client, message, args) => {
         //UTC+10:00
         time_name = "AEST"
         time_modifier = "Australia/Victoria"
-        time_modifier = "en-AU";
+        time_format = "en-AU";
     }
 
     //  Time formatting:
@@ -287,7 +290,7 @@ exports.run = async(client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ['echovr', 'echoarena', 'echovrml'],
     perms: [
 
     ]
@@ -296,7 +299,7 @@ exports.conf = {
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
-    name:"vrml",
-    description: "Returns vrml stats of a team",
-    usage: "!vrml [team / team member]"
+    name:"echo",
+    description: "Returns echo arena vrml stats of a team",
+    usage: "!echo [team / team member]"
 };

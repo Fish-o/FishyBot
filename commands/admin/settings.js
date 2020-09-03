@@ -71,7 +71,7 @@ exports.run = async (client, message, args) => {
     } else {
         auto_commands.forEach(auto_command => {
             if(command == auto_command){
-                const locate_string = "settings."+auto_command
+                const locate_string = `settings.${auto_command}`
 
                 if(action == 'off' || !action){
                     var guildQuery = {id: guildID};
@@ -85,6 +85,20 @@ exports.run = async (client, message, args) => {
                 }
             }
         });
+        if(client.commands.has(command)){
+            const locate_string = `settings.${command}`
+
+            if(action == 'off' || !action){
+                var guildQuery = {id: guildID};
+                var newnewvalues = { $set: {[locate_string]:false}}
+                client.updatedb(guildQuery, newnewvalues, `Disabled the \`${command}\` command, it might take some time to apply the settings.`, message.channel)
+                
+            }else if(action == 'on'){
+                var guildQuery = {id: guildID};
+                var newnewvalues = { $set: {[locate_string]:true}}
+                client.updatedb(guildQuery, newnewvalues, `Enabled the \`${command}\` command, it might take some time to apply the settings.`, message.channel)
+            }
+        }
     }
     client.recache()
 }

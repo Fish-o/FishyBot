@@ -121,7 +121,7 @@ ${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['echo', 'ignite'],
+    aliases: ['ignite', 'statsecho', 'ignitestats', 'ignitevr'],
     perms: [
         
     ]
@@ -130,7 +130,7 @@ exports.conf = {
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
-    name:"stats",
+    name:"echostats",
     description: "Get a users echo stats",
     usage: "!stats [player]"
 };
