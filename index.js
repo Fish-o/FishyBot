@@ -101,6 +101,174 @@ fs.readdir("./auto_commands/", (direrr, dirs) =>{
 
 
 
+
+/*
+    READY
+    RESUMED
+    GUILD_CREATE
+    GUILD_DELETE
+    GUILD_UPDATE
+    INVITE_CREATE
+    INVITE_DELETE
+    GUILD_MEMBER_ADD
+    GUILD_MEMBER_REMOVE
+    GUILD_MEMBER_UPDATE
+    GUILD_MEMBERS_CHUNK
+    GUILD_INTEGRATIONS_UPDATE
+    GUILD_ROLE_CREATE
+    GUILD_ROLE_DELETE
+    GUILD_ROLE_UPDATE
+    GUILD_BAN_ADD
+    GUILD_BAN_REMOVE
+    GUILD_EMOJIS_UPDATE
+    CHANNEL_CREATE
+    CHANNEL_DELETE
+    CHANNEL_UPDATE
+    CHANNEL_PINS_UPDATE
+    MESSAGE_CREATE
+    MESSAGE_DELETE
+    MESSAGE_UPDATE
+    MESSAGE_DELETE_BULK
+    MESSAGE_REACTION_ADD
+    MESSAGE_REACTION_REMOVE
+    MESSAGE_REACTION_REMOVE_ALL
+    MESSAGE_REACTION_REMOVE_EMOJI
+    USER_UPDATE
+    PRESENCE_UPDATE
+    TYPING_START
+    VOICE_STATE_UPDATE
+    VOICE_SERVER_UPDATE
+    WEBHOOKS_UPDATE
+
+
+
+MISC
+    INVITE_CREATE
+    WEBHOOKS_UPDATE
+
+SERVER
+    GUILD_UPDATE
+    GUILD_EMOJIS_UPDATE
+
+ROLES
+    GUILD_ROLE_CREATE
+    GUILD_ROLE_DELETE
+    GUILD_ROLE_UPDATE
+
+CHANNEL
+    CHANNEL_CREATE
+    CHANNEL_DELETE
+    CHANNEL_UPDATE
+
+MESSAGE
+    MESSAGE_DELETE
+    MESSAGE_UPDATE
+    MESSAGE_DELETE_BULK
+
+MEMBERS
+    GUILD_MEMBER_ADD
+    GUILD_MEMBER_REMOVE
+    GUILD_MEMBER_UPDATE //add role and stuff
+
+BANS
+    GUILD_BAN_ADD
+    GUILD_BAN_REMOVE
+*/
+
+
+const events = {
+    misc:[      'INVITE_CREATE',
+                'WEBHOOKS_UPDATE'],
+
+    server:[    'GUILD_UPDATE',
+                'GUILD_EMOJIS_UPDATE'],
+
+    role:[      'GUILD_ROLE_CREATE',
+                'GUILD_ROLE_DELETE',
+                'GUILD_ROLE_UPDATE'],
+
+    channel:[   'CHANNEL_CREATE',
+                'CHANNEL_DELETE',
+                'CHANNEL_UPDATE'],
+
+    message:[   'MESSAGE_DELETE',
+                'MESSAGE_UPDATE',
+                'MESSAGE_DELETE_BULK'],
+
+    member:[    'GUILD_MEMBER_ADD',
+                'GUILD_MEMBER_REMOVE',
+                'GUILD_MEMBER_UPDATE'],
+
+    ban:[       'GUILD_BAN_ADD',
+                'GUILD_BAN_REMOVE']
+}
+
+client.on('WEBHOOKS_UPDATE', function(client, channel){
+    const TEXT = "Webhook updated"
+
+    const Discord = require('discord.js');
+    const cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/exports.conf');
+    const cache = JSON.parse(cache_raw);
+    const cache_guild = cache.data.find(guild => guild.id == channel.guild.id);
+
+    
+    
+    if(!cache_guild.logging){
+        const locate = "logging";
+        const value = {$set: {[locate]:{}}};
+        client.updatedb({id:channel.guild.id}, value);
+    } 
+    else if(cache_guild.logging.WEBHOOKS_UPDATE.id){
+        const webhookClient = new Discord.WebhookClient(cache_guild.logging.WEBHOOKS_UPDATE.id, cache_guild.logging.WEBHOOKS_UPDATE.token);
+
+        const embed = new Discord.MessageEmbed()
+            .setTitle(TEXT)
+            .setTimestamp();
+
+        webhookClient.send('fishy-bot-logging', {
+            username: 'FishyBot',
+            avatarURL: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/fish_1f41f.png',
+            embeds: [embed],
+        });
+
+    }
+
+}.bind(null, client));
+
+
+
+events.misc
+events.server
+events.role
+events.channel
+events.message
+events.member
+events.ban
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 client.allow_test = function(cmd_name, guild_id){
     let cache_raw = fs.readFileSync(__dirname + '/jsonFiles/cache.json');
     let cache = JSON.parse(cache_raw);
