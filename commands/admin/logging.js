@@ -1,6 +1,10 @@
 exports.run = (client, message, args) => {
-    channel = message.mentions.channels.first();
 
+    if(!args[0]){
+        return message.channel.send("Stopped, please enter a channel, or enter `off`")
+    }
+
+    channel = message.mentions.channels.first();
     if(args[0].toLowerCase() == 'off' || args[0].toLowerCase() == 'stop' || args[0].toLowerCase() == 'close'){
 
     } else if (channel){
@@ -8,7 +12,17 @@ exports.run = (client, message, args) => {
         channel.createWebhook("FishyBot Logging")
         .then(webhook => webhook.edit("FishyBot Logging", client.user.avatarURL)
         .then(wb => {
-            message.author.send(`Here is your webhook https://canary.discordapp.com/api/webhooks/${wb.id}/${wb.token}`)
+            var query = {id: message.guild.id};
+            const locate_string = "logging.webhook"
+            const db_data = {
+                webhook: {
+                    id: wb.id,
+                    token: wb.token
+                }, 
+                channel_id: channel.id
+            }
+            var values = { $set: {[locate_string]:db_data}}
+            client.updatedb(query, value, 'Started logging!', message.channel)
         }).catch(console.error))
     }
 }
