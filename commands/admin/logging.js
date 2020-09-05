@@ -25,7 +25,7 @@ exports.run = (client, message, args) => {
     } else if (channel){
         guild.fetchWebhooks()
             .then(webhooks => {
-                const created_webhooks = webhooks.find(webhook => webhook.client.id == client.id)
+                const created_webhooks = webhooks.filter(webhook => webhook.client.user.id == client.user.id)
                 console.log(created_webhooks)
                 console.log(JSON.stringify(created_webhooks))
                 if(created_webhooks){
