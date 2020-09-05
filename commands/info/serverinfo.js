@@ -82,7 +82,7 @@ exports.run = async (client, message, args) =>{
     //var canvas = createCanvas(600,400)//600, 400)
     //var ctx = canvas.getContext('2d')
     //console.log(JSON.stringify(ctx))
-    const configuration = {
+    const myChart = {
         type: 'line',
         
         data: {
@@ -138,18 +138,19 @@ exports.run = async (client, message, args) =>{
     
     
     
-    const canvasRenderService = new CanvasRenderService(400, 400)
+    /*const canvasRenderService = new CanvasRenderService(400, 400)
     const to_buffer_rendered = await canvasRenderService.renderToBuffer(configuration);
-    fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);
+    fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);*/
 
+    var IMAGE = "https://cdn.pixabay.com/photo/2015/07/09/19/32/dog-838281_960_720.jpg"
 
-
-    var IMAGE = `${__dirname}/../../images/${message.guild.id}.png`; //"https://quickchart.io/chart?c="+encodeURIComponent(JSON.stringify(myChart));
-    console.log(IMAGE)
-
+    if(encodeURIComponent(JSON.stringify(myChart).length < 1700)){
+        IMAGE = "https://quickchart.io/chart?c="+encodeURIComponent(JSON.stringify(myChart)); //`${__dirname}/../../images/${message.guild.id}.png`; //
+        console.log(IMAGE)
+    }
     let sicon = message.guild.iconURL;
     let serverembed = new Discord.MessageEmbed()
-        .setImage(`/../../chart${message.guild.id}.png`)
+        //.setImage(IAMGE)
         .setAuthor(`${message.guild.name} - Informations`, message.guild.iconURL)
         .setColor("#15f153")
         .addField('Server owner', message.guild.owner, true)
@@ -171,7 +172,7 @@ exports.run = async (client, message, args) =>{
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['server'],
+    aliases: ['server', 'serverstats'],
     perms: [
     ]
   };
