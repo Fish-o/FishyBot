@@ -235,7 +235,7 @@ client.on('WEBHOOKS_UPDATE', function(client, channel){
 
 }.bind(null, client));
 
-bot.on('guildMemberUpdate', function(guild, oldMember, newMember) {
+client.on('guildMemberUpdate', function(guild, oldMember, newMember) {
     const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
