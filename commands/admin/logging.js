@@ -3,7 +3,7 @@ exports.run = (client, message, args) => {
     if(!args[0]){
         return message.channel.send("Stopped, please enter a channel, or enter `off`")
     }
-
+    const guild = message.guild; 
     channel = message.mentions.channels.first();
     if(args[0].toLowerCase() == 'off' || args[0].toLowerCase() == 'stop' || args[0].toLowerCase() == 'close'){
         guild.fetchWebhooks()
