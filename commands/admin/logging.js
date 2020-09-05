@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 exports.run = (client, message, args) => {
 
     if(!args[0]){
@@ -8,7 +9,7 @@ exports.run = (client, message, args) => {
     if(args[0].toLowerCase() == 'off' || args[0].toLowerCase() == 'stop' || args[0].toLowerCase() == 'close'){
         guild.fetchWebhooks()
         .then(webhooks => {
-            const created_webhooks = webhooks.find(webhook => webhook.client.id == client.id)
+            const created_webhooks = webhooks.filter(webhook => webhook.client.user.id == client.user.id)
             if(created_webhooks){
                 created_webhooks.forEach(webhook => {
                     webhook.delete()
@@ -34,10 +35,10 @@ exports.run = (client, message, args) => {
                     });
                 }
                 channel.createWebhook('FishyBot-log', {
-                        avatar: client.user.avatarURL,
-                        reason: 'used to post log events'
+                        reason: 'used to post log events',
+                        avatar: client.user.avatarURL()
                     })
-                    //.then(webhook => webhook.edit("FishyBot Logging", )
+                    //.then(webhook => webhook.edit({avatar: client.user.avatarURL()} ))
                     .then(wb => {
                         var query = {id: message.guild.id};
                         const locate_string = "logging"
