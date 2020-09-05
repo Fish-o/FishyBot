@@ -48,7 +48,7 @@ exports.run = (client, message, args) => {
                             }, 
                             channel_id: channel.id
                         }
-                        var values = { $set: {[locate_string]:db_data}}
+                        var value = { $set: {[locate_string]:db_data}}
                         client.updatedb(query, value, 'Started logging!', wb)
                     }).catch(console.error)
             }).catch(console.error);
