@@ -295,7 +295,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                 change = Changes.avatar;
 
             //post in the guild's log channel
-            const embed = undefined;
+            let embed = undefined;
             if (log != null) {
                 switch(change) {
                     case Changes.unknown:
