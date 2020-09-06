@@ -269,7 +269,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
             //check if roles were removed
             var removedRole = '';
             oldMember.roles.cache.forEach(value => {
-                if(newMember.roles.cache.find('id', value.id) == null) {
+                if(newMember.roles.cache.find(value2 => value2.id== value.id) == null) {
                     change = Changes.removedRole;
                     removedRole = value.name;
                 }
@@ -278,7 +278,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
             //check if roles were added
             var addedRole = '';
             newMember.roles.cache.forEach(value => {
-                if(oldMember.roles.cache.find('id', value.id) == null) {
+                if(oldMember.roles.cache.find(value2 => value2.id== value.id) == null) {
                     change = Changes.addedRole;
                     addedRole = value.name;
                 }
