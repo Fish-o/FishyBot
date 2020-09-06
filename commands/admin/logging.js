@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
                 }
                 channel.createWebhook('FishyBot-log', {
                         reason: 'used to post log events',
-                        avatar: client.user.avatarURL()
+                        avatar: client.user.displayAvatarURL()
                     })
                     //.then(webhook => webhook.edit({avatar: client.user.avatarURL()} ))
                     .then(wb => {
