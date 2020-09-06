@@ -242,10 +242,8 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
     mongoClient.connect(err => {
         if (err) throw err;
         const collection = mongoClient.db("botdb").collection("v2");
-        console.log(guild.id)
         collection.find({id:guild.id}).toArray(function(err2, result) {
             if (err2) {throw err2};
-            console.log(result);
             const db_guild = result[0];
             if(!db_guild.logging) return;
             if(!db_guild.logging.webhook.id) return;
@@ -297,33 +295,78 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                 change = Changes.avatar;
 
             //post in the guild's log channel
-            
+            const embed = undefined;
             if (log != null) {
                 switch(change) {
                     case Changes.unknown:
-                        log.send('**[User Update]** ' + newMember);
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.avatarURL)
+                            .setTitle(`User updated`)
+                            .setColor('#0099ff');
+
+
+                        //log.send('**[User Update]** ' + newMember);
                         break;
                     case Changes.addedRole:
-                        log.send('**[User Role Added]** ' + newMember + ': ' + addedRole);
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.avatarURL)
+                            .setTitle(`User role added`)
+                            .setDescription(`<@${addedRole.id}>`)
+                            .setColor('#00ff00');
+                        //log.send('**[User Role Added]** ' + newMember + ': ' + addedRole);
                         break;
                     case Changes.removedRole:
-                        log.send('**[User Role Removed]** ' + newMember + ': ' + removedRole);
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.avatarURL)
+                            .setTitle(`User role removed`)
+                            .setDescription(`<@${removedRole.id}>`)
+                            .setColor('#ff0000');
+                        //log.send('**[User Role Removed]** ' + newMember + ': ' + removedRole);
                         break;
                     case Changes.username:
-                        log.send('**[User Username Changed]** ' + newMember + ': Username changed from ' +
-                            oldMember.user.username + '#' + oldMember.user.discriminator + ' to ' +
-                            newMember.user.username + '#' + newMember.user.discriminator);
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.avatarURL)
+                            .setTitle(`User username changed`)
+                            .addFields(
+                                { name: 'Before: ', value: `${oldMember.user.username}#${oldMember.user.discriminator}`, inline: false },
+                                { name: '+After: ', value: `${newMember.user.username}#${newMember.user.discriminator}`, inline: false },
+                            )
+                            .setColor('#0099ff');
+
+                        //log.send('**[User Username Changed]** ' + newMember + ': Username changed from ' +
+                        //    oldMember.user.username + '#' + oldMember.user.discriminator + ' to ' +
+                        //    newMember.user.username + '#' + newMember.user.discriminator);
                         break;
                     case Changes.nickname:
-                        log.send('**[User Nickname Changed]** ' + newMember + ': ' +
-                            (oldMember.nickname != null ? 'Changed nickname from ' + oldMember.nickname +
-                                + newMember.nickname : 'Set nickname') + ' to ' +
-                            (newMember.nickname != null ? newMember.nickname + '.' : 'original username.'));
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.avatarURL)
+                            .setTitle(`User nickname changed`)
+                            .addFields(
+                                { name: 'Before: ', value: `${oldMember.nickname}`, inline: false },
+                                { name: '+After: ', value: `${newMember.nickname}`, inline: false },
+                            )
+                            .setColor('#0099ff');
+                        //log.send('**[User Nickname Changed]** ' + newMember + ': ' +
+                        //    (oldMember.nickname != null ? 'Changed nickname from ' + oldMember.nickname +
+                        //        + newMember.nickname : 'Set nickname') + ' to ' +
+                        //    (newMember.nickname != null ? newMember.nickname + '.' : 'original username.'));
                         break;
                     case Changes.avatar:
-                        log.send('**[User Avatar Changed]** ' + newMember);
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.avatarURL)
+                            .setTitle(`User avatar changed`)
+                            .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                            .setColor('#0099ff');
+                        //log.send('**[User Avatar Changed]** ' + newMember);
                         break;
                 }
+            }
+            if(embed){
+                log.send('FishyBot-log', {
+                    username: 'FishyBot-log',
+                    avatarURL: client.user.avatarURL(),
+                    embeds: [embed],
+                });
             }
             mongoClient.close();
         });
