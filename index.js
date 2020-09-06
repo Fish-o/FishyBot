@@ -362,9 +362,9 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                 }
             }
             if(embed){
-                log.send('FishyBot-log', {
+                log.send({
                     username: 'FishyBot-log',
-                    avatarURL: client.user.displayAvatarURL(),
+                    avatar: client.user.displayAvatarURL(),
                     embeds: [embed],
                 });
             }
