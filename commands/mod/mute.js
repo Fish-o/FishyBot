@@ -2,7 +2,11 @@ const ms = require("ms");
 
 exports.run = async (bot, message, args) => {
 
-  //!tempmute @user 1s/m/h/d
+         const ms = require("ms");
+        var args = message.content.slice(commandPrefix.length).trim().split(/ +/g);
+        args.shift()
+
+ //!tempmute @user 1s/m/h/d
 
   let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
   if(!tomute) return message.reply("Couldn't find user.");
@@ -39,14 +43,20 @@ exports.run = async (bot, message, args) => {
   //end of create role
   let mutetime = args[1];
   if(!mutetime) return message.reply("You didn't specify a time!");
+  if (tomute = message.author.id)
+  {
+    return message.channel.send(`cant mute urself my guy`);
+  }
 
   await(tomute.roles.add(muterole.id));
   message.reply(`<@${tomute.id}> has been muted for ${ms(ms(mutetime))}`);
+  tomute.send(`you have been muted for ${ms(ms(mutetime))}`)
 
   setTimeout(function(){
     tomute.roles.remove(muterole.id);
     message.channel.send(`<@${tomute.id}> has been unmuted!`);
   }, ms(mutetime));
+
 }
 
 
