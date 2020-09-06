@@ -300,7 +300,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                 switch(change) {
                     case Changes.unknown:
                         embed = new Discord.MessageEmbed()
-                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.displayAvatarURL())
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
                             .setTitle(`User updated`)
                             .setColor('#0099ff');
 
@@ -309,7 +309,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                         break;
                     case Changes.addedRole:
                         embed = new Discord.MessageEmbed()
-                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.displayAvatarURL())
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
                             .setTitle(`User role added`)
                             .setDescription(`<@${addedRole.id}>`)
                             .setColor('#00ff00');
@@ -317,7 +317,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                         break;
                     case Changes.removedRole:
                         embed = new Discord.MessageEmbed()
-                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.displayAvatarURL())
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
                             .setTitle(`User role removed`)
                             .setDescription(`<@${removedRole.id}>`)
                             .setColor('#ff0000');
@@ -325,7 +325,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                         break;
                     case Changes.username:
                         embed = new Discord.MessageEmbed()
-                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.displayAvatarURL())
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
                             .setTitle(`User username changed`)
                             .addFields(
                                 { name: 'Before: ', value: `${oldMember.user.username}#${oldMember.user.discriminator}`, inline: false },
@@ -339,7 +339,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                         break;
                     case Changes.nickname:
                         embed = new Discord.MessageEmbed()
-                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.displayAvatarURL())
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
                             .setTitle(`User nickname changed`)
                             .addFields(
                                 { name: 'Before: ', value: `${oldMember.nickname}`, inline: false },
@@ -353,7 +353,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                         break;
                     case Changes.avatar:
                         embed = new Discord.MessageEmbed()
-                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.displayAvatarURL())
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
                             .setTitle(`User avatar changed`)
                             .setThumbnail('https://i.imgur.com/wSTFkRM.png')
                             .setColor('#0099ff');
