@@ -243,7 +243,7 @@ client.on('guildMemberUpdate', function(guild, oldMember, newMember) {
         const collection = mongoClient.db("botdb").collection("v2");
         collection.findOne({id:guild.id}, function(err, db_guild) {
             if (err) {console.error(err); throw err};
-            
+            console.log(db_guild)
             if(!db_guild.logging) return;
             if(!db_guild.logging.webhook.id) return;
             
