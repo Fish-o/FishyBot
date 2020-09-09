@@ -364,7 +364,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
             if(embed){
                 log.send({
                     username: 'FishyBot-log',
-                    avatar: client.user.displayAvatarURL(),
+                    avatarURL: client.user.displayAvatarURL(),
                     embeds: [embed],
                 });
             }
