@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const querystring = require('query-string');
-const CAT_API_URL = "https://api.thecatapi.com/"
-
+const CAT_API_URL = "https://api.thecatapi.com/";
+const r2 = require("r2");
 exports.run = async (client, message, args) => {
     
     const CAT_API_KEY = client.config.CAT_TOKEN
@@ -11,11 +11,11 @@ exports.run = async (client, message, args) => {
         'X-API-KEY': CAT_API_KEY,
     }
     var query_params = {
-    //'has_breeds':true,
-    'mime_types':'jpg,png',
-    'size':'med',  
-    'sub_id': message.author.username, 
-    'limit' : 1
+        //'has_breeds':true,
+        'mime_types':'jpg,png',
+        'size':'med',  
+        'sub_id': message.author.username, 
+        'limit' : 1
     }
 
     let queryString = querystring.stringify(query_params);
