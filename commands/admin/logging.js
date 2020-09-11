@@ -27,8 +27,6 @@ exports.run = (client, message, args) => {
         guild.fetchWebhooks()
             .then(webhooks => {
                 const created_webhooks = webhooks.filter(webhook => webhook.client.user.id == client.user.id);
-                console.log(created_webhooks);
-                console.log(JSON.stringify(created_webhooks));
                 if(created_webhooks){
                     created_webhooks.forEach(webhook => {
                         webhook.delete()
