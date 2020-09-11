@@ -58,7 +58,7 @@ exports.conf = {
     enabled: true,
     guildOnly: false,
     aliases: ['logging'],
-    perms: [
+    perms: ['ADMINISTRATOR'
         
     ]
   };
