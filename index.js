@@ -391,7 +391,7 @@ client.on('messageDelete', function(message){
             if(!db_guild.logging.webhook.id) return;
             
             const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);
-            if(log){
+            if(log != null){
                 embed = new Discord.MessageEmbed()
                     .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
                     .setTitle(`Message deleted in #${message.channel.name}`)
