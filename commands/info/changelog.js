@@ -2,19 +2,27 @@ exports.run = (client, message, args) => {
     message.channel.send(
 `Version 1.4 release!
 **New features:**
-Auto commands:
-    These are commands that will activate without a prefix! They can also have multiple names for them to activate. Right now the only one is Dad jokes
+!CAT
+    they will consume us all, there is no delaying the inevitable
 
+!log
+    Logs events to a specified channel, currently doesnt log that much (you can check with !help log) but there will be added more soon!
 
-
+!onward
+    You are now able to view an onward vrml team's stats!
 
 
 **Updated features:**
-
 Settings:
-    There is a new !settings command, that allowes admins to disable commands.
+    Made !settings able to disable everything!
 
+Renames:
+    stats => echostats
+    vrml => echo
 
+**Other stuff**
+fixed the bot readding a db entry, after rejoining
+fixed guild delete
 `
         ).catch(console.error);
 }
