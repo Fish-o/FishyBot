@@ -389,7 +389,7 @@ client.on('messageDelete', function(message){
             const db_guild = result[0];
             if(!db_guild.logging) return;
             if(!db_guild.logging.webhook.id) return;
-            
+            var embed;
             const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);
             if(log != null){
                 embed = new Discord.MessageEmbed()
