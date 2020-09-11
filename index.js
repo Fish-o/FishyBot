@@ -203,7 +203,7 @@ const events = {
                 'GUILD_BAN_REMOVE']
 }
 
-client.on('WEBHOOKS_UPDATE', function(client, channel){
+client.on('WEBHOOKS_UPDATE', function(channel){
     const TEXT = "Webhook updated"
 
     const Discord = require('discord.js');
@@ -223,7 +223,8 @@ client.on('WEBHOOKS_UPDATE', function(client, channel){
 
         const embed = new Discord.MessageEmbed()
             .setTitle(TEXT)
-            .setTimestamp();
+            .setTimestamp()
+            .setDescription(`Channel: ${message.channel.name}`);
 
         webhookClient.send('fishy-bot-logging', {
             username: 'FishyBot',
@@ -355,13 +356,14 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
                         embed = new Discord.MessageEmbed()
                             .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
                             .setTitle(`User avatar changed`)
-                            .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                            //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
                             .setColor('#0099ff');
                         //log.send('**[User Avatar Changed]** ' + newMember);
                         break;
                 }
             }
             if(embed){
+                embed.setTimestamp()
                 log.send({
                     username: 'FishyBot-log',
                     avatarURL: client.user.displayAvatarURL(),
@@ -374,6 +376,42 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
     
 
 });
+
+client.on('messageDelete', function(message){
+    const uri = client.config.dbpath;
+    const guild = oldMember.guild
+    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+    mongoClient.connect(err => {
+        if (err) throw err;
+        const collection = mongoClient.db("botdb").collection("v2");
+        collection.find({id:guild.id}).toArray(function(err2, result) {
+            if (err2) {throw err2};
+            const db_guild = result[0];
+            if(!db_guild.logging) return;
+            if(!db_guild.logging.webhook.id) return;
+            
+            const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);
+            if(log){
+                embed = new Discord.MessageEmbed()
+                    .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                    .setTitle(`Message deleted in #${message.channel.name}`)
+                    .setDescription(message.content)
+                    .setColor('#ff0000')
+                    .setTimestamp()
+                    .setFooter('AuthorID: '+message.author.id);
+            }
+            if(embed){
+                log.send({
+                    username: 'FishyBot-log',
+                    avatarURL: client.user.displayAvatarURL(),
+                    embeds: [embed],
+                });
+            }
+            mongoClient.close();
+        });
+    });
+});
+
 
 events.misc
 events.server
