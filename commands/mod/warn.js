@@ -48,7 +48,7 @@ exports.run = (client, message, args) => {
 
     const uri = client.config.dbpath;
     const guildID = message.guild.id;
-    const member = message.mentions.users.first()
+    const member = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0])
     const memberID = member.id.toString();
 
 

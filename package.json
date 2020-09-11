@@ -1,6 +1,6 @@
 {
     "name": "fishybot",
-    "version": "2.1.0",
+    "version": "1.4.0",
     "description": "A crappy discord bot",
     "dependencies": {
         "bad-words": "^3.0.3",

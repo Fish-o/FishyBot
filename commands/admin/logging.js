@@ -67,7 +67,21 @@ const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"log",
-    description: "",
+    description: 
+`Logs events to a channel,
+current events include:
+
+GuildMemberUpdate:
+    unknown
+    addedRole
+    removedRole
+    username
+    nickname
+    avatar
+
+messageDelete
+
+more will be added over time.`,
     usage: "!log [channel / 'off']"
 };
 

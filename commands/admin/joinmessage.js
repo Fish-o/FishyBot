@@ -131,7 +131,7 @@ exports.run = (client, message, args) =>{
         if(!args[0]){
 
             message.channel.send("In what channel should it be, type `cancel` at any time to stop");
-            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(new_channel_raw_msg => {
+            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(new_channel_raw_msg => {
                 let new_channel_raw = new_channel_raw_msg.first().content;
 
                 if(!new_channel_raw_msg.first().mentions.channels.first()){
@@ -145,7 +145,7 @@ exports.run = (client, message, args) =>{
 
                 
                 message.channel.send("What color should it be, enter a color name or a hex code");
-                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(color_raw_msg => {
+                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(color_raw_msg => {
                     var color_raw = color_raw_msg.first().content
                     const hex = colourNameToHex(color_raw)
                     if(hex == false) {return message.channel.send("Stopped, not a valid color name or hex code")}
@@ -153,7 +153,7 @@ exports.run = (client, message, args) =>{
 
 
                     message.channel.send("What is going to be the tile (use {name} to insert the new members name)")
-                    message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(title_bold_raw_msg => {
+                    message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(title_bold_raw_msg => {
                         let title_bold_raw = title_bold_raw_msg.first().content;
 
                         if(title_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -167,7 +167,7 @@ exports.run = (client, message, args) =>{
 
 
                         message.channel.send("What is going to be the tile's description")
-                        message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(title_small_raw_msg => {
+                        message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(title_small_raw_msg => {
                             let title_small_raw = title_small_raw_msg.first().content;
 
                             if(title_small_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -181,7 +181,7 @@ exports.run = (client, message, args) =>{
 
 
                             message.channel.send("What is going to be the second blocks title? (type `none` to not have this)")
-                            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(second_bold_raw_msg => {
+                            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(second_bold_raw_msg => {
                                 let second_bold_raw = second_bold_raw_msg.first().content;
 
                                 if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -208,7 +208,7 @@ exports.run = (client, message, args) =>{
 
 
                                 message.channel.send("What is going to be the second blocks description?")
-                                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(second_small_raw_msg => {
+                                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(second_small_raw_msg => {
                                     let second_small_raw = second_small_raw_msg.first().content;
 
                                     if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -253,7 +253,7 @@ exports.run = (client, message, args) =>{
         if(!args[0]){
 
             message.channel.send("In what channel should it be, type `cancel` at any time to stop");
-            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(new_channel_raw_msg => {
+            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(new_channel_raw_msg => {
                 let new_channel_raw = new_channel_raw_msg.first().content;
 
                 if(!new_channel_raw_msg.first().mentions.channels.first()){
@@ -264,7 +264,7 @@ exports.run = (client, message, args) =>{
 
 
                 message.channel.send("What is going to be the message? (use {name} to insert the new members name)")
-                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(title_bold_raw_msg => {
+                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(title_bold_raw_msg => {
                     let title_bold_raw = title_bold_raw_msg.first().content;
 
                     if(title_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}

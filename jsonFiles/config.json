@@ -1,9 +1,8 @@
 {
     "name":"FishyBot",
-    "version":"1.3.0",
+    "version":"1.4.0",
     "description":"its kinda fishy :p",
-    "main":"index.js",
-    "author":"Fish",
+    "author":"Fish#2455",
     "master":"325893549071663104",
     "prefix":"f!"
 }
