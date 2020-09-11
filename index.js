@@ -379,7 +379,7 @@ client.on('guildMemberUpdate', function(oldMember, newMember) {
 
 client.on('messageDelete', function(message){
     const uri = client.config.dbpath;
-    const guild = oldMember.guild
+    const guild = message.guild
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
         if (err) throw err;
