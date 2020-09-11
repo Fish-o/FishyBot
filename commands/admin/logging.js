@@ -14,12 +14,12 @@ exports.run = (client, message, args) => {
                 created_webhooks.forEach(webhook => {
                     webhook.delete()
                 });
-                var query = {id: message.guild.id};
-                const locate_string = "logging"
-                const db_data = undefined;
-                var values = { $set: {[locate_string]:db_data}}
-                client.updatedb(query, value, 'Stopped logging', message.channel)
             }
+            var query = {id: message.guild.id};
+            const locate_string = "logging"
+            const db_data = undefined;
+            var value = { $set: {[locate_string]:db_data}}
+            client.updatedb(query, value, 'Stopped logging', message.channel)
 
         }).catch(console.error);
 
