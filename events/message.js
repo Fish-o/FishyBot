@@ -37,6 +37,7 @@ module.exports = (client, message) => {
     
     // Ignore all bots
     if (message.author.bot) return;
+    if (message.webhookID) return;
     if (message.channel instanceof Discord.DMChannel) return message.reply("This bot does not support DM messages");
     
     
