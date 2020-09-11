@@ -101,6 +101,350 @@ fs.readdir("./auto_commands/", (direrr, dirs) =>{
 
 
 
+
+/*
+    READY
+    RESUMED
+    GUILD_CREATE
+    GUILD_DELETE
+    GUILD_UPDATE
+    INVITE_CREATE
+    INVITE_DELETE
+    GUILD_MEMBER_ADD
+    GUILD_MEMBER_REMOVE
+    GUILD_MEMBER_UPDATE
+    GUILD_MEMBERS_CHUNK
+    GUILD_INTEGRATIONS_UPDATE
+    GUILD_ROLE_CREATE
+    GUILD_ROLE_DELETE
+    GUILD_ROLE_UPDATE
+    GUILD_BAN_ADD
+    GUILD_BAN_REMOVE
+    GUILD_EMOJIS_UPDATE
+    CHANNEL_CREATE
+    CHANNEL_DELETE
+    CHANNEL_UPDATE
+    CHANNEL_PINS_UPDATE
+    MESSAGE_CREATE
+    MESSAGE_DELETE
+    MESSAGE_UPDATE
+    MESSAGE_DELETE_BULK
+    MESSAGE_REACTION_ADD
+    MESSAGE_REACTION_REMOVE
+    MESSAGE_REACTION_REMOVE_ALL
+    MESSAGE_REACTION_REMOVE_EMOJI
+    USER_UPDATE
+    PRESENCE_UPDATE
+    TYPING_START
+    VOICE_STATE_UPDATE
+    VOICE_SERVER_UPDATE
+    WEBHOOKS_UPDATE
+
+
+
+MISC
+    INVITE_CREATE
+    WEBHOOKS_UPDATE
+
+SERVER
+    GUILD_UPDATE
+    GUILD_EMOJIS_UPDATE
+
+ROLES
+    GUILD_ROLE_CREATE
+    GUILD_ROLE_DELETE
+    GUILD_ROLE_UPDATE
+
+CHANNEL
+    CHANNEL_CREATE
+    CHANNEL_DELETE
+    CHANNEL_UPDATE
+
+MESSAGE
+    MESSAGE_DELETE
+    MESSAGE_UPDATE
+    MESSAGE_DELETE_BULK
+
+MEMBERS
+    GUILD_MEMBER_ADD
+    GUILD_MEMBER_REMOVE
+    GUILD_MEMBER_UPDATE //add role and stuff
+
+BANS
+    GUILD_BAN_ADD
+    GUILD_BAN_REMOVE
+*/
+
+
+const events = {
+    misc:[      'INVITE_CREATE',
+                'WEBHOOKS_UPDATE'],
+
+    server:[    'GUILD_UPDATE',
+                'GUILD_EMOJIS_UPDATE'],
+
+    role:[      'GUILD_ROLE_CREATE',
+                'GUILD_ROLE_DELETE',
+                'GUILD_ROLE_UPDATE'],
+
+    channel:[   'CHANNEL_CREATE',
+                'CHANNEL_DELETE',
+                'CHANNEL_UPDATE'],
+
+    message:[   'MESSAGE_DELETE',
+                'MESSAGE_UPDATE',
+                'MESSAGE_DELETE_BULK'],
+
+    member:[    'GUILD_MEMBER_ADD',
+                'GUILD_MEMBER_REMOVE',
+                'GUILD_MEMBER_UPDATE'],
+
+    ban:[       'GUILD_BAN_ADD',
+                'GUILD_BAN_REMOVE']
+}
+
+client.on('WEBHOOKS_UPDATE', function(channel){
+    const TEXT = "Webhook updated"
+
+    const Discord = require('discord.js');
+    const cache_raw = fs.readFileSync(__dirname + '/jsonFiles/cache.js');
+    const cache = JSON.parse(cache_raw);
+    const cache_guild = cache.data.find(guild => guild.id == channel.guild.id);
+
+    
+    
+    if(!cache_guild.logging){
+        const locate = "logging";
+        const value = {$set: {[locate]:{}}};
+        client.updatedb({id:channel.guild.id}, value);
+    } 
+    else if(cache_guild.logging.WEBHOOKS_UPDATE.id){
+        const webhookClient = new Discord.WebhookClient(cache_guild.logging.WEBHOOKS_UPDATE.id, cache_guild.logging.WEBHOOKS_UPDATE.token);
+
+        const embed = new Discord.MessageEmbed()
+            .setTitle(TEXT)
+            .setTimestamp()
+            .setDescription(`Channel: ${message.channel.name}`);
+
+        webhookClient.send('fishy-bot-logging', {
+            username: 'FishyBot',
+            avatarURL: 'https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/fish_1f41f.png',
+            embeds: [embed],
+        });
+
+    }
+
+}.bind(null, client));
+
+client.on('guildMemberUpdate', function(oldMember, newMember) {
+    const uri = client.config.dbpath;
+    const guild = oldMember.guild
+    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+    mongoClient.connect(err => {
+        if (err) throw err;
+        const collection = mongoClient.db("botdb").collection("v2");
+        collection.find({id:guild.id}).toArray(function(err2, result) {
+            if (err2) {throw err2};
+            const db_guild = result[0];
+            if(!db_guild.logging) return;
+            if(!db_guild.logging.webhook.id) return;
+            
+            const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);
+
+    
+            //var log = guild.channels.find('id', CHANNEL);
+
+            //declare changes
+            var Changes = {
+                unknown: 0,
+                addedRole: 1,
+                removedRole: 2,
+                username: 3,
+                nickname: 4,
+                avatar: 5
+            };
+            var change = Changes.unknown;
+
+            //check if roles were removed
+            var removedRole = '';
+            oldMember.roles.cache.forEach(value => {
+                if(newMember.roles.cache.find(value2 => value2.id== value.id) == null) {
+                    change = Changes.removedRole;
+                    removedRole = value.name;
+                }
+            });
+
+            //check if roles were added
+            var addedRole = '';
+            newMember.roles.cache.forEach(value => {
+                if(oldMember.roles.cache.find(value2 => value2.id== value.id) == null) {
+                    change = Changes.addedRole;
+                    addedRole = value.name;
+                }
+            });
+
+            //check if username changed
+            if(newMember.user.username != oldMember.user.username)
+                change = Changes.username;
+
+            //check if nickname changed
+            if(newMember.nickname != oldMember.nickname)
+                change = Changes.nickname;
+
+            //check if avatar changed
+            if(newMember.user.displayAvatarURL() != oldMember.user.displayAvatarURL())
+                change = Changes.avatar;
+
+            //post in the guild's log channel
+            let embed = undefined;
+            if (log != null) {
+                switch(change) {
+                    case Changes.unknown:
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
+                            .setTitle(`User updated`)
+                            .setColor('#0099ff');
+
+
+                        //log.send('**[User Update]** ' + newMember);
+                        break;
+                    case Changes.addedRole:
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
+                            .setTitle(`User role added`)
+                            .setDescription(`<@${addedRole.id}>`)
+                            .setColor('#00ff00');
+                        //log.send('**[User Role Added]** ' + newMember + ': ' + addedRole);
+                        break;
+                    case Changes.removedRole:
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
+                            .setTitle(`User role removed`)
+                            .setDescription(`<@${removedRole.id}>`)
+                            .setColor('#ff0000');
+                        //log.send('**[User Role Removed]** ' + newMember + ': ' + removedRole);
+                        break;
+                    case Changes.username:
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
+                            .setTitle(`User username changed`)
+                            .addFields(
+                                { name: 'Before: ', value: `${oldMember.user.username}#${oldMember.user.discriminator}`, inline: false },
+                                { name: '+After: ', value: `${newMember.user.username}#${newMember.user.discriminator}`, inline: false },
+                            )
+                            .setColor('#0099ff');
+
+                        //log.send('**[User Username Changed]** ' + newMember + ': Username changed from ' +
+                        //    oldMember.user.username + '#' + oldMember.user.discriminator + ' to ' +
+                        //    newMember.user.username + '#' + newMember.user.discriminator);
+                        break;
+                    case Changes.nickname:
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
+                            .setTitle(`User nickname changed`)
+                            .addFields(
+                                { name: 'Before: ', value: `${oldMember.nickname}`, inline: false },
+                                { name: '+After: ', value: `${newMember.nickname}`, inline: false },
+                            )
+                            .setColor('#0099ff');
+                        //log.send('**[User Nickname Changed]** ' + newMember + ': ' +
+                        //    (oldMember.nickname != null ? 'Changed nickname from ' + oldMember.nickname +
+                        //        + newMember.nickname : 'Set nickname') + ' to ' +
+                        //    (newMember.nickname != null ? newMember.nickname + '.' : 'original username.'));
+                        break;
+                    case Changes.avatar:
+                        embed = new Discord.MessageEmbed()
+                            .setAuthor(`${newMember.user.username}#${newMember.user.discriminator}`, newMember.user.displayAvatarURL())
+                            .setTitle(`User avatar changed`)
+                            //.setThumbnail('https://i.imgur.com/wSTFkRM.png')
+                            .setColor('#0099ff');
+                        //log.send('**[User Avatar Changed]** ' + newMember);
+                        break;
+                }
+            }
+            if(embed){
+                embed.setTimestamp()
+                log.send({
+                    username: 'FishyBot-log',
+                    avatarURL: client.user.displayAvatarURL(),
+                    embeds: [embed],
+                });
+            }
+            mongoClient.close();
+        });
+    });
+    
+
+});
+
+client.on('messageDelete', function(message){
+    const uri = client.config.dbpath;
+    const guild = message.guild
+    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+    mongoClient.connect(err => {
+        if (err) throw err;
+        const collection = mongoClient.db("botdb").collection("v2");
+        collection.find({id:guild.id}).toArray(function(err2, result) {
+            if (err2) {throw err2};
+            const db_guild = result[0];
+            if(!db_guild.logging) return;
+            if(!db_guild.logging.webhook.id) return;
+            var embed;
+            const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);
+            if(log != null){
+                embed = new Discord.MessageEmbed()
+                    .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                    .setTitle(`Message deleted in #${message.channel.name}`)
+                    .setDescription(message.content)
+                    .setColor('#ff0000')
+                    .setTimestamp()
+                    .setFooter('AuthorID: '+message.author.id);
+            }
+            if(embed){
+                log.send({
+                    username: 'FishyBot-log',
+                    avatarURL: client.user.displayAvatarURL(),
+                    embeds: [embed],
+                });
+            }
+            mongoClient.close();
+        });
+    });
+});
+
+
+events.misc
+events.server
+events.role
+events.channel
+events.message
+events.member
+events.ban
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 client.allow_test = function(cmd_name, guild_id){
     let cache_raw = fs.readFileSync(__dirname + '/jsonFiles/cache.json');
     let cache = JSON.parse(cache_raw);

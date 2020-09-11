@@ -8,7 +8,7 @@ exports.run = (client, message, args) =>{
     else{
 
         if(!rMember) 
-            return message.channel.send("Couldn't find that user, yo.");
+            return message.channel.send("Couldn't find that user.");
         
         let role = args.join(" ").slice(23);
         if(!role) 
