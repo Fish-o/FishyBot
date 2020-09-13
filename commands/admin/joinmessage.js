@@ -41,11 +41,12 @@ exports.run = async (client, message, args) =>{
     var action = ''
     if(args[0]){
         var text = args.join(' ')
-        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
-        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
+        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+            console.log('using json data')
             var jsondata = JSON.parse(text)
+            if(!jsondata.a || !jsondata.b || !jsondata.c || !jsondata.d || !jsondata.x || !jsondata.y){
+                return message.channel.send('Invalid json')
+            }
             var new_channel_id;
             if(jsondata.y == true){
                 new_channel_id == message.channel.id
@@ -85,6 +86,7 @@ exports.run = async (client, message, args) =>{
     } else{
         var action = 'message';
     }
+    console.log(action)
     if(!action || action == 'view'){
         const uri = client.config.dbpath
         var guild_data_promise = new Promise(function(resolve, reject){
