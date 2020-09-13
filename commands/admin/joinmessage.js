@@ -49,7 +49,7 @@ exports.run = async (client, message, args) =>{
             }
             var new_channel_id;
             if(jsondata.y == true){
-                new_channel_id == message.channel.id
+                new_channel_id = message.channel.id
             } else {
                 message.channel.send("In what channel should it be, type `cancel` at any time to stop");
                 var new_channel_raw_msg = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
