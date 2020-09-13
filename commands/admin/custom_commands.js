@@ -24,7 +24,10 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"custom",
     description: 
-`Allows you to make a custome command with multiple responses.
+`
+**NOT DONE YET!!!**
+
+Allows you to make a custome command with multiple responses.
 
 List all custom commands:
 !custom list
