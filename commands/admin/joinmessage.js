@@ -37,14 +37,56 @@ function colourNameToHex(colour){
 }
 
 
-exports.run = (client, message, args) =>{
+exports.run = async (client, message, args) =>{
     var action = ''
     if(args[0]){
-        var action = args[0].toLowerCase()
-        args.shift()
+        var text = args.join(' ')
+        if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+            console.log('using json data')
+            var jsondata = JSON.parse(text)
+            if(!jsondata.a || !jsondata.b || !jsondata.c || !jsondata.d || !jsondata.x || !jsondata.y){
+                return message.channel.send('Invalid json')
+            }
+            var new_channel_id;
+            if(jsondata.y == true){
+                new_channel_id = message.channel.id
+            } else {
+                message.channel.send("In what channel should it be, type `cancel` at any time to stop");
+                var new_channel_raw_msg = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
+               
+                let new_channel_raw = new_channel_raw_msg.first().content;
+
+                if(!new_channel_raw_msg.first().mentions.channels.first()){
+                    if(new_channel_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')};
+                }
+                new_channel_id = new_channel_raw_msg.first().mentions.channels.first().id;
+                
+            }
+            const join_object = {
+                channelId: new_channel_id,
+                color: jsondata.x,
+                title: {
+                    b:jsondata.a,
+                    s:jsondata.c
+                },
+                desc: {
+                    b:jsondata.b,
+                    s:jsondata.d
+                }
+            }
+            const locate = "joinMsg"
+            const value = {$set: {[locate]:join_object}}
+            client.updatedb({id:message.guild.id}, value, 'Changed the message!', message.channel)
+            return
+
+        } else {
+            var action = args[0].toLowerCase()
+            args.shift()
+        }
     } else{
         var action = 'message';
     }
+    console.log(action)
     if(!action || action == 'view'){
         const uri = client.config.dbpath
         var guild_data_promise = new Promise(function(resolve, reject){
