@@ -16,7 +16,7 @@ function sleep(ms) {
 
 
 
-module.exports = async (client, message) => {
+module.exports = async function(client, message) {
     // Fall back options to shut down the bot
     if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
