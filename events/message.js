@@ -235,8 +235,8 @@ var very_good_name = async function(client, message) {
                         console.log('before while2')
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
                             console.log(splits)
-                            splits.push(splits[-1].split(time_matches[0])[-1])
-                            message.channel.send(splits[-1]) 
+                            splits.push(splits[splits.length-1].split(time_matches[0])[-1])
+                            message.channel.send(splits[splits.length-1]) 
                             await sleep(time_matches[1].parseInt() *1000)
                             console.log(matched);
                         }
