@@ -195,7 +195,7 @@ var very_good_name = async function(client, message) {
                 }
                 if(isRegex) {
                     console.log('isregex')
-                    let resfix5.3ponse = responses[Math.floor(Math.random() * responses.length)];
+                    let resonse = responses[Math.floor(Math.random() * responses.length)];
                     var test_regex = new RegExp(test);
                 
                     var result = msg.match(test_regex);
