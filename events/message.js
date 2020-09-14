@@ -175,7 +175,7 @@ var very_good_name = async function(client, message) {
 
             var guild_custom_commands = {};
             let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
-            if(guild_cache.custom_commands == false){
+            if(guild_cache.custom_commands){
                 guild_custom_commands = guild_cache.custom_commands;
             }
             console.log(guild_custom_commands)
