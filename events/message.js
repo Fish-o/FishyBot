@@ -14,9 +14,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
-
-module.exports = async function very_good_name(client, message) {
+async function very_good_name(client, message) {
     // Fall back options to shut down the bot
     if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
@@ -301,3 +299,6 @@ module.exports = async function very_good_name(client, message) {
 
 //})
 };
+
+
+module.exports = very_good_name;
