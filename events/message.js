@@ -199,6 +199,9 @@ var very_good_name = async function(client, message) {
                     var test_regex = new RegExp(test);
                 
                     var result = msg.match(test_regex);
+                    console.log(result)
+                    console.log(test_regex)
+                    console.log(response)
                     if(result[0]){
                         var after = msg.split(result)[-1];
                         
