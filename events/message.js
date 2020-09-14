@@ -235,6 +235,7 @@ var very_good_name = async function(client, message) {
                         console.log('before while2')
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
                             console.log(splits)
+                            console.log("time matches: "+time_matches)
                             splits.push(splits[splits.length-1].split(time_matches[0])[-1])
                             message.channel.send(splits[splits.length-1]) 
                             await sleep(time_matches[1].parseInt() *1000)
