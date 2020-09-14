@@ -212,7 +212,7 @@ var very_good_name = async function(client, message) {
                                 response = ''
                             }
                             else{
-                                response = response.replace("{mentions}", `<@${message.mentions.members.first().id}>`)
+                                response = response.replace("{mention}", `<@${message.mentions.members.first().id}>`)
                             }
                         };
 
