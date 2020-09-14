@@ -195,13 +195,10 @@ var very_good_name = async function(client, message) {
                 }
                 if(isRegex) {
                     console.log('isregex')
-                    let response = responses[Math.floor(Math.random() * responses.length)];
+                    let resfix5.3ponse = responses[Math.floor(Math.random() * responses.length)];
                     var test_regex = new RegExp(test);
                 
                     var result = msg.match(test_regex);
-                    console.log(result)
-                    console.log(test_regex)
-                    console.log(response)
                     if(result[0]){
                         var after = msg.split(result)[-1];
                         
@@ -235,6 +232,7 @@ var very_good_name = async function(client, message) {
                         var sleeptime = 0;
 
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
+                            console.log(splits)
                             splits.push(splits[-1].split(time_matches[0])[-1])
                             message.channel.send(splits[-1]) 
                             await sleep(time_matches[1].parseInt() *1000)
