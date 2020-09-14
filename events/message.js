@@ -1,5 +1,6 @@
 const active = new Map();
 const talkedRecently = new Set();
+const { time } = require('console');
 const Discord = require('discord.js');
 var fs = require("fs");
 const path = require("path");
@@ -9,11 +10,13 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 
 
-
-module.exports = (client, message) => {
+module.exports = async (client, message) => {
     // Fall back options to shut down the bot
     if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
@@ -41,22 +44,7 @@ module.exports = (client, message) => {
     if (message.channel instanceof Discord.DMChannel) return message.reply("This bot does not support DM messages");
     
     
-    // Saving the message
-    /*try{
-        if (message.author.bot) return;
-        var date = new Date();
-        var Day = date.getDate() + "-" + date.getMonth()+1 + "-" + date.getFullYear();
-        var Time = date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
-        fs.appendFile('./logs/'+ Day + '.log', '\n['+Time +']  User: \"' + message.member.user.tag+'\" Content: \"'+ message.content +'\" Raw: '+JSON.stringify(message), function (err) {
-        if (err) throw err;
-        //console.log('Saved!');
-        })  
-    }
-    
-    catch (e){
-        console.log("Error saving message")
-    }*/
-    
+
     // Getting cache
     var cache_raw = null;
     var cache = null;
@@ -111,11 +99,14 @@ module.exports = (client, message) => {
         guild.members.fetch().then((member_list) => {
     
             var guildObject = {
-                    id : guild.id,
-                    users:{},
-                    prefix:"!",
-                    allow_say:true
-            }
+                id : guild.id,
+                users:{},
+                prefix:"!",
+                settings:{
+                    "dadjokes":false
+                },
+                custom_commands:{}
+        }
     
             member_list.forEach(guild_member => {
                 
@@ -175,8 +166,79 @@ module.exports = (client, message) => {
             command = args.shift().toLowerCase();
         } 
 
-        // Handeling auto commands (commands not needing a prefix)
+        // Handeling special commands (commands not needing a prefix)
         else {
+            custom_commands
+            const guild_custom_commands = {}
+
+            
+            var command;
+            var msg = message.content;
+           
+
+            
+            
+            Object.keys(guild_custom_commands).forEach(guild_custom_command => {
+                
+                let test = guild_custom_command;
+                const responses = guild_custom_commands[guild_custom_command]
+                let isRegex = true;
+                try {
+                    new RegExp(test);
+                } catch(e) {
+                    isRegex = false;
+                }
+                if(isRegex) {
+                    let response = responses[Math.floor(Math.random() * responses.length)];
+                    var test_regex = new RegExp(test);
+                
+                    var result = test_regex.match(msg);
+                    if(result[0]){
+                        var after = msg.split(result)[-1];
+                        
+                        // Checking if there needs to be a response with a mention
+                        if(response.includes("{mention}")){
+                            if(!message.mentions.members.first()){
+                                message.channel.send('This command needs you to mention someone')
+                                response = ''
+                            }
+                            else{
+                                response = response.replace("{mentions}", `<@${message.mentions.members.first().id}>`)
+                            }
+                        };
+
+                        // Replace the user
+                        response = response.replace("{user}", `<@${message.author.id}>`)
+                        
+                        var match;
+                        // Insert random numbers
+                        while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
+                            const whole = match[0];
+                            const min = match[1];
+                            const max = match[2];
+                            const rand = Math.round(Math.random() * (max - min) + min);
+                            response = response.replace(whole, rand);
+                        }
+                        
+                        var time_matches,
+                            splits = [response];
+                        var sleeptime = 0;
+
+                        while(time_matches = /{w(\d+)}/gi.exec(response)){
+                            splits.push(splits[-1].split(time_matches[0])[-1])
+                            message.channel.send(splits[-1]) 
+                            await sleep(time_matches[1].parseInt() *1000)
+                            console.log(matched);
+                        }
+
+                    };
+                    
+                }
+            })
+            
+
+
+            // Auto Commands
             if(!client.allow_test("all_auto", message.guild.id)){return}
             for (let [activation_key, value] of client.auto_activations) {
                 if(message.content.toLowerCase().includes(activation_key)){

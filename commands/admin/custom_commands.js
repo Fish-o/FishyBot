@@ -1,13 +1,32 @@
 /*
 
 
+custom commands
+
+
+input
+	!asdf
+	asdf
+	i like asdf and also fdsa!
+	regex
+
+
+argumenten
+	user mentions
+	woord after it
+
+
+
+output
+	["Love meter between {user} & {mention} {w3} {r1|100}"]
+
 
 
 */
 
 
 exports.run = (client, message, args) => {
-    message.channel.send("pong = " + `\`${client.ws.ping} ms\``).catch(console.error);
+    
 }
 
 exports.conf = {
