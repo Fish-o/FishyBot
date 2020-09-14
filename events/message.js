@@ -169,10 +169,7 @@ module.exports = async (client, message) => {
         // Handeling special commands (commands not needing a prefix)
         else {
             custom_commands
-            const guild_custom_commands = {}
-
-            
-            var command;
+            const guild_custom_commands = {};
             var msg = message.content;
            
 
