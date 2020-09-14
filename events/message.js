@@ -178,13 +178,13 @@ var very_good_name = async function(client, message) {
             if(guild_cache.custom_commands == false){
                 guild_custom_commands = guild_cache.custom_commands;
             }
-            
+            console.log(guild_custom_commands)
             var msg = message.content;
            
 
             
             asyncForEach(Object.keys(guild_custom_commands), async (guild_custom_command) => {
-                
+                console.log(guild_custom_command)
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
                 let isRegex = true;
@@ -194,6 +194,7 @@ var very_good_name = async function(client, message) {
                     isRegex = false;
                 }
                 if(isRegex) {
+                    console.log('isregex')
                     let response = responses[Math.floor(Math.random() * responses.length)];
                     var test_regex = new RegExp(test);
                 
@@ -216,6 +217,7 @@ var very_good_name = async function(client, message) {
                         response = response.replace("{user}", `<@${message.author.id}>`)
                         
                         var match;
+                        console.log(response)
                         // Insert random numbers
                         while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
                             const whole = match[0];
