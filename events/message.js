@@ -14,7 +14,11 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+}
 
 var very_good_name = async function(client, message) {
     // Fall back options to shut down the bot
@@ -174,9 +178,7 @@ var very_good_name = async function(client, message) {
            
 
             
-            
-            Object.keys(guild_custom_commands).forEach(guild_custom_command => {
-                
+            asyncForEach(Object.keys(guild_custom_commands), async (guild_custom_command) => {
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
                 let isRegex = true;
