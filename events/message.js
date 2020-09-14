@@ -196,11 +196,11 @@ var very_good_name = async function(client, message) {
                 if(isRegex) {
                     console.log('isregex')
                     let resonse = responses[Math.floor(Math.random() * responses.length)];
-                    var test_regex = new RegExp(test);
+                    var test_regex = new RegExp(test, 'g');
                 
                     var result = msg.match(test_regex);
                     console.log('result: '+result)
-                    if(result[0]){
+                    if(result){
                         var after = msg.split(result)[-1];
                         
                         // Checking if there needs to be a response with a mention
