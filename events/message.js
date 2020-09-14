@@ -172,12 +172,19 @@ var very_good_name = async function(client, message) {
 
         // Handeling special commands (commands not needing a prefix)
         else {
-            const guild_custom_commands = {};
+
+            var guild_custom_commands = {};
+            let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
+            if(guild_cache.custom_commands == false){
+                guild_custom_commands = guild_cache.custom_commands;
+            }
+            
             var msg = message.content;
            
 
             
             asyncForEach(Object.keys(guild_custom_commands), async (guild_custom_command) => {
+                
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
                 let isRegex = true;
