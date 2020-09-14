@@ -199,6 +199,7 @@ var very_good_name = async function(client, message) {
                     var test_regex = new RegExp(test);
                 
                     var result = msg.match(test_regex);
+                    console.log('result: '+result)
                     if(result[0]){
                         var after = msg.split(result)[-1];
                         
@@ -219,6 +220,7 @@ var very_good_name = async function(client, message) {
                         var match;
                         console.log(response)
                         // Insert random numbers
+                        console.log('before while1')
                         while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
                             const whole = match[0];
                             const min = match[1];
@@ -230,7 +232,7 @@ var very_good_name = async function(client, message) {
                         var time_matches,
                             splits = [response];
                         var sleeptime = 0;
-
+                        console.log('before while2')
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
                             console.log(splits)
                             splits.push(splits[-1].split(time_matches[0])[-1])
