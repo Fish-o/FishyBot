@@ -230,23 +230,20 @@ var very_good_name = async function(client, message) {
                         }
                         
                         var time_matches,
-                            splits = [response];
+                            splits = response;
                         var sleeptime = 0;
                         console.log('before while2')
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
-                            console.log(splits)
-                            console.log("time matches: "+time_matches)
+                            console.log(splits);
+                            console.log("time matches: "+time_matches);
 
-                            var new_splits = splits[splits.length-1].split(time_matches[0])
-                            splits.splice(-1,1)
-                            splits.push(new_splits[0])
-                            splits.push(new_splits[1])
+                            var new_splits = splits.split(time_matches[0]);
+                            splits = new_splits[1];
 
                             //splits.push(splits[splits.length-1].split(time_matches[0])[-1])
-                            console.log(splits)
-                            message.channel.send(splits[splits.length-1]) 
-                            await sleep(parseInt(time_matches[1]) *1000)
-                            console.log(matched);
+                            console.log(splits);
+                            message.channel.send(new_splits[0]); 
+                            await sleep(parseInt(time_matches[1]) *1000);
                         }
 
                     };
