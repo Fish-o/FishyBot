@@ -223,8 +223,8 @@ var very_good_name = async function(client, message) {
                         console.log('before while1')
                         while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
                             const whole = match[0];
-                            const min = match[1];
-                            const max = match[2];
+                            let min = match[1];
+                            let max = match[2];
                             min = Math.ceil(min);
                             max = Math.floor(max);
                             
