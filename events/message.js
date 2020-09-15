@@ -178,13 +178,11 @@ var very_good_name = async function(client, message) {
             if(guild_cache.custom_commands){
                 guild_custom_commands = guild_cache.custom_commands;
             }
-            console.log(guild_custom_commands)
             var msg = message.content;
            
 
             
             asyncForEach(Object.keys(guild_custom_commands), async (guild_custom_command) => {
-                console.log(guild_custom_command)
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
                 let isRegex = true;
@@ -194,12 +192,10 @@ var very_good_name = async function(client, message) {
                     isRegex = false;
                 }
                 if(isRegex) {
-                    console.log('isregex')
                     var response = responses[Math.floor(Math.random() * responses.length)];
                     var test_regex = new RegExp(test, 'g');
                 
                     var result = msg.match(test_regex);
-                    console.log('result: '+result)
                     if(result){
                         var after = msg.split(result)[-1];
                         
@@ -218,11 +214,7 @@ var very_good_name = async function(client, message) {
                         response = response.replace("{user}", `<@${message.author.id}>`)
                         
                         var match;
-                        console.log(response)
-                        // Insert random numbers
-                        console.log('before while1')
                         while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
-                                console.log('in while1')
                             const whole = match[0];
                             let min = match[1];
                             let max = match[2];
@@ -233,25 +225,17 @@ var very_good_name = async function(client, message) {
                             const rand = Math.floor(Math.random() * (max - min + 1)) + min;
                             response = response.replace(whole, rand);
                         };
-                        console.log('end while1')
                         
                         var time_matches,
                             splits = response;
                         var sleeptime = 0;
-                        console.log('before while2')
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
-                            console.log('in while 2')
-                            console.log('splits: '+splits);
-                            console.log("time matches: "+time_matches);
-
                             var new_splits = splits.split(time_matches[0]);
                             splits = new_splits[1];
-                            console.log('new_splits: '+new_splits)
-                            //splits.push(splits[splits.length-1].split(time_matches[0])[-1])
-                            console.log('updated splits: '+splits);
-                            message.channel.send(new_splits[0]);
-                            console.log('start sleeping')
-                            await sleep(parseInt(time_matches[1]) *1000);
+                            if(splits){
+                                message.channel.send(new_splits[0]);
+                                await sleep(parseInt(time_matches[1]) *1000);
+                            }
                         }
 
                     };
