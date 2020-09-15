@@ -222,6 +222,7 @@ var very_good_name = async function(client, message) {
                         // Insert random numbers
                         console.log('before while1')
                         while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
+                                console.log('in while1')
                             const whole = match[0];
                             let min = match[1];
                             let max = match[2];
@@ -230,25 +231,26 @@ var very_good_name = async function(client, message) {
                             
 
                             const rand = Math.floor(Math.random() * (max - min + 1)) + min;
-                            console.log(rand);
-                            console.log((Math.random() * (max - min + 1)) + min);
                             response = response.replace(whole, rand);
-                        }
+                        };
+                        console.log('end while1')
                         
                         var time_matches,
                             splits = response;
                         var sleeptime = 0;
                         console.log('before while2')
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
-                            console.log(splits);
+                            console.log('in while 2')
+                            console.log('splits: '+splits);
                             console.log("time matches: "+time_matches);
 
                             var new_splits = splits.split(time_matches[0]);
                             splits = new_splits[1];
-
+                            console.log('new_splits: '+new_splits)
                             //splits.push(splits[splits.length-1].split(time_matches[0])[-1])
-                            console.log(splits);
-                            message.channel.send(new_splits[0]); 
+                            console.log('updated splits: '+splits);
+                            message.channel.send(new_splits[0]);
+                            console.log('start sleeping')
                             await sleep(parseInt(time_matches[1]) *1000);
                         }
 
