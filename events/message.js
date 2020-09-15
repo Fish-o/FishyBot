@@ -225,8 +225,13 @@ var very_good_name = async function(client, message) {
                             const whole = match[0];
                             const min = match[1];
                             const max = match[2];
-                            const rand = Math.round(Math.random() * (max - min) + min);
-                            console.log(rand)
+                            min = Math.ceil(min);
+                            max = Math.floor(max);
+                            
+
+                            const rand = Math.floor(Math.random() * (max - min + 1)) + min;
+                            console.log(rand);
+                            console.log((Math.random() * (max - min + 1)) + min);
                             response = response.replace(whole, rand);
                         }
                         
