@@ -1,5 +1,6 @@
 const active = new Map();
 const talkedRecently = new Set();
+const { time } = require('console');
 const Discord = require('discord.js');
 var fs = require("fs");
 const path = require("path");
@@ -9,11 +10,17 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+      await callback(array[index], index, array);
+    }
+}
 
-
-
-module.exports = (client, message) => {
+var very_good_name = async function(client, message) {
     // Fall back options to shut down the bot
     if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
@@ -41,22 +48,7 @@ module.exports = (client, message) => {
     if (message.channel instanceof Discord.DMChannel) return message.reply("This bot does not support DM messages");
     
     
-    // Saving the message
-    /*try{
-        if (message.author.bot) return;
-        var date = new Date();
-        var Day = date.getDate() + "-" + date.getMonth()+1 + "-" + date.getFullYear();
-        var Time = date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
-        fs.appendFile('./logs/'+ Day + '.log', '\n['+Time +']  User: \"' + message.member.user.tag+'\" Content: \"'+ message.content +'\" Raw: '+JSON.stringify(message), function (err) {
-        if (err) throw err;
-        //console.log('Saved!');
-        })  
-    }
-    
-    catch (e){
-        console.log("Error saving message")
-    }*/
-    
+
     // Getting cache
     var cache_raw = null;
     var cache = null;
@@ -73,7 +65,7 @@ module.exports = (client, message) => {
 
     // Recaching if the time since it was last cached is shorter then recache_time
     const utc_time = new Date().getTime()
-    const recache_time = 20 * 1000
+    const recache_time = 5 * 1000
     if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == '325893549071663104')){
         
         // Updating member count
@@ -111,11 +103,14 @@ module.exports = (client, message) => {
         guild.members.fetch().then((member_list) => {
     
             var guildObject = {
-                    id : guild.id,
-                    users:{},
-                    prefix:"!",
-                    allow_say:true
-            }
+                id : guild.id,
+                users:{},
+                prefix:"!",
+                settings:{
+                    "dadjokes":false
+                },
+                custom_commands:{}
+        }
     
             member_list.forEach(guild_member => {
                 
@@ -175,8 +170,96 @@ module.exports = (client, message) => {
             command = args.shift().toLowerCase();
         } 
 
-        // Handeling auto commands (commands not needing a prefix)
+        // Handeling special commands (commands not needing a prefix)
         else {
+
+            var guild_custom_commands = {};
+            let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
+            if(guild_cache.custom_commands){
+                guild_custom_commands = guild_cache.custom_commands;
+            }else{
+                const locates = "custom_commands";
+                const values = {$set: {[locates]:{}}};
+                client.updatedb({id:message.guild.id}, values)
+            }
+            var msg = message.content;
+           
+
+            
+            asyncForEach(Object.keys(guild_custom_commands), async (guild_custom_command) => {
+                let test = guild_custom_command;
+                const responses = guild_custom_commands[guild_custom_command]
+                let isRegex = true;
+                try {
+                    new RegExp(test);
+                } catch(e) {
+                    isRegex = false;
+                }
+                if(isRegex) {
+                    var response = responses[Math.floor(Math.random() * responses.length)];
+                    var test_regex = new RegExp(test, 'g');
+                
+                    var result = msg.match(test_regex);
+                    if(result){
+                        var after = msg.split(result)[-1];
+                        
+                        // Checking if there needs to be a response with a mention
+                        if(response.includes("{mention}")){
+                            if(!message.mentions.members.first()){
+                                message.channel.send('This command needs you to mention someone')
+                                response = ''
+                            }
+                            else{
+                                response = response.replace(/\{mention\}/g, `<@${message.mentions.members.first().id}>`)
+                            }
+                        };
+
+                        // Replace the user
+                        response = response.replace(/\{user\}/g, `<@${message.author.id}>`)
+                        
+                        var match;
+                        while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
+                            const whole = match[0];
+                            let min = match[1];
+                            let max = match[2];
+                            min = Math.ceil(min);
+                            max = Math.floor(max);
+                            
+
+                            const rand = Math.floor(Math.random() * (max - min + 1)) + min;
+                            response = response.replace(whole, rand);
+                        };
+                        
+                        var time_match;
+                        var sleeptime = 0;
+                        const find_time = /{w(\d+)}/i;
+
+                        var matching = true
+                        while(matching == true){
+
+                            time_match = response.match(find_time);
+                            if(time_match == null){
+                                matching = false;
+                                return message.channel.send(response)
+                            }
+
+                            const index = response.indexOf(time_match[0]);
+                            
+                            var splits = [];
+                            message.channel.send(response.substring(0, index))
+                            response = response.substring(index +time_match[0].length);
+                            await sleep(parseInt(time_match[1]) *1000);
+                            
+                        }
+
+                    };
+                    
+                }
+            })
+            
+
+
+            // Auto Commands
             if(!client.allow_test("all_auto", message.guild.id)){return}
             for (let [activation_key, value] of client.auto_activations) {
                 if(message.content.toLowerCase().includes(activation_key)){
@@ -239,6 +322,9 @@ module.exports = (client, message) => {
             }, 1500);
         }
     }
-
+    
 //})
 };
+
+
+module.exports = very_good_name;
