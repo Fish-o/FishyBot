@@ -179,9 +179,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"custom",
     description: 
-`
-
-Allows you to make a custome command with multiple responses (which will be choosen randomly).
+`Allows you to make a custome command with multiple responses (which will be choosen randomly).
 
 List all custom commands:
 !custom list
@@ -192,10 +190,6 @@ Make new and delete commands
 !custom new
 !custom delete (command name/index)
 
-Use the \`list\` options to obtain the index
-
-
-
-`,
+Use the \`list\` options to obtain the index`,
     usage: "View `!help custom` for info"
 };

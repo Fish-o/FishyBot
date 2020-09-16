@@ -42,7 +42,7 @@ exports.run = (client, message, args) =>{
         .addField(`Creator`,`Fish`, true)
         .addField(`Servers`, `${servers}`, true)
         .addField(`Users`, `${users}`, true)
-        .addField(`Invite`, `[Link on github!](https://github.com/Fish-o/FishyBot)`, true)
+        .addField(`Invite`, `[Check the FishyBot website!](https://fishman.live/)`, true)
         .setFooter(`Uptime: ${uptime}`);
 
     message.channel.send(serverembed);    
