@@ -230,6 +230,7 @@ var very_good_name = async function(client, message) {
                             splits = response;
                         var sleeptime = 0;
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
+                            if(splits == undefined) return;
                             console.log('splits: '+splits)
                             try{
                                 var new_splits = splits.split(time_matches[0]);
