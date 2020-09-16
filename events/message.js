@@ -177,6 +177,10 @@ var very_good_name = async function(client, message) {
             let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
             if(guild_cache.custom_commands){
                 guild_custom_commands = guild_cache.custom_commands;
+            }else{
+                const locates = "custom_commands";
+                const values = {$set: {[locates]:{}}};
+                client.updatedb({id:message.guild.id}, values)
             }
             var msg = message.content;
            
