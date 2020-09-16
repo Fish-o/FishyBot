@@ -112,7 +112,7 @@ exports.run = async function (client, message, args) {
         client.updatedb({id:message.guild.id}, value, `Added custom command: ${obj.a}!`, message.channel)
     } else if(action == 'del'){
         if(isinstance(args[0], int)){
-            var cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
+            var cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
             var cache = JSON.parse(cache_raw);
             const cache_guild = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0]
             const cache_guild_custom_commands = cache_guild.custom_commands;
@@ -138,7 +138,7 @@ exports.run = async function (client, message, args) {
             client.updatedb({id:message.guild.id}, value, `Removed custom command: ${args.join(' ')}!`, message.channel)
         }
     } else if(action == 'list'){
-        var cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
+        var cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
         var cache = JSON.parse(cache_raw);
         const cache_guild = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0]
         const cache_guild_custom_commands = cache_guild.custom_commands;

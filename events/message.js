@@ -230,11 +230,16 @@ var very_good_name = async function(client, message) {
                             splits = response;
                         var sleeptime = 0;
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
-                            var new_splits = splits.split(time_matches[0]);
-                            splits = new_splits[1];
-                            if(splits){
-                                message.channel.send(new_splits[0]);
-                                await sleep(parseInt(time_matches[1]) *1000);
+                            console.log('splits: '+splits)
+                            try{
+                                var new_splits = splits.split(time_matches[0]);
+                                splits = new_splits[1];
+                                if(splits){
+                                    message.channel.send(new_splits[0]);
+                                    await sleep(parseInt(time_matches[1]) *1000);
+                                }
+                            }catch(err){
+                                console.log(err)
                             }
                         }
 
