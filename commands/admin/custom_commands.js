@@ -120,11 +120,13 @@ exports.run = async function (client, message, args) {
                 message.channel.send('Index is out to big.')
             } else{
                 const name = Object.keys(cache_guild_custom_commands)[parseInt(args[0])];
+
                 const array = cache_guild_custom_commands[name]
                 
                 if(!array || !name){
                     message.channel.send('Could not find the command')
                 } else{
+                    console.log('name to delete: '+name)
                     const locate = "custom_commands."+name;
                     const value = {$set: {[locate]:undefined}};
                     client.updatedb({id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
