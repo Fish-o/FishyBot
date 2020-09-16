@@ -150,12 +150,16 @@ exports.run = async function (client, message, args) {
             const embed = new Discord.MessageEmbed();
             embed.setTitle('All custom commands of this server')
             Object.keys(cache_guild_custom_commands).forEach(obj_key => {
+                if(cache_guild_custom_commands[obj_key] == null){
+                    return message.channel.send('No custom commands found')
+                }
                 console.log('all cc\'s: '+cache_guild_custom_commands);
                 console.log('key: '+obj_key);
                 console.log('all keys: '+Object.keys(cache_guild_custom_commands))
                 console.log('index: '+Object.keys(cache_guild_custom_commands).indexOf(obj_key));
                 const indexx = Object.keys(cache_guild_custom_commands).indexOf(obj_key);
                 embed.addField(`[${indexx}]: ${obj_key}`, ` ${cache_guild_custom_commands[obj_key].length} responses`, false)
+
 
             });
             message.channel.send(embed);
