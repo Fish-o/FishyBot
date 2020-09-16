@@ -123,20 +123,19 @@ exports.run = async function (client, message, args) {
 
                 const array = cache_guild_custom_commands[name]
                 
-                if(!array || !name){
+                if(!name){
                     message.channel.send('Could not find the command')
                 } else{
                     console.log('name to delete: '+name);
                     const locate = "custom_commands."+name;
                     const value = {$unset: {[locate]:""}};
                     client.updatedb({id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
-                    return
+                    return;
                 }
             }
-        }
-        if(args[0]){
+        }else if(args[0]){
             const locate = "custom_commands."+args.join(' ');
-            const value = {$set: {[locate]:undefined}};
+            const value = {$unset: {[locate]:""}};
             client.updatedb({id:message.guild.id}, value, `Removed custom command: ${args.join(' ')}!`, message.channel)
         }
     } else if(action == 'list'){
