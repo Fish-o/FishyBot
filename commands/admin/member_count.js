@@ -42,6 +42,8 @@ exports.run = (client, message, args) =>{
 
         client.updatedb(query, values, `Disabled the member counter`, message.channel)
         client.recache()
+    } else{
+        message.channel.send('Use the option `on` or `of`')
     }
 
 
