@@ -170,7 +170,7 @@ exports.conf = {
     guildOnly: false,
     aliases: ['customcommands', 'custom_commands'],
     perms: [
-        
+        'ADMINISTRATOR'
     ]
   };
   
