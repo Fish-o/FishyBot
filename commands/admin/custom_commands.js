@@ -152,8 +152,9 @@ exports.run = async function (client, message, args) {
             Object.keys(cache_guild_custom_commands).forEach(obj_key => {
                 console.log('all cc\'s: '+cache_guild_custom_commands);
                 console.log('key: '+obj_key);
-                console.log('index: '+Object.keys(cache_guild_custom_commands).findIndex(obj_key));
-                const indexx = Object.keys(cache_guild_custom_commands).findIndex(obj_key);
+                console.log('all keys: '+Object.keys(cache_guild_custom_commands))
+                console.log('index: '+Object.keys(cache_guild_custom_commands).indexOf(obj_key));
+                const indexx = Object.keys(cache_guild_custom_commands).indexOf(obj_key);
                 embed.addField(`[${indexx}]: ${obj_key}`, ` ${cache_guild_custom_commands[obj_key].length} responses`, false)
 
             })
