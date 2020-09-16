@@ -233,7 +233,7 @@ var very_good_name = async function(client, message) {
                             if(splits == undefined) return;
                             console.log('splits: '+splits)
                             var new_splits = splits.split(time_matches[0]);
-                            const to_say = new_splits.shift
+                            const to_say = new_splits.shift()
                             
                             splits = new_splits.join(time_matches);
      
