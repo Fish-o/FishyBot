@@ -226,21 +226,25 @@ var very_good_name = async function(client, message) {
                             response = response.replace(whole, rand);
                         };
                         
-                        var time_matches,
-                            splits = response;
+                        var time_match;
                         var sleeptime = 0;
-                        while(time_matches = /{w(\d+)}/gi.exec(response)){
-                            if(splits == undefined) return;
-                            console.log('splits: '+splits)
-                            var new_splits = splits.split(time_matches[0]);
-                            const to_say = new_splits.shift()
+                        const find_time = /{w(\d+)}/i;
+
+                        var matching = true
+                        while(matching == true){
+
+                            time_match = response.match(find_time);
+                            if(time_match == null){
+                                matching = false;
+                                return message.channel.send(response)
+                            }
+
+                            const index = response.indexOf(time_match[0]);
                             
-                            splits = new_splits.join(time_matches);
-     
-                            message.channel.send(to_say);
+                            var splits = [];
+                            message.channel.send(response.substring(0, index))
+                            response = response.substring(index +time_match[0].length);
                             await sleep(parseInt(time_matches[1]) *1000);
-                            
-                            console.log(err)
                             
                         }
 
