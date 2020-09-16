@@ -127,7 +127,6 @@ exports.run = async function (client, message, args) {
                 if(!name){
                     message.channel.send('Could not find the command')
                 } else{
-                    console.log('name to delete: '+name);
                     const locate = "custom_commands."+name;
                     const value = {$unset: {[locate]:1}};
                     client.updatedb({id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
@@ -135,7 +134,6 @@ exports.run = async function (client, message, args) {
                 }
             }
         }else if(args[0]){
-            console.log('name to delete: '+args.join(' '));
             const locate = "custom_commands."+args.join(' ');
             const value = {$unset: {[locate]:1}};
             client.updatedb({id:message.guild.id}, value, `Removed custom command: ${args.join(' ')}!`, message.channel)
@@ -156,10 +154,6 @@ exports.run = async function (client, message, args) {
                 if(cache_guild_custom_commands[obj_key] == null){
                     return message.channel.send('No custom commands found')
                 }
-                console.log('all cc\'s: '+cache_guild_custom_commands);
-                console.log('key: '+obj_key);
-                console.log('all keys: '+Object.keys(cache_guild_custom_commands))
-                console.log('index: '+Object.keys(cache_guild_custom_commands).indexOf(obj_key));
                 const indexx = Object.keys(cache_guild_custom_commands).indexOf(obj_key);
                 embed.addField(`[${indexx}]: ${obj_key}`, ` ${cache_guild_custom_commands[obj_key].length} responses`, false)
 

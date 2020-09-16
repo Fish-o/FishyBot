@@ -206,12 +206,12 @@ var very_good_name = async function(client, message) {
                                 response = ''
                             }
                             else{
-                                response = response.replace("{mention}", `<@${message.mentions.members.first().id}>`)
+                                response = response.replaceAll("{mention}", `<@${message.mentions.members.first().id}>`)
                             }
                         };
 
                         // Replace the user
-                        response = response.replace("{user}", `<@${message.author.id}>`)
+                        response = response.replaceAll("{user}", `<@${message.author.id}>`)
                         
                         var match;
                         while(match = /{r(\d+)\|(\d+)}/gi.exec(response)){
