@@ -64,7 +64,7 @@ exports.run = async function (client, message, args) {
             var proceed = true;
             var responses = []
             while (!done){
-                message.channel.send("What should the response be? , type `cancel` at any time to stop\nExample command response: `Love meter between {user} and {mention}{w1}calculating...{w2}Their love is {r0|100}%`\n{user} - The user who called the command\n{mention} - the user who was mentioned in the message\n{w3} - waights for 3 seconds before sending the rest of the message\n{r0|100} - returns a random number between 0 and 100");
+                message.channel.send("What should the response be? , type `cancel` at any time to stop\nExample command response: `Love meter between {user} and {mention}{w1}calculating...{w2}Their love is {r0|100}%`\n{user} - The user who called the command\n{mention} - the user who was mentioned in the message\n{w3} - waits for 3 seconds before sending the rest of the message\n{r0|100} - returns a random number between 0 and 100");
                 var command_response_msg = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
                 
                 let command_response = command_response_msg.first().content;
