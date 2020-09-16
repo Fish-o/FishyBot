@@ -232,16 +232,16 @@ var very_good_name = async function(client, message) {
                         while(time_matches = /{w(\d+)}/gi.exec(response)){
                             if(splits == undefined) return;
                             console.log('splits: '+splits)
-                            try{
-                                var new_splits = splits.split(time_matches[0]);
-                                splits = new_splits[1];
-                                if(splits){
-                                    message.channel.send(new_splits[0]);
-                                    await sleep(parseInt(time_matches[1]) *1000);
-                                }
-                            }catch(err){
-                                console.log(err)
-                            }
+                            var new_splits = splits.split(time_matches[0]);
+                            const to_say = new_splits.shift
+                            
+                            splits = new_splits.join(time_matches);
+     
+                            message.channel.send(to_say);
+                            await sleep(parseInt(time_matches[1]) *1000);
+                            
+                            console.log(err)
+                            
                         }
 
                     };
