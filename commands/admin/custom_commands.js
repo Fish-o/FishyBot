@@ -28,12 +28,21 @@ exports.run = async function (client, message, args) {
 
 
     // Check if valid json
-    if (/^[\],:{}\s]*$/.test(text.replace(/\\["\\\/bfnrtu]/g, '@').
+    if (/^[\],:{}\s]*$/.test(args.join().replace(/\\["\\\/bfnrtu]/g, '@').
     replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
     replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {action = 'data'
+    }else if(args[0] == 'new' || args[0] == 'add'){
+        action = 'new';
+        args.shift()
+    }else if(args[0] == 'delete' || args[0] == 'remove'|| args[0] == 'del'){
+        action = 'del'
+        args.shift()
+    } else{
+        action = 'list'
+        args.shift()
     }
 
-    
+
     if(action == 'new'){
         message.channel.send("What should be the command name? , type `cancel` at any time to stop\nThe command name supports **regex** (dont need the //), to make it activate only at the beginning of a message use `^commandname`");
         var command_name_raw_msg = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
