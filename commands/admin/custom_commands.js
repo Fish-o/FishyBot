@@ -157,7 +157,8 @@ exports.run = async function (client, message, args) {
                 const indexx = Object.keys(cache_guild_custom_commands).indexOf(obj_key);
                 embed.addField(`[${indexx}]: ${obj_key}`, ` ${cache_guild_custom_commands[obj_key].length} responses`, false)
 
-            })
+            });
+            message.channel.send(embed);
         }
     }
 
