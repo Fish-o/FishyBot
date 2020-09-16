@@ -82,8 +82,9 @@ exports.run = async function (client, message, args) {
                     message.channel.send("Do you want to add another respons? ( _yes_ or _no_ )");
                     var another_msg_raw = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
                     let another_msg = another_msg_raw.first().content;
-                    if(!another_msg_raw.first().mentions.channels.first()){
-                        if(another_msg.toLowerCase() == 'cancel'){proceed = false;addnothermsglooop = false;done = false; return message.channel.send('Stopped')};
+                    
+                    if(another_msg.toLowerCase() == 'cancel'){
+                        proceed = false;addnothermsglooop = false;done = false; return message.channel.send('Stopped')
                     }else if(another_msg.toLowerCase() == 'yes'){
                         addnothermsglooop = false;
                     }else if(another_msg.toLowerCase() == 'no'){
