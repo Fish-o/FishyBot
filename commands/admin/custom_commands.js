@@ -128,14 +128,15 @@ exports.run = async function (client, message, args) {
                 } else{
                     console.log('name to delete: '+name);
                     const locate = "custom_commands."+name;
-                    const value = {$unset: {[locate]:""}};
+                    const value = {$unset: {[locate]:1}};
                     client.updatedb({id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
                     return;
                 }
             }
         }else if(args[0]){
+            console.log('name to delete: '+args.join(' '));
             const locate = "custom_commands."+args.join(' ');
-            const value = {$unset: {[locate]:""}};
+            const value = {$unset: {[locate]:1}};
             client.updatedb({id:message.guild.id}, value, `Removed custom command: ${args.join(' ')}!`, message.channel)
         }
     } else if(action == 'list'){
