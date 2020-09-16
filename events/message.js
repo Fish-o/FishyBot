@@ -244,7 +244,7 @@ var very_good_name = async function(client, message) {
                             var splits = [];
                             message.channel.send(response.substring(0, index))
                             response = response.substring(index +time_match[0].length);
-                            await sleep(parseInt(time_matches[1]) *1000);
+                            await sleep(parseInt(time_match[1]) *1000);
                             
                         }
 
