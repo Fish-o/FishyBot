@@ -180,27 +180,21 @@ exports.help = {
     name:"custom",
     description: 
 `
-**NOT DONE YET!!!**
 
-Allows you to make a custome command with multiple responses.
+Allows you to make a custome command with multiple responses (which will be choosen randomly).
 
 List all custom commands:
 !custom list
 
-List all responses to a custom command:
-!custom list (command name/index)
+For easely adding new commands use the generator on: https://fishman.live/
 
 Make new and delete commands
-!custom new (command name)
+!custom new
 !custom delete (command name/index)
 
-Add and remove responses to a command
-!custom set (command name/index) data
-~~!custom add (command name/index) (response index)~~
-!custom remove (command name/index) (response index)
+Use the \`list\` options to obtain the index
 
 
-Use the \`list\` options to obtain the indexes
 
 `,
     usage: "View `!help custom` for info"
