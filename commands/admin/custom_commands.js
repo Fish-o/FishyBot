@@ -23,7 +23,7 @@ output
 
 const Discord = require('discord.js');
 exports.run = async function (client, message, args) {
-    const action = 'new';
+    let action = 'new';
     `rand: {r10|20} {r10|20} {r10|20} rand done. w8 5 secs {w5} {user} {mention}`;
 
 
