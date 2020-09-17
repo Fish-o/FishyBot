@@ -171,7 +171,7 @@ var very_good_name = async function(client, message) {
         } 
 
         // Handeling special commands (commands not needing a prefix)
-        if(!command)
+        if(!client.commands.has(command))
             {
             var guild_custom_commands = {};
             let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
