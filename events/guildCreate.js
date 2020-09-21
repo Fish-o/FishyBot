@@ -70,3 +70,8 @@ module.exports = (client, guild) => {
             
     console.log(guild.name)
 };
+
+
+exports.conf = {
+    event: "guildCreate"
+};

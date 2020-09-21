@@ -273,3 +273,7 @@ module.exports = (client, member) =>{
 
 	channel.send(serverembed);*/
 }
+
+exports.conf = {
+    event: "guildMemberAdd"
+};

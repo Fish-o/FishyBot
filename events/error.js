@@ -3,3 +3,8 @@ module.exports = async (client, error) => {
     client.sendinfo(JSON.stringify(error))
     client.logger.log(`An error event was sent by Discord.js: \n${JSON.stringify(error)}`, "error");
 };
+
+
+exports.conf = {
+    event: "error"
+};
