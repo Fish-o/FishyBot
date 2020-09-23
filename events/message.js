@@ -326,8 +326,7 @@ var very_good_name = async function(client, message) {
 //})
 };
 
-
-module.exports = very_good_name;
+exports.event = very_good_name;
 
 exports.conf = {
     event: "message"

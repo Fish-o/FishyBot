@@ -32,7 +32,7 @@ fs.readdir("./events/", (err, files) => {
     files.forEach(file => {
         const event = require(`./events/${file}`);
         //let eventName = file.split(".")[0];
-        client.on(event.conf.event, event.bind(null, client));
+        client.on(event.conf.event, event.event.bind(null, client));
     });
 });
 

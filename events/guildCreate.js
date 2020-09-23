@@ -1,7 +1,7 @@
 const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 
-module.exports = (client, guild) => {
+exports.event = (client, guild) => {
     client.sendinfo('event: guild create')
     console.log(`[GUILD JOIN] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
 

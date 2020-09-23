@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const fs = require('fs');
 
 const MongoClient = require('mongodb').MongoClient;
-module.exports = (client, member) =>{
+exports.event = (client, member) =>{
 	
 
     const uri = client.config.dbpath;
