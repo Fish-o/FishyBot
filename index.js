@@ -412,7 +412,78 @@ client.on('messageDelete', function(message){
     });
 });
 
+client.on('roleCreate', function(role){
+    const uri = client.config.dbpath; 
+    const guild = role.guild
+    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+    mongoClient.connect(err => {
+        if (err) throw err;
+        const collection = mongoClient.db("botdb").collection("v2");
+        collection.find({id:guild.id}).toArray(function(err2, result) {
+            if (err2) {throw err2};
+            const db_guild = result[0];
+            if(!db_guild.logging) return;
+            if(!db_guild.logging.webhook.id) return;
 
+            var embed;
+            const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);
+            if(log != null){
+                embed = new Discord.MessageEmbed()
+                    //.setAuthor(`r`, message.author.displayAvatarURL())
+                    .setTitle(`Role created`)
+                    .setDescription(`${role.name}, <@&${role.id}>`)
+                    .setColor('#00ff00')
+                    .setTimestamp()
+                    .setFooter('ID: '+role.id);
+            }
+            if(embed){
+                log.send({
+                    username: 'FishyBot-log',
+                    avatarURL: client.user.displayAvatarURL(),
+                    embeds: [embed],
+                });
+            }
+            mongoClient.close();
+        });
+    });
+})
+
+
+client.on('roleDelete', function(role){
+    const uri = client.config.dbpath; 
+    const guild = role.guild
+    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+    mongoClient.connect(err => {
+        if (err) throw err;
+        const collection = mongoClient.db("botdb").collection("v2");
+        collection.find({id:guild.id}).toArray(function(err2, result) {
+            if (err2) {throw err2};
+            const db_guild = result[0];
+            if(!db_guild.logging) return;
+            if(!db_guild.logging.webhook.id) return;
+
+            var embed;
+            const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);
+            if(log != null){
+                embed = new Discord.MessageEmbed()
+                    //.setAuthor(`r`, message.author.displayAvatarURL())
+                    .setTitle(`Role deleted`)
+                    .setDescription(`${role.name}, <@&${role.id}>`)
+                    .setColor('#ff0000')
+                    .setTimestamp()
+                    .setFooter('ID: '+role.id);
+            }
+            if(embed){
+                log.send({
+                    username: 'FishyBot-log',
+                    avatarURL: client.user.displayAvatarURL(),
+                    embeds: [embed],
+                });
+            }
+            mongoClient.close();
+        });
+    });
+})
 events.misc
 events.server
 events.role
@@ -427,96 +498,18 @@ events.ban
 
 
 
+const dbtools = require("./utils").dbtools;
+
+client.updatedb = dbtools.updatedb;
+client.recache = dbtools.recache;
+client.dbgetuser = dbtools.dbgetuser;
 
 
+const dbtests = require("./utils").dbtests;
 
+client.elevation = dbtests.elevation;
+client.allow_test = dbtests.allow_test;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-client.allow_test = function(cmd_name, guild_id){
-    let cache_raw = fs.readFileSync(__dirname + '/jsonFiles/cache.json');
-    let cache = JSON.parse(cache_raw);
-
-    const locate_string = cmd_name
-    
-    let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
-    if(guild_cache.settings[cmd_name] == false){return false}
-    client.recache()
-    return true
-}
-
-
-client.recache = async function (){
-    const uri = client.config.dbpath;
-    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-    mongoClient.connect(err => {
-        if (err) throw err;
-        const collection = mongoClient.db("botdb").collection("v2");
-        collection.find({}).toArray(function(err, result) {
-            if (err) {console.error(err); throw err};
-            mongoClient.close();
-            var data = {timestamp:new Date().getTime(),
-                data:result}
-
-            var jsonData = JSON.stringify(data);
-            var fs = require('fs');
-
-            fs.writeFile(__dirname + '/jsonFiles/cache.json', jsonData, function(err) {
-                if (err) {
-                    console.log(err);
-                }
-            }); 
-        });
-    });
-}
-
-client.updatedb = function(query, value, msg = '', channel = null) {
-    const uri = client.config.dbpath;
-
-    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-    mongoClient.connect(err => {
-        if (err) console.log(err);
-        const collection = mongoClient.db("botdb").collection("v2");
-        collection.updateOne(query, value, function(err, res) {
-            if (err) throw err;
-            console.log("1 document updated");
-            mongoClient.close();
-            if(msg != '' && channel){
-               channel.send(msg)
-            }
-        });
-    })
-
-
-}
-
-
-client.elevation = function (msg) {
-  /* This function should resolve to an ELEVATION level which
-     is then sent to the command handler for verification*/
-    let permlvl = 0;
-
-    let mod_role = msg.guild.roles.find("name", "Moderator");
-    if (mod_role && msg.member.roles.has(mod_role.id)) permlvl = 2;
-
-    let admin_role = msg.guild.roles.find("name", "Administratorl");
-    if (admin_role && msg.member.roles.has(admin_role.id)) permlvl = 3;
-
-    if (msg.author.id === "325893549071663104") permlvl = 4;
-    return permlvl;
-};
 
 
 client.sendinfo = function (info){
