@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 exports.updatedb = function(client, uri, query, value, msg = '', channel = null) {
-    const uri = client.config.dbpath;
+    let uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
         if (err) console.log(err);
@@ -17,7 +17,7 @@ exports.updatedb = function(client, uri, query, value, msg = '', channel = null)
 }
 
 exports.recache = async function (client){
-    const uri = client.config.dbpath;
+    let uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
         if (err) throw err;
@@ -43,7 +43,7 @@ exports.recache = async function (client){
 
 
 exports.dbgetuser = function (client, userid, guildid){
-    const uri = client.config.dbpath;
+    let uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
         if (err) throw err;
