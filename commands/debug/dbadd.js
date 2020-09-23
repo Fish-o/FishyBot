@@ -166,7 +166,7 @@ exports.run = (client, message, args) => {
             const locate = "users"
             let value = { $set: {[locate]: new_users}};
 
-            client.updatedb({id:message.guild.id}, value, `Fixxed \`${not_in_db.length}\` users`, message.channel)
+            client.updatedb(client, {id:message.guild.id}, value, `Fixxed \`${not_in_db.length}\` users`, message.channel)
 
 
 

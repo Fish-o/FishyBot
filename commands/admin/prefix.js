@@ -27,7 +27,7 @@ exports.run = (client, message, args) =>{
     });
 
 
-    client.recache()
+    client.recache(client, )
 
       
 }

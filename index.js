@@ -216,7 +216,7 @@ client.on('WEBHOOKS_UPDATE', function(channel){
     if(!cache_guild.logging){
         const locate = "logging";
         const value = {$set: {[locate]:{}}};
-        client.updatedb({id:channel.guild.id}, value);
+        client.updatedb(client, {id:channel.guild.id}, value);
     } 
     else if(cache_guild.logging.WEBHOOKS_UPDATE.id){
         const webhookClient = new Discord.WebhookClient(cache_guild.logging.WEBHOOKS_UPDATE.id, cache_guild.logging.WEBHOOKS_UPDATE.token);
@@ -500,15 +500,15 @@ events.ban
 
 const dbtools = require("./utils/dbtools");
 
-client.updatedb =  function (args) {dbtools.updatedb.apply(client, arguments)};
-client.recache =  function (args) {dbtools.recache.apply(client, arguments)};
-client.dbgetuser =  function (args) {dbtools.dbgetuser.apply(client, arguments)};
+client.updatedb = dbtools.updatedb;
+client.recache = dbtools.recache;
+client.dbgetuser = dbtools.dbgetuser;
 
 
 const dbtests = require("./utils/dbtests");
 
-client.elevation = function (args) {dbtests.elevation.apply(client, arguments)};
-client.allow_test = function (args) {dbtests.allow_test.apply(client, arguments)};
+//client.elevation = dbtests.elevation;
+client.allow_test = dbtests.allow_test;
 
 
 

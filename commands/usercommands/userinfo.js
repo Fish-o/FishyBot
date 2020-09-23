@@ -95,7 +95,7 @@ exports.run = (client, message, args) =>{
                 }
                 var values = { $set: {[locate_string]:userObject}}
 
-                client.updatedb(query, values, "Something went wrong, this should have fixxed it, try doing it again! If it still wont work, then contact Fish#2455", message.channel)
+                client.updatedb(client, query, values, "Something went wrong, this should have fixxed it, try doing it again! If it still wont work, then contact Fish#2455", message.channel)
                 
             }
 

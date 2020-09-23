@@ -58,7 +58,7 @@ var very_good_name = async function(client, message) {
         var cache = JSON.parse(cache_raw);
         
     } catch(err){
-        client.recache()
+        client.recache(client, )
         return
     }
     
@@ -88,14 +88,14 @@ var very_good_name = async function(client, message) {
             }
         })
         // Recaching
-        client.recache()
+        client.recache(client, )
     }
 
 
     if(!message.guild){console.log(message)}
 
     // Find guild in cache
-    //if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return client.recache()}
+    //if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return client.recache(client, )}
 
     // If no guild was found, add a new one
     if(!cache.data.find(db_guild => db_guild.id == message.guild.id)){
@@ -143,7 +143,7 @@ var very_good_name = async function(client, message) {
                     if (err) throw err;
                     console.log("1 document inserted");
                     mongoClient.close();
-                    client.recache()
+                    client.recache(client, )
                 });
                 
             });
@@ -180,7 +180,7 @@ var very_good_name = async function(client, message) {
             }else{
                 const locates = "custom_commands";
                 const values = {$set: {[locates]:{}}};
-                client.updatedb({id:message.guild.id}, values)
+                client.updatedb(client, {id:message.guild.id}, values)
             }
             var msg = message.content;
            
@@ -260,10 +260,10 @@ var very_good_name = async function(client, message) {
 
 
             // Auto Commands
-            if(!client.allow_test("all_auto", message.guild.id)){return}
+            if(!client.allow_test(client, "all_auto", message.guild.id)){return}
             for (let [activation_key, value] of client.auto_activations) {
                 if(message.content.toLowerCase().includes(activation_key)){
-                    if(!client.allow_test(value, message.guild.id)){return}
+                    if(!client.allow_test(client, value, message.guild.id)){return}
                     cmd = client.auto_commands.get(value)
                     // If that command doesn't exist, silently exit and do nothing
                     if (!cmd) return;
@@ -277,7 +277,7 @@ var very_good_name = async function(client, message) {
 
         // Our standard argument/command name definition.
         if (!command) return;
-        if(!client.allow_test(command, message.guild.id)){return}
+        if(!client.allow_test(client, command, message.guild.id)){return}
         
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {

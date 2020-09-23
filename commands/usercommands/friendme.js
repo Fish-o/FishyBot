@@ -75,7 +75,7 @@ exports.run = (client, message, args) => {
                                     const locate_string = "users."+userID+".data.usernames."+platform  
                                     var newnewvalues = { $set: {[locate_string]:username}}
 
-                                    client.updatedb(newquery, newnewvalues, 'Changed **'+platform+'** username to `'+username+'`', message.channel)
+                                    client.updatedb(client, newquery, newnewvalues, 'Changed **'+platform+'** username to `'+username+'`', message.channel)
 
                                     /*
                                     const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
