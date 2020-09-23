@@ -498,14 +498,14 @@ events.ban
 
 
 
-const dbtools = require("./utils").dbtools;
+const dbtools = require("./utils/dbtools");
 
 client.updatedb = dbtools.updatedb;
 client.recache = dbtools.recache;
 client.dbgetuser = dbtools.dbgetuser;
 
 
-const dbtests = require("./utils").dbtests;
+const dbtests = require("./utils/dbtests");
 
 client.elevation = dbtests.elevation;
 client.allow_test = dbtests.allow_test;
