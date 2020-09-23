@@ -3,7 +3,8 @@
 
 
 
-exports.update = function(client, uri, query, value, msg = '', channel = null) {
+exports.update = function() {
+    [client, uri, query, value, msg = '', channel = null] = arguments;
     //const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
@@ -20,7 +21,8 @@ exports.update = function(client, uri, query, value, msg = '', channel = null) {
     })
 }
 
-exports.recache = async function (client){
+exports.recache = async function (){
+    [client] = arguments;
     const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
@@ -46,7 +48,8 @@ exports.recache = async function (client){
 
 
 
-exports.dbgetuser = function (client, userid, guildid){
+exports.dbgetuser = function (){
+    [client, userid, guildid] = arguments;
     const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
