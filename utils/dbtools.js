@@ -1,5 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-exports.updatedb = function(client, uri, query, value, msg = '', channel = null) {
+exports.updatedb = function(client, query, value, msg = '', channel = null) {
     let uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
