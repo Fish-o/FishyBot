@@ -1,4 +1,4 @@
-exports.allow_test = function(cmd_name, guild_id){
+exports.allow_test = function(client, cmd_name, guild_id){
     let cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
     let cache = JSON.parse(cache_raw);
 
@@ -11,7 +11,7 @@ exports.allow_test = function(cmd_name, guild_id){
 }
 
 
-exports.elevation = function (msg) {
+exports.elevation = function (client, msg) {
     /* This function should resolve to an ELEVATION level which
     is then sent to the command handler for verification*/
     let permlvl = 0;

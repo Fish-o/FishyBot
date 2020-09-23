@@ -500,15 +500,15 @@ events.ban
 
 const dbtools = require("./utils/dbtools");
 
-client.updatedb = dbtools.updatedb;
-client.recache = dbtools.recache;
-client.dbgetuser = dbtools.dbgetuser;
+client.updatedb =  function (args) {dbtools.updatedb.apply(client, arguments)};
+client.recache =  function (args) {dbtools.recache.apply(client, arguments)};
+client.dbgetuser =  function (args) {dbtools.dbgetuser.apply(client, arguments)};
 
 
 const dbtests = require("./utils/dbtests");
 
-client.elevation = dbtests.elevation;
-client.allow_test = dbtests.allow_test;
+client.elevation = function (args) {dbtests.elevation.apply(client, arguments)};
+client.allow_test = function (args) {dbtests.allow_test.apply(client, arguments)};
 
 
 
