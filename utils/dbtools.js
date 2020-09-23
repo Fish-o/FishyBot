@@ -1,6 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 exports.updatedb = function(client, uri, query, value, msg = '', channel = null) {
-    //const uri = client.config.dbpath;
+    const uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
         if (err) console.log(err);
