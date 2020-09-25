@@ -504,11 +504,8 @@ client.updatedb = dbtools.updatedb;
 client.recache = dbtools.recache;
 client.dbgetuser = dbtools.dbgetuser;
 
-
-const dbtests = require("./utils/dbtests");
-
 //client.elevation = dbtests.elevation;
-client.allow_test = dbtests.allow_test;
+client.allow_test = dbtools.allow_test;
 
 
 

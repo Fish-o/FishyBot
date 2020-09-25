@@ -1,11 +1,11 @@
 exports.run = (client, message, args) => {
-    message.channel.send("pong = " + `\`${client.ws.ping} ms\``).catch(console.error);
+    message.send(client.dbgetuser(client, message.guild.id, message.author.id).xp)
 }
 
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['xp'],
+    aliases: ['xp','showrank','showxp'],
     perms: [
         
     ]
