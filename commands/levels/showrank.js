@@ -71,7 +71,7 @@ exports.run = async (client, message, args) => {
     await GetAvatar(client, message, ctx);
     //Put all the things together and send it in a nice package.
     var lvlimg = new Discord.Attachment(canvas.toBuffer(), 'rank-cards.png');
-    message.reply('asdfasdf', lvlimg)
+    message.channel.send('asdfasdf', lvlimg)
 
     /*const constant = 0.5; 
 
