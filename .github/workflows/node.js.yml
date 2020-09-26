@@ -18,10 +18,11 @@ jobs:
       with:
         node-version: '12'
     - run: npm install -g yarn 
-    - name: yarn install, build, and test
-      run: |
-        yarn install
-        yarn test
+    - name: yarn install 
+      run: yarn install
+        
+    - name: run!
+      run: yarn test
       env:
           DBPATH: ${{ secrets.DBPATH }}
           TOKEN: ${{ secrets.TOKEN }}
