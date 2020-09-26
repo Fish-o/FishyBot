@@ -8,8 +8,8 @@ exports.run = (client, message, args) => {
 
         let level = Math.floor(constant * Math.sqrt(user.xp))
 
-        let xp_for_curlvl = Math.floor(Math.pow(level / constant,2));
-        let xp_for_nextlvl = Math.floor(Math.pow(level+1 / constant,2));
+        let xp_for_curlvl = Math.floor(Math.pow(level * constant,2));
+        let xp_for_nextlvl = Math.floor(Math.pow(level+1 * constant,2));
         let diff = xp_for_nextlvl-xp_for_curlvl;
 
         const embed = new Discord.MessageEmbed()
