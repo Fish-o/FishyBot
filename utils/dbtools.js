@@ -54,7 +54,7 @@ exports.dbgetuser = function (client, guildid, userid){
             let guild_data = result[0];
             if (err) {console.error(err); throw err};
             mongoClient.close();
-            const db_user = guild_data.users.find(user => {user.id = userid});
+            const db_user = guild_data.users[userid];
             if(db_user){
                 return db_user;
             }else{
