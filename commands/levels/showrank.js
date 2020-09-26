@@ -44,56 +44,57 @@ exports.run = async (client, message, args) => {
     var ctx = canvas.getContext('2d');
 
 
-    client.dbgetuser(client, message.guild.id, member.id).then(users=>{
-        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-        //Draw rectangle
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.fillRect(260, 80, 650, 160);
-        ctx.closePath();
-        ctx.stroke();
-        //Get Username
-        ctx.font = '60px sans-serif';
-        ctx.fillStyle = '#fff';
-        ctx.fillText(member.displayName, 280, 136);
-        //Show XP and levels
-        let nxtlvl = 300 * Math.pow(2, users.level);
-        ctx.font = '40px sans-serif';
-        ctx.fillStyle = '#fff';
-        ctx.fillText("You are level " + users.level + " - " + users.xp + " XP", 280, 180);
-        //xp left
-        var xpLeft = nxtlvl - users.xp;
-        ctx.font = '50px sans-serif';
-        ctx.fillStyle = '#fff';
-        ctx.fillText(`next level in ${xpLeft} XP`, 280, 225);
-        //Get avatar
-        await GetAvatar(message, ctx);
-        //Put all the things together and send it in a nice package.
-        var lvlimg = new discord.Attachment(canvas.toBuffer(), 'rank-cards.png');
-        message.reply(lvlimg)
+    let users = await client.dbgetuser(client, message.guild.id, member.id)
+    
+    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    //Draw rectangle
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+    ctx.fillRect(260, 80, 650, 160);
+    ctx.closePath();
+    ctx.stroke();
+    //Get Username
+    ctx.font = '60px sans-serif';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(member.displayName, 280, 136);
+    //Show XP and levels
+    let nxtlvl = 300 * Math.pow(2, users.level);
+    ctx.font = '40px sans-serif';
+    ctx.fillStyle = '#fff';
+    ctx.fillText("You are level " + users.level + " - " + users.xp + " XP", 280, 180);
+    //xp left
+    var xpLeft = nxtlvl - users.xp;
+    ctx.font = '50px sans-serif';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(`next level in ${xpLeft} XP`, 280, 225);
+    //Get avatar
+    await GetAvatar(message, ctx);
+    //Put all the things together and send it in a nice package.
+    var lvlimg = new discord.Attachment(canvas.toBuffer(), 'rank-cards.png');
+    message.reply(lvlimg)
 
-        /*const constant = 0.5; 
+    /*const constant = 0.5; 
 
-        let level = Math.floor(constant * Math.sqrt(user.xp))
+    let level = Math.floor(constant * Math.sqrt(user.xp))
 
-        let xp_for_curlvl = Math.floor(Math.pow(level * constant,2));
-        let xp_for_nextlvl = Math.floor(Math.pow(level+1 * constant,2));
-        let diff = xp_for_nextlvl-xp_for_curlvl;
+    let xp_for_curlvl = Math.floor(Math.pow(level * constant,2));
+    let xp_for_nextlvl = Math.floor(Math.pow(level+1 * constant,2));
+    let diff = xp_for_nextlvl-xp_for_curlvl;
 
-        const embed = new Discord.MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle(`${message.author.name}'s stats`)
-        .addField('Level', level)
-        .addField('Xp', user.xp)
-        .addField('Xp for this lvl', xp_for_curlvl)
-        .addField('Xp for next', xp_for_nextlvl)
-        .addField('Xp till nex', diff)
-        .setTimestamp();
+    const embed = new Discord.MessageEmbed()
+    .setColor('#0099ff')
+    .setTitle(`${message.author.name}'s stats`)
+    .addField('Level', level)
+    .addField('Xp', user.xp)
+    .addField('Xp for this lvl', xp_for_curlvl)
+    .addField('Xp for next', xp_for_nextlvl)
+    .addField('Xp till nex', diff)
+    .setTimestamp();
 
 
-        message.channel.send(embed);*/
-        message.channel.stopTyping();
-    })
+    message.channel.send(embed);*/
+    message.channel.stopTyping();
+    
     
     
     
