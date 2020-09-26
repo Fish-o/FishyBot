@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
         let xp_for_nextlvl = Math.floor(Math.pow(level+1 / constant,2));
         let diff = xp_for_nextlvl-xp_for_curlvl;
 
-        const exampleEmbed = new Discord.MessageEmbed()
+        const embed = new Discord.MessageEmbed()
         .setColor('#0099ff')
         .setTitle(`${message.author.name}'s stats`)
         .addField('Level', level)
