@@ -2,7 +2,7 @@ exports.run = (client, message, args) => {
     client.dbgetuser(client, message.guild.id, message.author.id).then(user=>{
 
 
-        message.send(user.xp)
+        message.channel.send(user.xp)
     })
     
     
