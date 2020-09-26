@@ -1,4 +1,4 @@
-const Canvacord = require("canvacord");
+const canvacord = require("canvacord");
 const { MessageAttachment } = require("discord.js");
 
 function match(msg, i) {
@@ -30,7 +30,6 @@ exports.run = async (client, message, args) => {
         client.users.cache.get(args[0]) ||
         match(args.join(" ").toLowerCase(), message.guild) ||
         message.author;
-    let canvas = new Canvacord();
     
     const db_user = await client.dbgetuser(client, message.guild.id, user.id);
     let level = db_user.rank.level || 0;
@@ -42,7 +41,7 @@ exports.run = async (client, message, args) => {
     let rank = 2
     rank = rank.toString();
 
-    let img = await canvas.rank({
+    let img = await canvacord.rank({
         username: user.username,
         discrim: user.discriminator,
         currentXP: exp.toString(),
