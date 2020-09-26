@@ -10,7 +10,7 @@
         "r2":"^2.0.1",
         
         "chart.js":"*",
-        "canvas":"*",
+        "canvas":"2.6.1",
         "chartjs-node-canvas":"*",
 
         "discord.js": "^12.2.0",

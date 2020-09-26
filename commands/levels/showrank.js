@@ -54,17 +54,17 @@ exports.run = async (client, message, args) => {
     ctx.closePath();
     ctx.stroke();
     //Get Username
-    ctx.font = '60px sans-serif';
+    //ctx.font = '60px sans-serif';
     ctx.fillStyle = '#fff';
     ctx.fillText(member.displayName, 280, 136);
     //Show XP and levels
     let nxtlvl = 300 * Math.pow(2, users.level);
-    ctx.font = '40px sans-serif';
+    //ctx.font = '40px sans-serif';
     ctx.fillStyle = '#fff';
     ctx.fillText("You are level " + users.level + " - " + users.xp + " XP", 280, 180);
     //xp left
     var xpLeft = nxtlvl - users.xp;
-    ctx.font = '50px sans-serif';
+    //ctx.font = '50px sans-serif';
     ctx.fillStyle = '#fff';
     ctx.fillText(`next level in ${xpLeft} XP`, 280, 225);
     //Get avatar
