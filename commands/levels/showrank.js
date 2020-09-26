@@ -46,7 +46,7 @@ exports.run = async (client, message, args) => {
 
     let users = await client.dbgetuser(client, message.guild.id, member.id)
     
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    //ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
     //Draw rectangle
     ctx.beginPath();
     ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
