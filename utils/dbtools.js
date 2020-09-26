@@ -50,7 +50,7 @@ exports.dbgetuser = function (client, guildid, userid){
         const collection = mongoClient.db("botdb").collection("v2");
         collection.find({id: guildid}).toArray(function(err, result) {
 
-
+            console.log(result);
             let guild_data = result[0];
             if (err) {console.error(err); throw err};
             mongoClient.close();
