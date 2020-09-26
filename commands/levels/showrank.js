@@ -12,7 +12,7 @@ async function GetAvatar(client, message, ctx) {
         //XP bar calculus. (Help)
         let nxtlvl = 300 * Math.pow(2, users.level);
         var n = ((users.xp - nxtlvl) / nxtlvl) * -100;
-        var member = getMember(message);
+        var member = client.getMember(message);
         var arc = (100-n)/100*Math.PI;
         //Image arc draw (Cry in js)
         ctx.strokeStyle = member.displayHexColor;
