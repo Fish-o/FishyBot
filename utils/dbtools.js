@@ -42,13 +42,15 @@ exports.recache = async function (client){
 
 
 
-exports.dbgetuser = function (client, userid, guildid){
+exports.dbgetuser = function (client, guildid, userid){
     let uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
         if (err) throw err;
         const collection = mongoClient.db("botdb").collection("v2");
         collection.find({id: guildid}).toArray(function(err, result) {
+
+
             let guild_data = result[0];
             if (err) {console.error(err); throw err};
             mongoClient.close();
