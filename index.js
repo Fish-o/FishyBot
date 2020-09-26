@@ -508,7 +508,7 @@ client.dbgetuser = dbtools.dbgetuser;
 client.allow_test = dbtools.allow_test;
 
 
-const other = require("./utils/dbtools");
+const other = require("./utils/other");
 client.getMember = other.getMember;
 
 client.sendinfo = function (info){
