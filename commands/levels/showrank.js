@@ -1,5 +1,11 @@
 exports.run = (client, message, args) => {
-    message.send(client.dbgetuser(client, message.guild.id, message.author.id).xp)
+    client.dbgetuser(client, message.guild.id, message.author.id).then(user=>{
+
+
+        message.send(user.xp)
+    })
+    
+    
 }
 
 exports.conf = {

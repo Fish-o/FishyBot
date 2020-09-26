@@ -43,25 +43,27 @@ exports.recache = async function (client){
 
 
 exports.dbgetuser = function (client, guildid, userid){
-    let uri = client.config.dbpath;
-    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-    mongoClient.connect(err => {
-        if (err) throw err;
-        const collection = mongoClient.db("botdb").collection("v2");
-        collection.find({id: guildid}).toArray(function(err, result) {
-
-            console.log(result);
-            let guild_data = result[0];
-            if (err) {console.error(err); throw err};
-            mongoClient.close();
-            const db_user = guild_data.users[userid];
-            if(db_user){
-                return db_user;
-            }else{
-                return guild_data.users[Math.floor(Math.random()*guild_data.users.length)];
-            }
+    return new Promise((resolve, reject) => {
+        
+        let uri = client.config.dbpath;
+        var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+        mongoClient.connect(err => {
+            if (err) throw err;
+            const collection = mongoClient.db("botdb").collection("v2");
+            collection.find({id: guildid}).toArray(function(err, result) {
+                let guild_data = result[0];
+                if (err) {console.error(err); throw err};
+                mongoClient.close();
+                const db_user = guild_data.users[userid];
+                if(db_user){
+                    resolve(db_user);
+                }else{
+                    resolve(guild_data.user[Object.keys(guild_data.users)[Math.floor(Math.random()*guild_data.users.length)]]);
+                }
+            });
         });
     });
+        
 }
 
 
