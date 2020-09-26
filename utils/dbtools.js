@@ -49,13 +49,14 @@ exports.dbgetuser = function (client, userid, guildid){
         if (err) throw err;
         const collection = mongoClient.db("botdb").collection("v2");
         collection.find({id: guildid}).toArray(function(err, result) {
+            let guild_data = result[0];
             if (err) {console.error(err); throw err};
             mongoClient.close();
-            const db_user = result.users.find(user => {user.id = userid});
+            const db_user = guild_data.users.find(user => {user.id = userid});
             if(db_user){
                 return db_user;
             }else{
-                return result.users[Math.floor(Math.random()*result.users.length)];
+                return guild_data.users[Math.floor(Math.random()*guild_data.users.length)];
             }
         });
     });
