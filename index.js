@@ -508,6 +508,8 @@ client.dbgetuser = dbtools.dbgetuser;
 client.allow_test = dbtools.allow_test;
 
 
+const other = require("./utils/dbtools");
+client.getMember = other.getMember;
 
 client.sendinfo = function (info){
     client.channels.cache.get('739211875610525746').send(info);

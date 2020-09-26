@@ -1,4 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
+var Canvas = require('canvas');
+
 exports.updatedb = function(client, query, value, msg = '', channel = null) {
     let uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
