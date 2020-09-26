@@ -267,7 +267,7 @@ var very_good_name = async function(client, message) {
 
 
         // Check if the feature is enabled
-        if(client.config.features.inculeds(cmd.help.category) && !guild_cache.features.includes(cmd.help.category) && !guild_cache.features.includes('all')){
+        if(client.config.features.includes(cmd.help.category) && !guild_cache.features.includes(cmd.help.category) && !guild_cache.features.includes('all')){
             return message.channel.send('This is a premium feature, and not enabled on this server')
         };
 
