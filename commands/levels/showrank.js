@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 var Canvas = require('canvas');
 
-async function GetAvatar(message, ctx) {
+async function GetAvatar(client, message, ctx) {
     //I HATE this part. I think here at the Yukiko Dev Team Incorporation ltd llc Group we all hate this part.
     // If Anyone know how to use canvas and this part better than us, please feel free to PR :) 
     // (or if you are a dev of node-canvas please contact me on Twitter/Github @Asthriona )
@@ -68,7 +68,7 @@ exports.run = async (client, message, args) => {
     ctx.fillStyle = '#fff';
     ctx.fillText(`next level in ${xpLeft} XP`, 280, 225);
     //Get avatar
-    await GetAvatar(message, ctx);
+    await GetAvatar(client, message, ctx);
     //Put all the things together and send it in a nice package.
     var lvlimg = new discord.Attachment(canvas.toBuffer(), 'rank-cards.png');
     message.reply(lvlimg)
