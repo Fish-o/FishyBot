@@ -70,7 +70,7 @@ exports.run = async (client, message, args) => {
     //Get avatar
     await GetAvatar(client, message, ctx);
     //Put all the things together and send it in a nice package.
-    var lvlimg = new discord.Attachment(canvas.toBuffer(), 'rank-cards.png');
+    var lvlimg = new Discord.Attachment(canvas.toBuffer(), 'rank-cards.png');
     message.reply(lvlimg)
 
     /*const constant = 0.5; 
