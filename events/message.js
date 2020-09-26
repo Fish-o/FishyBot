@@ -45,7 +45,7 @@ var very_good_name = async function(client, message) {
     // Ignore all bots
     if (message.author.bot) return;
     if (message.webhookID) return;
-    if (message.channel instanceof Discord.DMChannel) return message.reply("This bot does not support DM messages");
+    if (message.channel instanceof Discord.DMChannel) return message.reply("blub".repeat(Math.ceil(Math.random()*100)));
     
     
 
@@ -54,48 +54,22 @@ var very_good_name = async function(client, message) {
     var cache = null;
 
     try{
-        var cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
-        var cache = JSON.parse(cache_raw);
+        cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
+        cache = JSON.parse(cache_raw);
         
     } catch(err){
-        client.recache(client, )
+        client.recache(client)
         return
     }
     
 
-    // Recaching if the time since it was last cached is shorter then recache_time
-    const utc_time = new Date().getTime()
-    const recache_time = 5 * 1000
-    if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == '325893549071663104') || Math.random()<0.1){
-        
-        // Updating member count
-        cache.data.forEach(cache_guild => {
-            if(cache_guild.member_count_channel){
-                try{
-                    let guild_count = client.guilds.cache.find(search_guild => search_guild.id == cache_guild.id)
-                    if(guild_count){
-                        let channel_count = guild_count.channels.cache.find(search_channel => search_channel.id == cache_guild.member_count_channel)
-                        if(channel_count){
-                            var memberCount = guild_count.members.cache.filter(member => !member.user.bot).size; 
-                            channel_count.setName(`Members: ${memberCount}` )
-                        }
-                    }
-                }
-                catch(err){
-                    console.log(err)
-                    message.channel.send('An error has occurred')
-                }
-            }
-        })
-        // Recaching
-        client.recache(client, )
-    }
+
 
 
     if(!message.guild){console.log(message)}
 
     // Find guild in cache
-    //if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return client.recache(client, )}
+    //if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return client.recache(client)}
 
     // If no guild was found, add a new one
     if(!cache.data.find(db_guild => db_guild.id == message.guild.id)){
@@ -143,7 +117,7 @@ var very_good_name = async function(client, message) {
                     if (err) throw err;
                     console.log("1 document inserted");
                     mongoClient.close();
-                    client.recache(client, )
+                    client.recache(client)
                 });
                 
             });
@@ -289,6 +263,14 @@ var very_good_name = async function(client, message) {
     
         // If that command doesn't exist, silently exit and do nothing
         if (!cmd) return;
+
+
+
+        // Check if the feature is enabled
+        if(client.config.features.inculeds(cmd.help.category) && !guild_cache.features.includes(cmd.help.category) && !guild_cache.features.includes('all')){
+            return message.channel.send('This is a premium feature, and not enabled on this server')
+        };
+
 
         var succes = true;
         if(!client.bypass || message.author.id !== '325893549071663104'){

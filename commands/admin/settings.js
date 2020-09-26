@@ -100,7 +100,7 @@ exports.run = async (client, message, args) => {
             }
         }
     }
-    client.recache(client, )
+    client.recache(client)
 }
 
 exports.conf = {

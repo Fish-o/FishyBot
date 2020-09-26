@@ -62,7 +62,7 @@ exports.event = (client, guild) => {
                 if (err) throw err;
                 console.log("1 document inserted");
                 mongoClient.close();
-                client.recache(client, )
+                client.recache(client)
             });
             
         });

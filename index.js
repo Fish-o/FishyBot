@@ -4,6 +4,10 @@ const moment  = require("moment");
 const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 
+client.xpcooldown = {
+    col: new Discord.Collection(),
+    time: 15000
+}
 const client = new Discord.Client();
 
 

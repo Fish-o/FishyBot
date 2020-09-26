@@ -49,8 +49,7 @@ exports.run = async (client, message, args) => {
         rank,
         level,
         avatarURL: user.displayAvatarURL({ format: "png" }),
-        background: "https://images.pexels.com/photos/1578445/pexels-photo-1578445.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-        //background: "https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixlib=rb-1.2.1&w=1000&q=80"
+        background: "https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixlib=rb-1.2.1&w=1000&q=80"
       });
     message.channel.send(new MessageAttachment(img, "rank.png"));
 

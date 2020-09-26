@@ -77,6 +77,6 @@ exports.allow_test = function(client, cmd_name, guild_id){
     
     let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
     if(guild_cache.settings[cmd_name] == false){return false}
-    client.recache(client, )
+    client.recache(client)
     return true
 }
