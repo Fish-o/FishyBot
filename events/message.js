@@ -130,6 +130,7 @@ var very_good_name = async function(client, message) {
     }
     else{
         // Get prefix
+        let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
         const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
         
     
@@ -148,7 +149,7 @@ var very_good_name = async function(client, message) {
         if(!client.commands.has(command))
             {
             var guild_custom_commands = {};
-            let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
+            
             if(guild_cache.custom_commands){
                 guild_custom_commands = guild_cache.custom_commands;
             }else{
@@ -267,6 +268,12 @@ var very_good_name = async function(client, message) {
 
 
         // Check if the feature is enabled
+        if(!guild_cache.features){
+            
+            const value = {$set: {features:[]}}
+
+            return client.updatedb(client, {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, contact Fish#2455', message.channel)
+        }
         if(client.config.features.includes(cmd.help.category) && !guild_cache.features.includes(cmd.help.category) && !guild_cache.features.includes('all')){
             return message.channel.send('This is a premium feature, and not enabled on this server')
         };
