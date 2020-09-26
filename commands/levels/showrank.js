@@ -1,8 +1,10 @@
 exports.run = (client, message, args) => {
+    message.channel.startTyping();
     client.dbgetuser(client, message.guild.id, message.author.id).then(user=>{
 
 
         message.channel.send(user.xp)
+        message.channel.stopTyping();
     })
     
     
