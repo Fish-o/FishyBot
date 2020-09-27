@@ -6,7 +6,7 @@ exports.run = async (client, message, args, ops) => {
             console.log(err)
             return message.channel.send("Something went wrong");
         }
-        console.log(videos)
+        console.log(res)
         let videos = res.videos.slice(0,20);
         console.log(videos)
         let resp = '';
