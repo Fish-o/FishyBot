@@ -4,14 +4,22 @@ exports.run = async (client, message, args, ops) => {
         return message.channel.send("There isn't any music playing in this guild!");
     let queue = fetched.queue;
 
-    let resp = '__**Queue**__\n';
+
+    const Embed = new Discord.MessageEmbed()
+    .setColor('#0000ff')
+    .setTitle('Queue')
+    .setTimestamp()
+    .setAuthor(message.author.id, message.author.displayAvatarURL());
+    
+
+    //let resp = '__**Queue**__\n';
 
     if(queue.length > 1){
         for(var i=1; i<queue.length; i++){
-            resp += `${i}. **${queue[i].songTitle}** -- Requested by **${queue[i].requester}**\n\n`
+            Embed.addField(`[**${i}**] ${queue[i].songTitle}`, `Requested by **${queue[i].requester}**`, false)
         }
 
-        return message.channel.send(resp);    
+        return message.channel.send(Embed);  
     
     }
     else {

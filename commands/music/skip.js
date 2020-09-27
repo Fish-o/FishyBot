@@ -23,6 +23,15 @@ exports.run = async (client, message, args, ops) => {
     ops.active.set(message.guild.id, fetched);
 
     if(fetched.queue[0].voteSkips.length >= required){
+        const Embed = new Discord.MessageEmbed()
+        .setColor('#0000ff')
+        .setTitle('Successfully skipped the track')
+        //.setDescription(`${fetched.queue[0].songTitle}`)
+        .setTimestamp()
+        //.setAuthor(message.author.id, message.author.displayAvatarURL());
+
+        message.channel.send(Embed);
+
         message.channel.send("Successfully skipped song!");
         return fetched.dispatcher.emit('end');
     }

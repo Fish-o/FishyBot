@@ -12,7 +12,16 @@ exports.run = async (client, message, args, ops) => {
         
     fetched.dispatcher.resume();    
     
-    message.channel.send(`Successfully resumed the track **${fetched.queue[0].songTitle}**`);    
+
+    const Embed = new Discord.MessageEmbed()
+    .setColor('#00ff00')
+    .setTitle('Successfully resumed the track')
+    .setDescription(`${fetched.queue[0].songTitle}`)
+    .setTimestamp()
+    .setAuthor(message.author.id, message.author.displayAvatarURL());
+    message.channel.send(Embed);
+
+    //message.channel.send(`Successfully resumed the track **${fetched.queue[0].songTitle}**`);    
 }
 exports.conf = {
     enabled: true,

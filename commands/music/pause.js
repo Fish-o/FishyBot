@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 exports.run = async (client, message, args, ops) => {
     let fetched = ops.active.get(message.guild.id);
     
@@ -11,8 +13,14 @@ exports.run = async (client, message, args, ops) => {
         return message.channel.send("The music is already paused");
         
     fetched.dispatcher.pause();    
-    
-    message.channel.send(`Successfully paused the track **${fetched.queue[0].songTitle}**`);    
+    const Embed = new Discord.MessageEmbed()
+    .setColor('#00ff00')
+    .setTitle('Successfully paused the track')
+    .setDescription(`${fetched.queue[0].songTitle}`)
+    .setTimestamp()
+    .setAuthor(message.author.id, message.author.displayAvatarURL());
+    message.channel.send(Embed);
+    //message.channel.send(`Successfully paused the track **${fetched.queue[0].songTitle}**`);    
 }
 exports.conf = {
     enabled: true,
