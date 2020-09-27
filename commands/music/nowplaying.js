@@ -14,7 +14,7 @@ exports.run = async (client, message, args, ops) => {
     let results = nowPlaying.url.match('[\\?&]v=([^&#]*)');
     let video   = (results === null) ? url : results[1];
 
-    const Embed = Discord.MessageEmbed()
+    const Embed = new Discord.MessageEmbed()
     .setTimestamp()
     .setTitle(nowPlaying.songTitle)
     .setUrl(nowPlaying.url)
