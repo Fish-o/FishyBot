@@ -46,10 +46,7 @@ A list of all commands will be DMed to you right now, to avoid spamming this ser
 
 If you need any more help ask an admin, moderator, or message ${client.config.author}.`)
         
-        cats[cat_name].forEach(command_data=>{
-            InfoEmbed.addField(command_data.name, command_data.usage, true);
-        })
-
+    
 
         
         message.channel.send(InfoEmbed);
