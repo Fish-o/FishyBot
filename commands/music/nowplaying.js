@@ -17,7 +17,7 @@ exports.run = async (client, message, args, ops) => {
     const Embed = new Discord.MessageEmbed()
     .setTimestamp()
     .setTitle(nowPlaying.songTitle)
-    .setUrl(nowPlaying.url)
+    .setURL(nowPlaying.url)
     .setDescription(`${bar}\n\nRequested by: \`${nowPlaying.requester}\`` )
     .setThumbnail('http://img.youtube.com/vi/' + video + '/0.jpg');
 
