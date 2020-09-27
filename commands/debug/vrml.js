@@ -1,5 +1,7 @@
 exports.run = async (client, message, args) => {
     message.channel.send('did you mean !echo, or !onward?')
+    let commandFile = require ("/../games/echo.js");
+    commandFile.run(client, message, args);
 }
 
 exports.conf = {

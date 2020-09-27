@@ -1,5 +1,7 @@
 exports.run = async (client, message, args) => {
-    message.channel.send('did you mean !echostats?')
+    message.channel.send('did you mean !echostats?');
+    let commandFile = require ("/../games/echostats.js");
+    commandFile.run(client, message, args);
 }
 
 exports.conf = {
