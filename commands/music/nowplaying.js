@@ -18,7 +18,7 @@ exports.run = async (client, message, args, ops) => {
     .setTimestamp()
     .setTitle(nowPlaying.songTitle)
     .setURL(nowPlaying.url)
-    .setDescription(`${bar}\n\nRequested by: \`${nowPlaying.requester}\`` )
+    .setDescription(`Requested by: \`${nowPlaying.requester}\`` )
     .setThumbnail('http://img.youtube.com/vi/' + video + '/0.jpg');
 
     //let resp = `__**Now playing**__\n**${nowPlaying.songTitle}** -- Requested by **${nowPlaying.requester}**`;
