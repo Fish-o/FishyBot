@@ -23,14 +23,14 @@ exports.run = async (client, message, args, ops) => {
         Embed.setDescription(resp);
         message.channel.send(Embed);
 
-        const filter = m => (!isNaN(m.content) && m.content < videos.length+1 && m.content > 0) || m.content.toLowercase() == 'cancel';
+        const filter = m => (!isNaN(m.content) && m.content < videos.length+1 && m.content > 0) || m.content.toLowerCase() == 'cancel';
 
         const collector = message.channel.createMessageCollector(filter);
 
         collector.videos = videos;
 
         collector.once('collect', function(m){
-            if(m.content.toLowercase() == 'cancel'){
+            if(m.content.toLowerCase() == 'cancel'){
                 return message.channel.send('Canceld')
             }
             
