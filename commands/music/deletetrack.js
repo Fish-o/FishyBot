@@ -31,7 +31,7 @@ exports.run = (client, message, args, ops) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ['deletetsong','removetrack','removesong'],
     perms: [
     ]
   };

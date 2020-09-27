@@ -10,7 +10,7 @@ exports.run = async (client, message, args, ops) => {
 
     let userCount = voiceChannel.members.size;
     
-    let required = Math.ceil(userCount/2);
+    let required = Math.floor(userCount/2);
 
     if(!fetched.queue[0].voteSkips)
         fetched.queue[0].voteSkips = [];

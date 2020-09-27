@@ -8,7 +8,7 @@ exports.run = async (client, message, args, ops) => {
 
     if(queue.length > 1){
         for(var i=1; i<queue.length; i++){
-            resp += `${i}. **${queue[i].songTitle}** -- Requested by **${queue[i].requester}**\n`
+            resp += `${i}. **${queue[i].songTitle}** -- Requested by **${queue[i].requester}**\n\n`
         }
 
         return message.channel.send(resp);    

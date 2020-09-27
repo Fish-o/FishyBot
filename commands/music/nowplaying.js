@@ -12,7 +12,7 @@ exports.run = async (client, message, args, ops) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['nowplaying'],
+    aliases: ['nowplaying','playing'],
     perms: [
     ]
   };
