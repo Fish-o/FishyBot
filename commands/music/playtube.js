@@ -43,7 +43,7 @@ exports.run = async (client, message, args, ops) => {
 async function play(client, ops, data){
 
     console.log(data)
-    console.log(ops)
+    console.log(ops.active)
     data.dispatcher = await data.connection.play(ytdl(data.queue[0].url, {filter: 'audioonly'}));
 
     data.dispatcher.guildID = data.guildID;
