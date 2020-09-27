@@ -1,29 +1,39 @@
 const search = require('yt-search');
-
+const Discord = require('discord.js')
 exports.run = async (client, message, args, ops) => {
     search(args.join(''), function(err, res){
         if(err){
             console.log(err)
             return message.channel.send("Something went wrong");
         }
-        console.log(res)
-        let videos = res.videos.slice(0,20);
-        console.log(videos)
+        let videos = res.videos.slice(0,21);
+
+        const Embed = new Discord.MessageEmbed()
+        .setColor('#001166')
+        .setTitle('Choose a number between \`1-${videos.length}\`, or type \`cancel\`')
+        .setTimestamp()
+        .setAuthor(message.author.id, message.author.displayAvatarURL());
+
         let resp = '';
         for(var i in videos){
             resp += `**[${parseInt(i)+1}]** \`${videos[i].title}\`\n`;
         }
 
         resp += `\nChoose a number between \`1-${videos.length}\``;
-        message.channel.send(resp);
+        Embed.setDescription(resp);
+        message.channel.send(Embed);
 
-        const filter = m => !isNaN(m.content) && m.content < videos.length+1 && m.content > 0;
+        const filter = m => (!isNaN(m.content) && m.content < videos.length+1 && m.content > 0) || m.content.toLowercase() == 'cancel';
 
         const collector = message.channel.createMessageCollector(filter);
 
         collector.videos = videos;
 
         collector.once('collect', function(m){
+            if(m.content.toLowercase() == 'cancel'){
+                return message.channel.send('Canceld')
+            }
+            
             let commandFile = require ("./playtube.js");
             commandFile.run(client, message, [this.videos[parseInt(m.content)-1].url], ops);
         });

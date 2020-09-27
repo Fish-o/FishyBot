@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 exports.run = async (client, message, args, ops) => {
     let fetched = ops.active.get(message.guild.id);
     if(!fetched)
@@ -29,7 +30,7 @@ exports.run = async (client, message, args, ops) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ['q'],
     perms: [
     ]
   };

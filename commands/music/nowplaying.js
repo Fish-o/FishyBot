@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 exports.run = async (client, message, args, ops) => {
     let fetched = ops.active.get(message.guild.id);
     if(!fetched)
@@ -5,14 +6,28 @@ exports.run = async (client, message, args, ops) => {
         
     let queue = fetched.queue;
     let nowPlaying = queue[0];
+    console.log(nowPlaying)
+    let bar = '▬▬▬▬▬▬▬▬▬🔘▬▬▬▬▬▬▬▬▬▬';
+    //20
+    //🔘 ▬▬▬▬▬▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬ ▬▬▬▬▬▬▬▬▬▬
+    let size    = 'big';
+    let results = nowPlaying.url.match('[\\?&]v=([^&#]*)');
+    let video   = (results === null) ? url : results[1];
 
-    let resp = `__**Now playing**__\n**${nowPlaying.songTitle}** -- Requested by **${nowPlaying.requester}**`;
-    message.channel.send(resp);    
+    const Embed = Discord.MessageEmbed()
+    .setTimestamp()
+    .setTitle(nowPlaying.songTitle)
+    .setUrl(nowPlaying.url)
+    .setDescription(`${bar}\n\nRequested by: \`${nowPlaying.requester}\`` )
+    .setThumbnail('http://img.youtube.com/vi/' + video + '/0.jpg');
+
+    //let resp = `__**Now playing**__\n**${nowPlaying.songTitle}** -- Requested by **${nowPlaying.requester}**`;
+    message.channel.send(Embed);    
 }
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['nowplaying','playing'],
+    aliases: ['nowplaying','playing','np'],
     perms: [
     ]
   };

@@ -1,5 +1,5 @@
 const ytdl = require('ytdl-core');
-
+const Discord = require('discord.js');
 exports.run = async (client, message, args, ops) => {
     voiceChannel = message.member.voice.channel;
     if(!voiceChannel)

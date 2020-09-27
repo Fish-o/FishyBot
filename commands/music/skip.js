@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 exports.run = async (client, message, args, ops) => {
     let fetched = ops.active.get(message.guild.id);
     let voiceChannel = message.member.voice.channel;
