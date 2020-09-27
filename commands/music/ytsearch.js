@@ -2,8 +2,11 @@ const search = require('yt-search');
 
 exports.run = async (client, message, args, ops) => {
     search(args.join(''), function(err, res){
-        if(err)
+        if(err){
+            console.log(err)
             return message.channel.send("Something went wrong");
+        }
+        console.log(videos)
         let videos = res.videos.slice(0,20);
         console.log(videos)
         let resp = '';
