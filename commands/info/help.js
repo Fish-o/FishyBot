@@ -106,7 +106,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
             if(perms == '\`'){
                 perms = 'No permisions needed'
             } else {
-                perms = perms.substring(0, perms.length - 3);
+                perms = perms.substring(0, perms.length - 1);
             }
 
             const CommandEmbed = new Discord.MessageEmbed()
@@ -170,9 +170,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
                     CatEmbed.addField(command_data.name, command_data.usage)
                 })
                 message.channel.send(CatEmbed);
-        } else{
-            message.channel.send('Could not find any commands or categories with the name: '+command)
-        }
+        };
 	}
 }
 exports.conf = {
