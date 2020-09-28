@@ -52,8 +52,9 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
         message.channel.send(InfoEmbed);
 
         Object.keys(cats).forEach(async cat_name =>{
-            let color = "#00aeff";
-            if(cat_name == 'admin'){
+            let color = "#a6a6a6";
+            if(1==1){
+            } else if(cat_name == 'admin'){
                 color = '#ff2525'
             } else if(cat_name == 'games'){
                 color = '#00f5b4'
@@ -75,7 +76,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
             .setTitle(jsUcfirst(cat_name));
             
             cats[cat_name].forEach(command_data=>{
-                Embed.addField(command_data.name, command_data.usage, true);
+                Embed.addField(command_data.name, command_data.usage);
             })
 
 
@@ -88,6 +89,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
         })    
     
     } else {
+        let color = "#a6a6a6";
         let cats = {};
         client.commands.forEach(c=>{if(c.help.category != 'debug'){if(!cats[c.help.category]){cats[c.help.category] = []} cats[c.help.category].push({  name:c.help.name,
                                                                                                                                                         desc:c.help.description,
@@ -119,36 +121,53 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
             
         }; 
         if(Object.keys(cats).includes(command.toLowerCase())){
-                let color = "#0000ff";
                 let cat = command.toLowerCase();
+                
+                if(1==1){} 
+                else if(cat == 'admin'){
+                    color = '#ff2525'
+                } else if(cat == 'games'){
+                    color = '#00f5b4'
+                }else if(cat == 'info'){
+                    color = '#2525ff'
+                }else if(cat == 'levels'){
+                    color = '#ca03fc'
+                }else if(cat == 'mod'){
+                    color = '#2534ff'
+                }else if(cat == 'music'){
+                    color = '#c90000'
+                }
+                
+                
                 const CatEmbed = new Discord.MessageEmbed()
                 .setColor(color)
                 .setAuthor(client.user.tag, client.user.displayAvatarURL(), 'https://fishman.live/')
-                .setTitle('Help for:'+ jsUcfirst(cat));
+                .setTitle('Help for: '+ jsUcfirst(cat));
+                
                 
                 
                 if(cat == 'admin'){
                     CatEmbed.setDescription('Commands in the admin category are made to help and assist admins, these commands require high permissions to user.')
-                } else if(cat_name == 'games'){
+                } else if(cat == 'games'){
                     CatEmbed.setDescription('Commands in the game category let server members show off their stats in certain games.')
-                }else if(cat_name == 'info'){
+                }else if(cat == 'info'){
                     CatEmbed.setDescription('Commands in the info category give info about the server, bots, members, and more.')
-                }else if(cat_name == 'levels'){
+                }else if(cat == 'levels'){
                     CatEmbed.setDescription('Commands in the levels category have to do with the xp and ranking system, that rewards members for chatting in the server.')
-                }else if(cat_name == 'mod'){
+                }else if(cat == 'mod'){
                     CatEmbed.setDescription('Commands in the mod category make moderating easier and helps moderators.')
-                }else if(cat_name == 'music'){
+                }else if(cat == 'music'){
                     CatEmbed.setDescription('Commands in the music category allow members to play audio in a voice channel.')
-                }else if(cat_name == 'randomstuff'){
+                }else if(cat == 'randomstuff'){
                     CatEmbed.setDescription('Just stuff that didnt fit nicely in any other categories, try some out')
-                }else if(cat_name == 'usercommands'){
+                }else if(cat == 'usercommands'){
                     CatEmbed.setDescription('Commands in the usercommands category allow members to add data like usernames and region data to their account.')
                 } else {
                     CatEmbed.setDescription('Nameless category')
                 }
 
                 cats[cat].forEach(command_data=>{
-                    CatEmbed.addField(command_data.name, command_data.usage, true)
+                    CatEmbed.addField(command_data.name, command_data.usage)
                 })
                 message.channel.send(CatEmbed);
         } else{
