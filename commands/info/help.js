@@ -52,7 +52,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
         message.channel.send(InfoEmbed);
 
         Object.keys(cats).forEach(async cat_name =>{
-            let color = "#a6a6a6";
+            let color = "#b0d9f5";
             if(1==1){
             } else if(cat_name == 'admin'){
                 color = '#ff2525'
@@ -89,7 +89,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
         })    
     
     } else {
-        let color = "#a6a6a6";
+        let color = "#b0d9f5";
         let cats = {};
         client.commands.forEach(c=>{if(c.help.category != 'debug'){if(!cats[c.help.category]){cats[c.help.category] = []} cats[c.help.category].push({  name:c.help.name,
                                                                                                                                                         desc:c.help.description,
