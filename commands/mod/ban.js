@@ -1,15 +1,6 @@
-//const sqlite3 = require('sqlite').verbose();
 
-const fs = require('fs');
 exports.run = (client, message, args) => {
     let member = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-    
-
-    // Make sqlite connection
-    let rawdata = fs.readFileSync(__dirname + '/../../jsonFiles/config.json')
-    let config = JSON.parse(rawdata);
-    console.log(config['dbpath']);
-    
 
     
     if(!member)

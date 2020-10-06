@@ -115,7 +115,7 @@ exports.run = async function (client, message, args) {
         if(!isNaN(args[0])){
             var cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
             var cache = JSON.parse(cache_raw);
-            const cache_guild = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0]
+            const cache_guild = cache.data.find(db_guild => db_guild.id == message.guild.id);
             const cache_guild_custom_commands = cache_guild.custom_commands;
             if(cache_guild_custom_commands.length < parseInt(args[0])){
                 message.channel.send('Index is out to big.')
@@ -141,7 +141,7 @@ exports.run = async function (client, message, args) {
     } else if(action == 'list'){
         var cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
         var cache = JSON.parse(cache_raw);
-        const cache_guild = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0]
+        const cache_guild = cache.data.find(db_guild => db_guild.id == message.guild.id);
         const cache_guild_custom_commands = cache_guild.custom_commands;
         if(!cache_guild_custom_commands){
             const locate = "custom_commands";

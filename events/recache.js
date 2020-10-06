@@ -36,7 +36,6 @@ exports.event = async (client, message) =>{
             }
         })
         // Recaching
-        client.recache(client)
     }
 }
 exports.conf = {

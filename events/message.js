@@ -7,7 +7,8 @@ const path = require("path");
 const { config } = require('process');
 const MongoClient = require('mongodb').MongoClient;
 
-
+const  User = require('../database/schemas/User')
+const  Guild = require('../database/schemas/Guild')
 
 
 function sleep(ms) {

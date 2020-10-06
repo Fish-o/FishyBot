@@ -1,6 +1,9 @@
-const fs = require('fs');
+
 const Discord = require('discord.js');
-const MongoClient = require('mongodb').MongoClient;
+
+const  User = require('../../database/schemas/User')
+const  Guild = require('../../database/schemas/Guild')
+
 const moment = require("moment");
 
 const status = {
@@ -10,7 +13,7 @@ const status = {
     offline: "Offline/Invisible"
 };
 
-exports.run = (client, message, args) =>{
+exports.run = async (client, message, args) =>{
     
 
     var permissions = [];
@@ -68,88 +71,75 @@ exports.run = (client, message, args) =>{
     if(member.user.id == message.guild.ownerID){
         acknowledgements = 'Server Owner';
     }
-    const uri = client.config.dbpath
-    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-    mongoClient.connect(err => {
-        if (err) throw err;
-        const collection = mongoClient.db("botdb").collection("v2");
-        collection.findOne({id:message.guild.id}, function(err, result){
-            if (err) {console.error(err); throw err};
-            
-            var db_data = result;
 
-            var db_user = db_data.users[member.id]
-            var usernames = '';
-            var usernameDict = {};
+    const dbGuild = await Guild.findOne({id: guildID});
 
-            
-            if(!db_user.data){
-                var query = {id: message.guild.id};
-                const locate_string = `users.${member.id}`
-                var userObject = {
-                    warns:[],
-                    data:{
-                        usernames:{},
-                        region:null 
-                    }
-                }
-                var values = { $set: {[locate_string]:userObject}}
 
-                client.updatedb(client, query, values, "Something went wrong, this should have fixxed it, try doing it again! If it still wont work, then contact Fish#2455", message.channel)
-                
-            }
+    var db_user = db_data.users[member.id]
+    var usernames = '';
+    var usernameDict = {};
 
-            if(db_user.data.usernames){
-                usernames = '';
-                usernameDict = db_user.data.usernames;
+    
+    if(!db_user.data){
+        var query = {id: message.guild.id};
+        const locate_string = `users.${member.id}`
+        var userObject = {
+            warns:[],
+            data:{
+                usernames:{},
+                region:null 
             }
-            for(var username in usernameDict){
-                var new_user = ' **'+username+ '**: *' +usernameDict[username] +'* **|**' ;
-                usernames = usernames.concat(new_user);
-            }
-            
-            if(usernames === ''){
-                usernames = 'No username data, add with !friendme';
-            }
-            
-            else{
-                usernames = usernames.slice(0,-5);
-            }
-           
-            
-            
-            // Notes
-            if(db_data.notes)
-            
-            mongoClient.close();
+        }
+        var values = { $set: {[locate_string]:userObject}}
 
-            // Regions 
-            const region_role = member.roles.cache.find(role => Object.keys(client.emoji_data['regions']).includes(role.name))
-            let region_role_name = "None assigned";
-            if(region_role){
-                region_role_name = region_role.name
-            }
-            
+        client.updatedb(client, query, values, "Something went wrong, this should have fixxed it, try doing it again! If it still wont work, then contact Fish#2455", message.channel)
+        
+    }
 
-            const embed = new Discord.MessageEmbed()
-                .setDescription(`<@${member.user.id}>`)
-                .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL)
-                .setColor(randomColor)
-                .setFooter(`ID: ${member.id}`)
-                .setThumbnail(member.user.displayAvatarURL)
-                .setTimestamp()
-                .addField("Region",`${region_role_name}`, true)
-                .addField("Usernames",`${usernames}`, true)
-                .addField('Joined at: ',`${moment(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
-                //.addField("Created at: ",`${moment(member.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
-                //.addField("Permissions: ", `${permissions.join(', ')}`, true)
-                .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
-                //.addField("Acknowledgements: ", `${warnings}`, true);
-                
-            message.channel.send({embed});
-                
-        });
-    });
+    if(dbGuild.usernames[member.id]){
+        usernames = '';
+        usernameDict = dbGuild.usernames[member.id];
+    }
+    for(var username in usernameDict){
+        var new_user = ' **'+username+ '**: *' +usernameDict[username] +'* **|**' ;
+        usernames = usernames.concat(new_user);
+    }
+    
+    if(usernames === ''){
+        usernames = 'No username data, add with !friendme';
+    }
+    
+    else{
+        usernames = usernames.slice(0,-5);
+    }
+    
+
+    // Regions 
+    const region_role = member.roles.cache.find(role => Object.keys(client.emoji_data['regions']).includes(role.name))
+    let region_role_name = "None assigned";
+    if(region_role){
+        region_role_name = region_role.name
+    }
+    
+
+    const embed = new Discord.MessageEmbed()
+        .setDescription(`<@${member.user.id}>`)
+        .setAuthor(`${member.user.tag}`, member.user.displayAvatarURL)
+        .setColor(randomColor)
+        .setFooter(`ID: ${member.id}`)
+        .setThumbnail(member.user.displayAvatarURL)
+        .setTimestamp()
+        .addField("Region",`${region_role_name}`, true)
+        .addField("Usernames",`${usernames}`, true)
+        .addField('Joined at: ',`${moment(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
+        //.addField("Created at: ",`${moment(member.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
+        //.addField("Permissions: ", `${permissions.join(', ')}`, true)
+        .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
+        //.addField("Acknowledgements: ", `${warnings}`, true);
+        
+    message.channel.send({embed});
+        
+
     
 
 }
