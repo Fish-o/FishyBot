@@ -13,7 +13,7 @@ exports.event = async (client, guild) => {
     guild.members.fetch().then( async (member_list) => {
         let memberidlist = []
 
-        member_list.forEach(member=>{
+        member_list.forEach( async (member)=>{
             memberidlist.append(member.id)
             await User.findOneAndUpdate({discordId:guild_member.id },{
                 id:guildID, 
