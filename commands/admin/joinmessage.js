@@ -273,7 +273,7 @@ exports.run = async (client, message, args) =>{
 
 
                 message.channel.send("What is going to be the message? (use {name} to insert the new members name)")
-                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(title_bold_raw_msg => {
+                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then( async title_bold_raw_msg => {
                     let title_bold_raw = title_bold_raw_msg.first().content;
 
                     if(title_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
