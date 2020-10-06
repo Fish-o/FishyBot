@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
 
                 var key = Object.keys(emoji_data['logos']).find(key => emoji_data['logos'][key] == emojiID)
                 message.reply('Enter your **'+key+'** username. Type `CANCEL` in all caps to stop the operation.')
-                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then(collected => {
+                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 60000}).then( async collected => {
                     if(collected.first().content){
                         if(collected.first().content == 'CANCEL'){
                             message.reply('Operation cancled')
