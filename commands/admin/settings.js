@@ -71,7 +71,7 @@ exports.run = async (client, message, args) => {
             message.channel.send("Enabled all auto commands, it might take some time to apply the settings.")
         }
     } else {
-        auto_commands.forEach(auto_command => {
+        auto_commands.forEach(async auto_command => {
             if(command == auto_command){
                 const locate_string = `settings.${auto_command}`
 
