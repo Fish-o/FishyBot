@@ -28,7 +28,7 @@ exports.recache = async function (client){
 
         const all_guilds = Guild.find({})
         let data = {timestamp:new Date().getTime(),
-            data:result}
+            data:all_guilds}
 
 
         let jsonData = JSON.stringify(data);
