@@ -214,7 +214,7 @@ const events = {
                 'GUILD_BAN_REMOVE']
 }
 
-client.on('WEBHOOKS_UPDATE', function(channel){
+client.on('WEBHOOKS_UPDATE', async function(channel){
     const TEXT = "Webhook updated"
 
 
@@ -389,7 +389,7 @@ client.on('guildMemberUpdate', async function(oldMember, newMember) {
 
 
 
-client.on('messageDelete', function(message){
+client.on('messageDelete', async function(message){
     const guild = message.guild
 
 
@@ -421,7 +421,7 @@ client.on('messageDelete', function(message){
 });
 
 
-client.on('roleCreate', function(role){
+client.on('roleCreate', async function(role){
 
     const guild = role.guild
     const DbGuild = await Guild.findOne({id: guild.id});
@@ -454,7 +454,7 @@ client.on('roleCreate', function(role){
 
 
 
-client.on('roleDelete', function(role){
+client.on('roleDelete', async function(role){
 
     const guild = role.guild
     const DbGuild = await Guild.findOne({id: guild.id});
