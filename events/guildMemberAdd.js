@@ -115,13 +115,13 @@ exports.event = async (client, member) =>{
         });
     });*/
 
-    let guild = await Guild.findOne({id: guildID});
+    let db_guild = await Guild.findOne({id: guildID});
 
     // Get guilds
 
-    value = value[0]
+    let value = db_guild;
     if(!value.joinMsg){return};
-
+    if(!value.joinMsg.channelId){return};
     //const member = member;
 
     // Send the message to a designated channel on a server:
