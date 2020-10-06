@@ -10,7 +10,7 @@ exports.event = async (client, guild) => {
 
 	var guildID = guild.id;
 
-    guild.members.fetch().then((member_list) => {
+    guild.members.fetch().then( async (member_list) => {
         let memberidlist = []
 
         member_list.forEach(member=>{
