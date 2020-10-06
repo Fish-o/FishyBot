@@ -192,7 +192,7 @@ exports.run = async (client, message, args) =>{
 
 
                             message.channel.send("What is going to be the second blocks title? (type `none` to not have this)")
-                            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(second_bold_raw_msg => {
+                            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(async second_bold_raw_msg => {
                                 let second_bold_raw = second_bold_raw_msg.first().content;
 
                                 if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -218,7 +218,7 @@ exports.run = async (client, message, args) =>{
 
 
                                 message.channel.send("What is going to be the second blocks description?")
-                                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(second_small_raw_msg => {
+                                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then( async second_small_raw_msg => {
                                     let second_small_raw = second_small_raw_msg.first().content;
 
                                     if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}

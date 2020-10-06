@@ -2,8 +2,7 @@ const Discord = require('discord.js');
 var moment = require('moment'); // require
 var fs = require("fs");
 exports.run = (client, message, args) =>{
-    const cache_raw =   
-               .readFileSync(__dirname + '/../../jsonFiles/cache.json');
+    const cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
     const cache = JSON.parse(cache_raw);
     const cachedID = cache.data.find(guild => guild.id == message.guild.id).member_count_channel
     
