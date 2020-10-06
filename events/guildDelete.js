@@ -1,5 +1,5 @@
 var fs = require("fs");
-exports.event = (client, guild) => {
+exports.event = async (client, guild) => {
     client.sendinfo('event: delete guild')
     /*var date = new Date();
                 var Day = date.getDate() + "-" + date.getMonth()+1 + "-" + date.getFullYear();
