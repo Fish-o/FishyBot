@@ -2,8 +2,8 @@ var MongoClient = require('mongodb').MongoClient;
 var Canvas = require('canvas');
 var fs = require('fs');
 
-const  User = require('../../database/schemas/User');
-const  Guild = require('../../database/schemas/Guild');
+const  User = require('../database/schemas/User');
+const  Guild = require('../database/schemas/Guild');
 
 exports.updatedb = function(client, query, value, msg = '', channel = null) {
     let uri = client.config.dbpath;
