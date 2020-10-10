@@ -1,6 +1,8 @@
 # FishyBot
 [Invite the bot!](https://discord.com/api/oauth2/authorize?client_id=721313666405761024&permissions=8&scope=bot)
 
+[FishyBot website](https://fishman.live/)
+
 A crappy discord bot
 
 A basic command example:
