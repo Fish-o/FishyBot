@@ -8,7 +8,8 @@ const { config } = require('process');
 const MongoClient = require('mongodb').MongoClient;
 
 const  User = require('../database/schemas/User')
-const  Guild = require('../database/schemas/Guild')
+const  Guild = require('../database/schemas/Guild');
+const { CANCELLED } = require('dns');
 
 
 function sleep(ms) {
@@ -27,6 +28,7 @@ var very_good_name = async function(client, message) {
         client.sendinfo('Shutting down')
         client.destroy()
     } else if(message.content == 'botsenduptime' && message.author.id == client.master){
+        
         client.sendinfo(`Uptime: ${client.uptime / 1000}`)
     }
 
@@ -64,8 +66,9 @@ var very_good_name = async function(client, message) {
     }
     
 
-
-
+    console.log(cache);
+    console.log('\n\n\n\n');
+    console.log(cache_raw);
 
     if(!message.guild){console.log(message)}
 
@@ -90,59 +93,11 @@ var very_good_name = async function(client, message) {
                     avatar:member.user.avatar
                 }, { upsert: true, setDefaultsOnInsert: true })
             })
-            return Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist}, { upsert: true, new: true, setDefaultsOnInsert: true });
+             
+            await Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist}, { upsert: true, new: true, setDefaultsOnInsert: true });
+            return client.recache();
         })
         
-        /*guild.members.fetch().then((member_list) => {
-    
-            var guildObject = {
-                id : guild.id,
-                users:{},
-                prefix:"!",
-                settings:{
-                    "dadjokes":false
-                },
-                custom_commands:{}
-        }
-    
-            member_list.forEach(guild_member => {
-                
-                console.log('\n#####################################\n')
-                
-                
-                var userObject = {
-                
-                    warns:[],
-                    data:{
-                        "usernames":{},
-                        "region":null 
-                    }
-                
-                }
-                userId = guild_member.id;
-                guildObject.users[userId] = userObject;
-    
-            })
-            
-    
-    
-            // Push new Guild object with users to db
-            const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("v2");
-                // perform actions on the collection object
-                collection.insertOne(guildObject, function(err, res) {
-                    if (err) throw err;
-                    console.log("1 document inserted");
-                    mongoClient.close();
-                    client.recache(client)
-                });
-                
-            });
-    
-    
-        })*/
         
         console.log(message.guild.name)
     

@@ -23,8 +23,7 @@ exports.updatedb = function(client, query, value, msg = '', channel = null) {
 }
 
 
-exports.recache = async function (client){
-
+exports.recache = async function (client, id=''){
     try{
 
         const all_guilds = await Guild.find({})
