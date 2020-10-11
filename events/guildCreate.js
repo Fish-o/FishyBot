@@ -14,7 +14,7 @@ exports.event = async (client, guild) => {
         let memberidlist = []
 
         member_list.forEach( async (member)=>{
-            memberidlist.append(member.id)
+            memberidlist.push(member.id)
             await User.findOneAndUpdate({discordId:guild_member.id },{
                 id:guildID, 
                 discordTag:guild_member.user.tag,

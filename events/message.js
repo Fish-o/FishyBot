@@ -75,7 +75,7 @@ var very_good_name = async function(client, message) {
     // If no guild was found, add a new one
     if(!cache.data.find(db_guild => db_guild.id == message.guild.id)){
         const guild = message.guild;
-        console.log(`[GUILD JOIN] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
+        console.log(`[GUILD DB ADD] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
 
         var guildID = guild.id;
 
@@ -83,7 +83,7 @@ var very_good_name = async function(client, message) {
             let memberidlist = []
 
             member_list.forEach( async (member)=>{
-                memberidlist.append(member.id)
+                memberidlist.push(member.id)
                 await User.findOneAndUpdate({discordId:guild_member.id },{
                     id:guildID, 
                     discordTag:guild_member.user.tag,
