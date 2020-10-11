@@ -84,10 +84,10 @@ var very_good_name = async function(client, message) {
 
             member_list.forEach( async (member)=>{
                 memberidlist.push(member.id)
-                await User.findOneAndUpdate({discordId:guild_member.id },{
+                await User.findOneAndUpdate({discordId:member.id },{
                     id:guildID, 
-                    discordTag:guild_member.user.tag,
-                    avatar:guild_member.user.avatar
+                    discordTag:member.user.tag,
+                    avatar:member.user.avatar
                 }, { upsert: true, setDefaultsOnInsert: true })
             })
             return Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist}, { upsert: true, new: true, setDefaultsOnInsert: true });
