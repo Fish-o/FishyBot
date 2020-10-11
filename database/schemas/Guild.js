@@ -115,6 +115,6 @@ const GuildConfigSchema = new mongoose.Schema({
     }
 
 
-})
+}, { collection:'GuildData'})
 
 module.exports = mongoose.model('GuildData', GuildConfigSchema);

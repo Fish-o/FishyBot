@@ -22,6 +22,7 @@ exports.updatedb = function(client, query, value, msg = '', channel = null) {
     })
 }
 
+
 exports.recache = async function (client){
 
     try{
