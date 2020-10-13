@@ -72,15 +72,15 @@ exports.run = async (client, message, args) =>{
         acknowledgements = 'Server Owner';
     }
 
-    const dbGuild = await Guild.findOne({id: guildID});
+    const dbGuild = await Guild.findOne({id: message.guild.id});
 
 
-    var db_user = db_data.users[member.id]
+    //var db_user = db_data.users[member.id]
     var usernames = '';
     var usernameDict = {};
 
     
-    if(!db_user.data){
+    /*if(!db_user.data){
         var query = {id: message.guild.id};
         const locate_string = `users.${member.id}`
         var userObject = {
@@ -94,12 +94,14 @@ exports.run = async (client, message, args) =>{
 
         client.updatedb(client, query, values, "Something went wrong, this should have fixxed it, try doing it again! If it still wont work, then contact Fish#2455", message.channel)
         
-    }
+    }*/
 
-    if(dbGuild.usernames[member.id]){
+    if(dbGuild.usernames.has(member.id)){
         usernames = '';
-        usernameDict = dbGuild.usernames[member.id];
+        usernameDict = dbGuild.usernames.get(member.id);
     }
+    console.log(dbGuild)
+    console.log(usernameDict)
     for(var username in usernameDict){
         var new_user = ' **'+username+ '**: *' +usernameDict[username] +'* **|**' ;
         usernames = usernames.concat(new_user);

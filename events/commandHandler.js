@@ -64,11 +64,7 @@ var very_good_name = async function(client, message) {
         client.recache(client)
         return
     }
-    
 
-    console.log(cache);
-    console.log('\n\n\n\n');
-    console.log(cache_raw);
 
     if(!message.guild){console.log(message)}
 

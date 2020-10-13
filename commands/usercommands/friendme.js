@@ -40,15 +40,15 @@ exports.run = async (client, message, args) => {
                             const userID = member.id;
 
 
-                            let db_guild_data = value;
-                            var db_user_data = db_guild_data.users[userID];
+                            /*let db_guild_data = value;
+                            var db_user_data = db_guild_data.users[userID];*/
                             
 
                             var newquery = {id: message.guild.id};
                             const locate_string = "users."+userID+".data.usernames."+platform  
                             var newnewvalues = { $set: {[locate_string]:username}}
 
-                            await Guild.updateOne({id: guild},  {[`usernames.${userID}.${platform}`]: username});
+                            await Guild.updateOne({id: message.guild},  {[`usernames.${userID}.${platform}`]: username});
                             message.channel.send('Changed **'+platform+'** username to `'+username+'`')
 
 

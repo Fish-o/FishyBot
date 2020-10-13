@@ -1,5 +1,6 @@
 const canvacord = require("canvacord");
 const { MessageAttachment } = require("discord.js");
+const  Guild = require('../../database/schemas/Guild');
 
 function match(msg, i) {
     if (!msg) return undefined;
@@ -31,27 +32,33 @@ exports.run = async (client, message, args) => {
         match(args.join(" ").toLowerCase(), message.guild) ||
         message.author;
     
-    const db_user = await client.dbgetuser(client, message.guild.id, user.id);
-    let level = db_user.rank.level || 0;
-    level = level.toString();
 
-    let exp = db_user.rank.exp || 0;
-    let neededXP = Math.floor(Math.pow(level / 0.1, 2));
+    const dbGuild = await Guild.findOne({id:message.guild.id});
+    //const db_user = await client.dbgetuser(client, message.guild.id, user.id);
+    
+
+    const dbUserLevelData = dbGuild.levels.members[message.member.id];
+    let level = dbUserLevelData.level;
+    let exp = dbUserLevelData.exp;
+
+    let neededXP = Math.floor(Math.pow(level / 0.5, 2));
 
     let rank = 2
-    rank = rank.toString();
+    
 
-    let img = await canvacord.rank({
-        username: user.username,
-        discrim: user.discriminator,
-        currentXP: exp.toString(),
-        neededXP: neededXP.toString(),
-        rank,
-        level,
-        avatarURL: user.displayAvatarURL({ format: "png" }),
-        background: "https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixlib=rb-1.2.1&w=1000&q=80"
-      });
-    message.channel.send(new MessageAttachment(img, "rank.png"));
+    const canvacordrank = new canvacord.Rank()
+        .setUsername(user.username)
+        .setDiscriminator(user.discriminator)
+        .setCurrentXP(exp)
+        .setRequiredXP(neededXP)
+        .setRank(rank)
+        .setLevel(level)
+        .setAvatar(user.displayAvatarURL({ format: "png" }));
+        //background"https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?ixlib=rb-1.2.1&w=1000&q=80"
+    
+    
+    let data = await canvacordrank.build();
+    message.channel.send(new MessageAttachment(data, "rank.png"));
 
     message.channel.stopTyping();
     

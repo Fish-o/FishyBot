@@ -107,7 +107,30 @@ const GuildConfigSchema = new mongoose.Schema({
     },
     custom_commands:{
         type: Map,
-        required: false
+        required: false,
+        default: {}
+    },
+    levels:{
+        type:{
+            members:{
+                type: Map,
+                required: true,
+                default: new Map()
+            },
+            channel:{
+                type: String,
+                required: false
+            },
+            lvlUpMsg:{
+                type: String,
+                required: false
+            }
+        },
+        required: true,
+        default:{
+            members: new Map()
+        }
+        
     },
     features:{
         type: Array,

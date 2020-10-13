@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const Enmap = require("enmap");
 const moment  = require("moment");
 
-var path = require('path'); 
 const fs = require('fs');
 
 const mongoose = require('mongoose')
@@ -14,7 +13,7 @@ const client = new Discord.Client();
 
 
 
-require('dotenv').config({ path: './secrets.env' });
+require('dotenv').config();
 
 let config = require("./jsonFiles/config.json");
 
@@ -41,15 +40,15 @@ mongoose.connect(client.config.dbpath, {
 })
 
 
-
-if(!path.existsSync(__dirname + '/../jsonFiles/cache.json')){
+console.log('Checking if cache file exists')
+if(!fs.existsSync(__dirname + '/jsonFiles/cache.json')){
     fs.closeSync(fs.openSync(__dirname + '/../jsonFiles/cache.json', 'w'));
 }
 
 
 
 
-
+console.log('Loading events')
 fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
     files.forEach(file => {
@@ -70,6 +69,7 @@ client.auto_activations = new Discord.Collection();
 client.bypass = false;
 client.master = client.config.master
 
+console.log('Loading commands');
 fs.readdir("./commands/", (direrr, dirs) =>{
     if (direrr) {
         return console.log('Unable to scan directory: ' + err);
@@ -96,6 +96,7 @@ fs.readdir("./commands/", (direrr, dirs) =>{
     })
 })
 
+console.log('Loading autocommands');
 fs.readdir("./auto_commands/", (direrr, dirs) =>{
     if (direrr) {
         return console.log('Unable to scan directory: ' + err);
@@ -495,7 +496,7 @@ client.on('roleDelete', async function(role){
         });
     }
 });
-
+console.log('Done with logging');
 events.misc
 events.server
 events.role
@@ -526,5 +527,5 @@ client.getMember = other.getMember;
 client.sendinfo = function (info){
     client.channels.cache.get('739211875610525746').send(info);
 }
-
+console.log('Logging on')
 client.login(config.token);
