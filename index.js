@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const Enmap = require("enmap");
 const moment  = require("moment");
+
+var path = require('path'); 
 const fs = require('fs');
 
 const mongoose = require('mongoose')
@@ -37,6 +39,16 @@ mongoose.connect(client.config.dbpath, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
+
+
+
+if(!path.existsSync(__dirname + '/../jsonFiles/cache.json')){
+    fs.closeSync(fs.openSync(__dirname + '/../jsonFiles/cache.json', 'w'));
+}
+
+
+
+
 
 fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
