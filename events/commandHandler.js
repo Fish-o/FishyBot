@@ -48,7 +48,7 @@ var very_good_name = async function(client, message) {
     // Ignore all bots
     if (message.author.bot) return;
     if (message.webhookID) return;
-    if (message.channel instanceof Discord.DMChannel) return message.reply("blub".repeat(Math.ceil(Math.random()*100)));
+    if (message.channel instanceof Discord.DMChannel) return message.reply("blub ".repeat(Math.ceil(Math.random()*50)));
     
     
 

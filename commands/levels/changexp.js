@@ -1,3 +1,4 @@
+const  Guild = require('../../database/schemas/Guild');
 function match(msg, i) {
     if (!msg) return undefined;
     if (!i) return undefined;
@@ -24,12 +25,14 @@ exports.run = async (client, message, args) => {
         match(args.join(" ").toLowerCase(), message.guild) ||
         message.author;
 
-
+    if(user.bot){
+        return message.channel.send('You can not change the xp of a bot')
+    }
     let modifier = 'exp';
 
-    if(args.map(arg => arg.toUpperCase()).includes('levels') || args.map(arg => arg.toUpperCase()).includes('level') || args.map(arg => arg.toUpperCase()).includes('lvl')|| args.map(arg => arg.toUpperCase()).includes('lvls')){
+    if(args.map(arg => arg.toLowerCase()).includes('levels') || args.map(arg => arg.toLowerCase()).includes('level') || args.map(arg => arg.toLowerCase()).includes('lvl')|| args.map(arg => arg.toLowerCase()).includes('lvls')){
         modifier='lvl';
-    } else if(args.map(arg => arg.toUpperCase()).includes('exp') || args.map(arg => arg.toUpperCase()).includes('xp') || args.map(arg => arg.toUpperCase()).includes('experience')){
+    } else if(args.map(arg => arg.toLowerCase()).includes('exp') || args.map(arg => arg.toLowerCase()).includes('xp') || args.map(arg => arg.toLowerCase()).includes('experience')){
         modifier='exp';
     }
 
@@ -63,24 +66,40 @@ exports.run = async (client, message, args) => {
     let newLvl = level;
 
     if(modifier == 'exp'){
+        
         newExp += amount;
-
-        while(newExp >= neededXP){
-            newLvl += 1;
-            newExp -= neededXP
-            neededXP = Math.floor(Math.pow(newLvl / 0.5, 2))
+        if(Math.sign(newExp) == -1){
+            while(newExp <= 0 && newLvl > 1){
+                newLvl -= 1;
+                newExp += Math.floor(Math.pow(newLvl / 0.5, 2))
+            }
+        } else {
+            while(newExp >= neededXP){
+                newLvl += 1;
+                newExp -= neededXP
+                neededXP = Math.floor(Math.pow(newLvl / 0.5, 2))
+            }
         }
     } else if(modifier == 'lvl'){
         newLvl += amount;
     }
 
-    let msg = await message.channel.send(`${user.toString}'s level will be set to ${newLvl} and experience to ${newExp}.`)
+    if(Math.sign(newExp) == -1){
+        newExp = 1
+    }
+
+    if(Math.sign(newLvl) == -1){
+        newLvl = 1
+    }
+
+    let msg = await message.channel.send(`${user.toString()}'s level will be set to ${newLvl} and experience to ${newExp}.`)
     msg.react('✔️');
     msg.react('❌');
-    let collected = await msg.awaitReactions((reaction, emojiuser) => emojiuser.id == message.author.id && ['✔️', '❌'].includes(reaction.emoji), {max:1, time:30000})
+    let collected = await msg.awaitReactions((reaction, emojiuser) => emojiuser.id == message.author.id && ['✔️', '❌'].includes(reaction.emoji.toString()), {max:1, time:30000})
      
     if(collected.first()){
-            var emoji = collected.first();
+            var emoji = collected.first().emoji.toString();
+
             if(emoji == '✔️'){
                 await Guild.update({id:guild.id}, {['levels.members.'+user.id]: {level:newLvl, exp:newExp}})
                 message.channel.send('Done!')

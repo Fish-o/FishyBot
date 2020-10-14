@@ -6,7 +6,7 @@ const Discord = require('discord.js')
 exports.event = async (client, message) =>{
     if (message.author.bot) return;
     if (message.webhookID) return;
-    if (message.channel instanceof Discord.DMChannel) return message.reply("blub".repeat(Math.ceil(Math.random()*100)));
+    if (message.channel instanceof Discord.DMChannel) return;
     
     try{
             
