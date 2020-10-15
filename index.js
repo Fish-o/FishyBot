@@ -19,6 +19,7 @@ let config = require("./jsonFiles/config.json");
 
 config.token = process.env.TOKEN
 config.dbpath = process.env.DBPATH
+config.OLDDBPATH = process.env.OLDDBPATH
 if(process.env.prefix){
     config.prefix = process.env.prefix;
 }
@@ -528,4 +529,14 @@ client.sendinfo = function (info){
     client.channels.cache.get('739211875610525746').send(info);
 }
 console.log('Logging on')
+
+
+
+
+process.on('SIGTERM', () => {
+    client.sendinfo('SIGTERM signal received: stopping bot')
+    client.destroy()
+})
+
+
 client.login(config.token);

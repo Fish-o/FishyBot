@@ -5,7 +5,16 @@ var fs = require('fs');
 const  User = require('../database/schemas/User');
 const  Guild = require('../database/schemas/Guild');
 
-exports.updatedb = function(client, query, value, msg = '', channel = null) {
+exports.updatedb = async (client, query, value, msg = '', channel = null) => {
+    try{
+        await Guild.updateOne(query, value)
+        if(msg != '' && channel){
+            channel.send(msg)
+        }
+    } catch(err){
+        console.log(err)
+        console.log('\nerror in updating db')
+    }
     /*let uri = client.config.dbpath;
     var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
     mongoClient.connect(err => {
@@ -47,16 +56,7 @@ exports.recache = async function (client, id=''){
 
 
 
-exports.dbgetuser = function (client, guildid, userid){
-    return new Promise(async (resolve, reject) => {
-        
 
-        resolve(null);
-        
-
-    });
-        
-}
 
 /*exports.AddGuildToMember = async (memberID, guildID) =>{
     const DbUser = await User.findOne({discordId: memberID});

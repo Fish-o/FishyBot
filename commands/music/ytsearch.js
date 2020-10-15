@@ -43,7 +43,7 @@ exports.run = async (client, message, args, ops) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['search'],
+    aliases: ['searchyt','searchsong'],
     perms: [
     ]
   };

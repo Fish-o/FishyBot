@@ -52,7 +52,7 @@ exports.run = async (client, message, args) => {
     message.channel.startTyping();
     let user =
         message.mentions.users.first() ||
-        client.users.cache.get(args[0]) ||
+        message.guild.members.cache.get(args[0]) ||
         match(args.join(" ").toLowerCase(), message.guild) ||
         message.author;
 
@@ -81,7 +81,7 @@ exports.run = async (client, message, args) => {
     let guild = message.guild;
 
     let dbGuild = await Guild.findOne({id:message.guild.id});
-    //const db_user = await client.dbgetuser(client, message.guild.id, user.id);
+
     if(!(user.id in dbGuild.levels.members)){
         dbGuild =  await Guild.update({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
     }

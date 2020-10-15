@@ -96,7 +96,7 @@ exports.run = async function (client, message, args) {
             if(proceed){
 
                 const locate = "custom_commands."+command_name_raw;
-                const value = {$set: {[locate]:responses}};
+                const value = {[locate]:responses};
                 client.updatedb(client, {id:message.guild.id}, value, `Added custom command!`, message.channel)
 
             }
@@ -109,7 +109,7 @@ exports.run = async function (client, message, args) {
 
 
         const locate = "custom_commands."+obj.a;
-        const value = {$set: {[locate]:obj.b}};
+        const value = {[locate]:obj.b};
         client.updatedb(client, {id:message.guild.id}, value, `Added custom command: ${obj.a}!`, message.channel)
     } else if(action == 'del'){
         if(!isNaN(args[0])){
@@ -128,14 +128,14 @@ exports.run = async function (client, message, args) {
                     message.channel.send('Could not find the command')
                 } else{
                     const locate = "custom_commands."+name;
-                    const value = {$unset: {[locate]:1}};
+                    const value = {[locate]:undefined};
                     client.updatedb(client, {id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
                     return;
                 }
             }
         }else if(args[0]){
             const locate = "custom_commands."+args.join(' ');
-            const value = {$unset: {[locate]:1}};
+            const value = {[locate]:undefined};
             client.updatedb(client, {id:message.guild.id}, value, `Removed custom command: ${args.join(' ')}!`, message.channel)
         }
     } else if(action == 'list'){
@@ -145,7 +145,7 @@ exports.run = async function (client, message, args) {
         const cache_guild_custom_commands = cache_guild.custom_commands;
         if(!cache_guild_custom_commands){
             const locate = "custom_commands";
-            const value = {$set: {[locate]:{}}};
+            const value = {[locate]:{}};
             client.updatedb(client, {id:message.guild.id}, value, `Something went wrong, it should be fixxed now, try again!`, message.channel)
         } else{
             const embed = new Discord.MessageEmbed();

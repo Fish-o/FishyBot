@@ -31,7 +31,7 @@ exports.run = async (client, message, args) => {
         cats=sortOnKeys(cats)
 
 
-        let color = "#0000ff";
+        let color = "#5555ff";
         const InfoEmbed = new Discord.MessageEmbed()
         .setColor(color)
         .setAuthor(client.user.tag, client.user.displayAvatarURL(), 'https://fishman.live/')
@@ -42,7 +42,6 @@ There are ${Object.keys(cats).length} categories:
 **${Object.keys(cats).join('**\n**')}**
 To get more info about a specific category type \`!help (category name)\`.
 To get more info about a specific command, type \`!help (command name)\`
-A list of all commands will be DMed to you right now, to avoid spamming this server.
 
 If you need any more help ask an admin, moderator, or message ${client.config.author}.`)
         
@@ -51,7 +50,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
         
         message.channel.send(InfoEmbed);
 
-        Object.keys(cats).forEach(async cat_name =>{
+        /*Object.keys(cats).forEach(async cat_name =>{
             let color = "#b0d9f5";
             if(1==1){
             } else if(cat_name == 'admin'){
@@ -86,7 +85,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
             await sleep(500);
 
 
-        })    
+        })    */
     
     } else {
         let color = "#b0d9f5";

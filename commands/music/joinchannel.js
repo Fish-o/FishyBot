@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['join'],
+    aliases: ['joinchannel'],
     perms: [
     ]
   };
@@ -21,7 +21,7 @@ exports.conf = {
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
-    name:"joinchannel",
+    name:"join",
     description: "Joins a voice channel",
-    usage: "!joinchannel"
+    usage: "!join"
 };

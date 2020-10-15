@@ -10,6 +10,7 @@ const MongoClient = require('mongodb').MongoClient;
 const  User = require('../database/schemas/User')
 const  Guild = require('../database/schemas/Guild');
 const { CANCELLED } = require('dns');
+const { db } = require('../database/schemas/User');
 
 
 function sleep(ms) {
@@ -73,27 +74,106 @@ var very_good_name = async function(client, message) {
 
     // If no guild was found, add a new one
     if(!cache.data.find(db_guild => db_guild.id == message.guild.id)){
-        const guild = message.guild;
-        console.log(`[GUILD DB ADD] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
+        const dbGuild = await Guild.findOne({id:guildID});
+        if(!dbGuild){
+            const uri = client.config.OLDDBPATH
+            const guild = message.guild;
+            var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+            mongoClient.connect(err => {
+                if (err) throw err;
+                const collection = mongoClient.db("botdb").collection("v2");
+                collection.findOne({id:message.guild.id}, async function(err, result){
+                    if (err) {console.error(err); throw err};
+                    var db_data = result;
+                    
+                    if(db_data){
+                        let member_list = await guild.members.fetch();
+                        let memberidlist = []
 
-        var guildID = guild.id;
+                        
+                        member_list.forEach( async (member)=>{
+                            memberidlist.push(member.id)
+                            await User.findOneAndUpdate({discordId:member.id },{
+                                id:guildID, 
+                                discordTag:member.user.tag,
+                                avatar:member.user.avatar
+                            }, { upsert: true, setDefaultsOnInsert: true })
+                        })
 
-        guild.members.fetch().then( async (member_list) => {
-            let memberidlist = []
+                        let prefix = db_data.prefix
+                        let settings = {"dadjokes":false}
+                        let warns = {}
+                        let usernames = {};
+                        let member_count_channel = undefined;
+                        let logging = undefined;
+                        let joinMsg = undefined;
+                        let custom_commands = undefined
+                        
+                        Object.keys(db_data.users).forEach(userId=>{
+                            if(Object.keys(db_data.users[userId].data.usernames).length > 0){
+                                usernames[userId] = db_data.users[userId].data.usernames.length
+                            }
+                            if(db_data.users[userId].warns.length > 0){
+                                warns[userId] = db_data.users[userId].warns;
+                            }
+                        })
 
-            member_list.forEach( async (member)=>{
-                memberidlist.push(member.id)
-                await User.findOneAndUpdate({discordId:member.id },{
-                    id:guildID, 
-                    discordTag:member.user.tag,
-                    avatar:member.user.avatar
-                }, { upsert: true, setDefaultsOnInsert: true })
+                        if(db_data.joinMsg){
+                            joinMsg = db_data.joinMsg
+                        }
+
+                        if(db_data.custom_commands){
+                            custom_commands = db_data.custom_commands;
+                        }
+
+                        if(db_data.settings){
+                            settings = db_data.settings;
+                        }
+
+                        if(db_data.member_count_channel){
+                            member_count_channel = db_data.member_count_channel;
+                        }
+                        
+                        if(db_data.logging){
+                            logging = db_data.logging;
+                        }
+
+                        await Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist,
+                            prefix,
+                            settings,
+                            warns,
+                            usernames,
+                            member_count_channel,
+                            logging,
+                            joinMsg,
+                            custom_commands
+                            
+                        }, { upsert: true, setDefaultsOnInsert: true });
+                        return client.recache()
+
+                    } 
+                    else {
+                        client.sendinfo(`[GUILD DB ADD] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
+                        var guildID = guild.id;
+                        guild.members.fetch().then( async (member_list) => {
+                            let memberidlist = []
+
+                            member_list.forEach( async (member)=>{
+                                memberidlist.push(member.id)
+                                await User.findOneAndUpdate({discordId:member.id },{
+                                    id:guildID, 
+                                    discordTag:member.user.tag,
+                                    avatar:member.user.avatar
+                                }, { upsert: true, setDefaultsOnInsert: true })
+                            })
+                            await Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist}, { upsert: true, setDefaultsOnInsert: true });
+                            return client.recache();
+                        })
+                    }
+                })
             })
-             
-            await Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist}, { upsert: true, new: true, setDefaultsOnInsert: true });
-            return client.recache();
-        })
-        
+            
+        }
         
         console.log(message.guild.name)
     
@@ -124,7 +204,7 @@ var very_good_name = async function(client, message) {
                 guild_custom_commands = guild_cache.custom_commands;
             }else{
                 const locates = "custom_commands";
-                const values = {$set: {[locates]:{}}};
+                const values = {[locates]:{}};
                 client.updatedb(client, {id:message.guild.id}, values)
             }
             var msg = message.content;
@@ -240,7 +320,7 @@ var very_good_name = async function(client, message) {
         // Check if the feature is enabled
         if(!guild_cache.features){
             
-            const value = {$set: {features:[]}}
+            const value = {features:[]}
 
             return client.updatedb(client, {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, contact Fish#2455', message.channel)
         }
