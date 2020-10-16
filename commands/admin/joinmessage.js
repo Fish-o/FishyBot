@@ -290,8 +290,10 @@ exports.run = async (client, message, args) =>{
                         channelId: new_channel_id,
                         message: title_bold
                     }
+
                     await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
                     message.channel.send('Changed the message!')
+
                 });
             });
         };
