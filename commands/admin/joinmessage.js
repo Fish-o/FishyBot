@@ -1,8 +1,8 @@
 const fs = require('fs');
 const Discord = require('discord.js');
-const MongoClient = require('mongodb').MongoClient;
-const moment = require("moment");
 
+const  User = require('../../database/schemas/User')
+const  Guild = require('../../database/schemas/Guild')
 
 
 function colourNameToHex(colour){
@@ -74,9 +74,8 @@ exports.run = async (client, message, args) =>{
                     s:jsondata.d
                 }
             }
-            const locate = "joinMsg"
-            const value = {$set: {[locate]:join_object}}
-            client.updatedb({id:message.guild.id}, value, 'Changed the message!', message.channel)
+            await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
+            message.channel.send('Changed the message!')
             return
 
         } else {
@@ -86,88 +85,57 @@ exports.run = async (client, message, args) =>{
     } else{
         var action = 'message';
     }
-    console.log(action)
     if(!action || action == 'view'){
-        const uri = client.config.dbpath
-        var guild_data_promise = new Promise(function(resolve, reject){
-            var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                console.log('...conect');
-                if (err) throw err;
-                const collection = mongoClient.db("botdb").collection("v2");
-                collection.find({id:message.guild.id}).toArray(function(err, result) {
-                    console.log('...find');
-                    if (err) {console.error(err); throw err};
-                    
-                
-                    
-                    //let new_results = [];
-                    //for(i = 0; i < result.length; i++){
-                    //	new_results.push(JSON.stringify({	id: result[i].id,
-                    //						guild: result[i].guild}));
-                    //}
-                    mongoClient.close();
-                    console.log('...close');
-                    setTimeout(function(){
-                        resolve(result);
-                    }, 100);
-                        
-                });
-            });
-        });
-
-
-
         // Get guilds
-        guild_data_promise.then( async function(value) {
-            value = value[0]
-            if(!value.joinMsg){return};
+        const DbGuild = await Guild.findOne({id: guild.id});
+        const value = DbGuild
+        if(!value.joinMsg){return};
 
+        
+
+        const member = message.member;
+
+        // Send the message to a designated channel on a server:
+        const channel = member.guild.channels.cache.find(ch => ch.id === value.joinMsg.channelId);
+        
+        // Do nothing if the channel wasn't found on this server
+        if (!channel) return;
+
+        if(value.joinMsg.dm != '' && value.joinMsg.dm){
             
+            member.send(value.joinMsg.dm.replace("{name}", member));
+        }
+        if(value.joinMsg.message) return channel.send(value.joinMsg.message)
+        value.joinMsg.title
+        value.joinMsg.desc
 
-            const member = message.member;
-
-            // Send the message to a designated channel on a server:
-            const channel = member.guild.channels.cache.find(ch => ch.id === value.joinMsg.channelId);
-            
-            // Do nothing if the channel wasn't found on this server
-            if (!channel) return;
-
-            if(value.joinMsg.dm != '' && value.joinMsg.dm){
-                
-                member.send(value.joinMsg.dm.replace("{name}", member));
-            }
-            if(value.joinMsg.message) return channel.send(value.joinMsg.message)
-            value.joinMsg.title
-            value.joinMsg.desc
-
-            // Send the message, mentioning the member
-            
-            
-            let sicon = member.user.displayAvatarURL();
-            let serverembed = new Discord.MessageEmbed();
-            serverembed.setColor(value.joinMsg.color);
-            serverembed.setThumbnail(sicon);
-            serverembed.addField(value.joinMsg.title.b.replace("{name}", member.user.username)  ,value.joinMsg.title.s.replace("{name}", member));
-            if(value.joinMsg.desc){
-                serverembed.addField(value.joinMsg.desc.b.replace("{name}", member.user.username)   ,value.joinMsg.desc.s.replace("{name}", member));
-            }
-            try{
-                channel.send(serverembed);
-            } catch(err){
-                console.log(err);
-                message.channel.send('Error in join message');
-            }
-            /*
-                .setColor("#ff0000")
-                .setThumbnail(sicon)
-                .addField("Here comes a new quester!",`A new member has joined to The VR Gang ${member}`)
-                .addField("Where should i start ?","Read the 📄-rules, and then try running !friendme in the #🤝-friend-me channel!");
+        // Send the message, mentioning the member
+        
+        
+        let sicon = member.user.displayAvatarURL();
+        let serverembed = new Discord.MessageEmbed();
+        serverembed.setColor(value.joinMsg.color);
+        serverembed.setThumbnail(sicon);
+        serverembed.addField(value.joinMsg.title.b.replace("{name}", member.user.username)  ,value.joinMsg.title.s.replace("{name}", member));
+        if(value.joinMsg.desc){
+            serverembed.addField(value.joinMsg.desc.b.replace("{name}", member.user.username)   ,value.joinMsg.desc.s.replace("{name}", member));
+        }
+        try{
+            channel.send(serverembed);
+        } catch(err){
+            console.log(err);
+            message.channel.send('Error in join message');
+        }
+        /*
+            .setColor("#ff0000")
+            .setThumbnail(sicon)
+            .addField("Here comes a new quester!",`A new member has joined to The VR Gang ${member}`)
+            .addField("Where should i start ?","Read the 📄-rules, and then try running !friendme in the #🤝-friend-me channel!");
 
 
 
-            */
-        });
+        */
+        
     }
     else if(action == 'edit' ||action == 'embed' ){
         if(!args[0]){
@@ -223,7 +191,7 @@ exports.run = async (client, message, args) =>{
 
 
                             message.channel.send("What is going to be the second blocks title? (type `none` to not have this)")
-                            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(second_bold_raw_msg => {
+                            message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(async second_bold_raw_msg => {
                                 let second_bold_raw = second_bold_raw_msg.first().content;
 
                                 if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -238,11 +206,10 @@ exports.run = async (client, message, args) =>{
                                             s:title_small
                                         }
                                     }
-                                    const locate = "joinMsg"
-                                    const value = {$set: {[locate]:join_object}}
 
-                                    client.updatedb({id:message.guild.id}, value, 'Changed the message!', message.channel)// = function(query, value, msg = '', channel = null) {
-                                    return 0
+                                    await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
+                                    message.channel.send('Changed the message!')
+                                    return;
                                 }
 
                                 if(second_bold_raw.length >= 1000){return message.channel.send('Stopped, the message must be under 1000 characters long')};
@@ -250,7 +217,7 @@ exports.run = async (client, message, args) =>{
 
 
                                 message.channel.send("What is going to be the second blocks description?")
-                                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(second_small_raw_msg => {
+                                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then( async second_small_raw_msg => {
                                     let second_small_raw = second_small_raw_msg.first().content;
 
                                     if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -271,10 +238,9 @@ exports.run = async (client, message, args) =>{
                                             s:second_small
                                         }
                                     }
-                                    const locate = "joinMsg"
-                                    const value = {$set: {[locate]:join_object}}
-
-                                    client.updatedb({id:message.guild.id}, value, 'Changed the message!', message.channel)
+                                    await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
+                                    message.channel.send('Changed the message!')
+                                    //client, {id:message.guild.id}, , 'Changed the message!', message.channel)
 
                                 });
 
@@ -306,7 +272,7 @@ exports.run = async (client, message, args) =>{
 
 
                 message.channel.send("What is going to be the message? (use {name} to insert the new members name)")
-                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(title_bold_raw_msg => {
+                message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then( async title_bold_raw_msg => {
                     let title_bold_raw = title_bold_raw_msg.first().content;
 
                     if(title_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
@@ -324,12 +290,10 @@ exports.run = async (client, message, args) =>{
                         channelId: new_channel_id,
                         message: title_bold
                     }
-                    const locate = "joinMsg"
-                    const value = {$set: {[locate]:join_object}}
 
-                    client.updatedb({id:message.guild.id}, value, 'Changed the message!', message.channel)
+                    await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
+                    message.channel.send('Changed the message!')
 
-                            
                 });
             });
         };
@@ -340,10 +304,8 @@ exports.run = async (client, message, args) =>{
 
     
     else if(action == 'remove'){
-        const locate = "joinMsg"
-        const value = {$set: {[locate]:undefined}}
-
-        client.updatedb({id:message.guild.id}, value, 'Deleted the join message!', message.channel)
+        await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: undefined});
+        message.channel.send('Deleted the message!')
 
     }
 };

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const MongoClient = require('mongodb').MongoClient;
+
+
 exports.run = (client, message, args) => {
     //return message.channel.send('This wont work for now, as the database is being worked on, sorry for the inconvenience.')
     

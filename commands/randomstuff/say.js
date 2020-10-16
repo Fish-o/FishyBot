@@ -1,8 +1,7 @@
 var Filter = require('bad-words'),
     filter = new Filter();
  
-var fs = require("fs");
-const MongoClient = require('mongodb').MongoClient;
+
 
 exports.run = (client, message, args) => {
     //message.channel.send('').catch(console.error);

@@ -1,5 +1,5 @@
 var fs = require("fs");
-module.exports = (client, guild) => {
+exports.event = async (client, guild) => {
     client.sendinfo('event: delete guild')
     /*var date = new Date();
                 var Day = date.getDate() + "-" + date.getMonth()+1 + "-" + date.getFullYear();
@@ -11,4 +11,9 @@ module.exports = (client, guild) => {
     /*if (client.settings.has(guild.id)) {
       client.settings.delete(guild.id);
     }*/
+};
+
+
+exports.conf = {
+    event: "guildDelete"
 };

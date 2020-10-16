@@ -1,7 +1,10 @@
 var fs = require("fs");
-const MongoClient = require('mongodb').MongoClient;
+
+const  Guild = require('../../database/schemas/Guild')
+
+
 exports.run = async (client, message, args) => {
-    const uri = client.config.dbpath;
+
     if(!args[0]){return}
 
     var command = args[0].toLowerCase();
@@ -14,8 +17,8 @@ exports.run = async (client, message, args) => {
         let guilds = client.guilds.cache
         guilds.forEach(guild =>{
             var guildQuery = {id: guild.id};
-            var newnewvalues = { $set: {[locate_string]:false}}
-            client.updatedb(guildQuery, newnewvalues, "done some shit", message.channel)
+            var newnewvalues = {[locate_string]:false}
+            client.updatedb(client, guildQuery, newnewvalues, "done some shit", message.channel)
         })
         
 
@@ -41,47 +44,47 @@ exports.run = async (client, message, args) => {
     }
 
 
-    else if(command == 'say'){
-        const locate_string = "settings.say"
+    else if(command == 'levels'){
+        const locate_string = "settings.levels"
         if(action == 'off' || !action){
             var guildQuery = {id: guildID};
-            var newnewvalues = { $set: {[locate_string]:false}}
-
-            client.updatedb(guildQuery, newnewvalues, "Disabled the `say` command, it might take some time to apply the settings.", message.channel)
             
+            await Guild.updateOne(guildQuery, {[locate_string]:false});
+            message.channel.send("Disabled the leveling system")
         }else if(action == 'on'){
             var guildQuery = {id: guildID};
-            var newnewvalues = { $set: {[locate_string]:true}}
 
-
-            client.updatedb(guildQuery, newnewvalues, "Enabled the `say` command, it might take some time to apply the settings.", message.channel)
+            await Guild.updateOne(guildQuery, {[locate_string]:true});
+            message.channel.send("Enabled the leveling system.")
         }
     } else if(command == 'all_auto'){
         const locate_string = "settings.all_auto"
         if(action == 'off' || !action){
             var guildQuery = {id: guildID};
-            var newnewvalues = { $set: {[locate_string]:false}}
-            client.updatedb(guildQuery, newnewvalues, "Disabled all auto commands, it might take some time to apply the settings.", message.channel)
-            
+
+            await Guild.updateOne(guildQuery, {[locate_string]:false});
+            message.channel.send("Disabled all auto commands, it might take some time to apply the settings.")
         }else if(action == 'on'){
             var guildQuery = {id: guildID};
-            var newnewvalues = { $set: {[locate_string]:true}}
-            client.updatedb(guildQuery, newnewvalues, "Enabled all auto commands, it might take some time to apply the settings.", message.channel)
+
+            await Guild.updateOne(guildQuery, {[locate_string]:true});
+            message.channel.send("Enabled all auto commands, it might take some time to apply the settings.")
         }
     } else {
-        auto_commands.forEach(auto_command => {
+        auto_commands.forEach(async auto_command => {
             if(command == auto_command){
                 const locate_string = `settings.${auto_command}`
 
                 if(action == 'off' || !action){
                     var guildQuery = {id: guildID};
-                    var newnewvalues = { $set: {[locate_string]:false}}
-                    client.updatedb(guildQuery, newnewvalues, `Disabled the \`${auto_command}\` auto command, it might take some time to apply the settings.`, message.channel)
-                    
+
+                    await Guild.updateOne(guildQuery, {[locate_string]:false}); 
+                    message.channel.send(`Disabled the \`${auto_command}\` auto command, it might take some time to apply the settings.`)
                 }else if(action == 'on'){
                     var guildQuery = {id: guildID};
-                    var newnewvalues = { $set: {[locate_string]:true}}
-                    client.updatedb(guildQuery, newnewvalues, `Enabled the \`${auto_command}\` auto command, it might take some time to apply the settings.`, message.channel)
+
+                    await Guild.updateOne(guildQuery, {[locate_string]:true});
+                    message.channel.send(`Enabled the \`${auto_command}\` auto command, it might take some time to apply the settings.`)
                 }
             }
         });
@@ -90,17 +93,18 @@ exports.run = async (client, message, args) => {
 
             if(action == 'off' || !action){
                 var guildQuery = {id: guildID};
-                var newnewvalues = { $set: {[locate_string]:false}}
-                client.updatedb(guildQuery, newnewvalues, `Disabled the \`${command}\` command, it might take some time to apply the settings.`, message.channel)
-                
+
+                await Guild.updateOne(guildQuery, {[locate_string]:false});
+                message.channel.send(`Disabled the \`${command}\` command, it might take some time to apply the settings.`)
             }else if(action == 'on'){
                 var guildQuery = {id: guildID};
-                var newnewvalues = { $set: {[locate_string]:true}}
-                client.updatedb(guildQuery, newnewvalues, `Enabled the \`${command}\` command, it might take some time to apply the settings.`, message.channel)
+
+                await Guild.updateOne(guildQuery, {[locate_string]:true});
+                message.channel.send(`Enabled the \`${command}\` command, it might take some time to apply the settings.`)
             }
         }
     }
-    client.recache()
+    client.recache(client)
 }
 
 exports.conf = {
@@ -113,7 +117,6 @@ exports.conf = {
 };
   
 const path = require("path");
-const { cpuUsage } = require("process");
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"settings",

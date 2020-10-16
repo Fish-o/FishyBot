@@ -1,10 +1,17 @@
-var fs = require("fs");
 const path = require("path");
 const MongoClient = require('mongodb').MongoClient;
-module.exports = (client) => {
-    client.recache()
+exports.event = (client) => {
+    client.recache(client)
     client.sendinfo('Bot gone online')
 	console.log('I am ready to serve you!');
 	client.user.setStatus('online');
-	client.user.setActivity('https://fishman.live/');
+    client.user.setActivity('New Update!');
+
+    
+    
+};
+
+
+exports.conf = {
+    event: "ready"
 };

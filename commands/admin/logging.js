@@ -18,8 +18,8 @@ exports.run = (client, message, args) => {
             var query = {id: message.guild.id};
             const locate_string = "logging"
             const db_data = undefined;
-            var value = { $set: {[locate_string]:db_data}}
-            client.updatedb(query, value, 'Stopped logging', message.channel)
+            var value = {[locate_string]:db_data}
+            client.updatedb(client, query, value, 'Stopped logging', message.channel)
 
         }).catch(console.error);
 
@@ -47,8 +47,8 @@ exports.run = (client, message, args) => {
                             }, 
                             channel_id: channel.id
                         }
-                        var value = { $set: {[locate_string]:db_data}}
-                        client.updatedb(query, value, 'Started logging!', wb)
+                        var value = {[locate_string]:db_data}
+                        client.updatedb(client, query, value, 'Started logging!', wb)
                     }).catch(console.error)
             }).catch(console.error);
     }

@@ -1,33 +1,17 @@
 
 var fs = require("fs");
-const MongoClient = require('mongodb').MongoClient;
+const  Guild = require('../../database/schemas/Guild')
 
-exports.run = (client, message, args) =>{
+
+exports.run = async (client, message, args) =>{
     const uri = client.config.dbpath;
     // get the delete count, as an actual number.
     if(!args[0]){return message.channel.send("Enter a prefix")}
     
-    
+    await Guild.findOneAndUpdate({id: message.guild.id}, {prefix: args.join(' ')});
 
-    var newquery = {id: message.guild.id};
-    const locate_string = "prefix" 
-    var newnewvalues = { $set: {[locate_string]:args.join()}}
-
-
-    var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-    mongoClient.connect(err => {
-        if (err) console.log(err);
-        const collection = mongoClient.db("botdb").collection("v2");
-        collection.updateOne(newquery, newnewvalues, function(err, res) {
-            if (err) throw err;
-            console.log("1 document updated");
-            mongoClient.close();
-            message.channel.send('Changed **prefix** to `'+args.join()+'`')
-        });
-    });
-
-
-    client.recache()
+    message.channel.send('Changed **prefix** to `'+args.join(' ')+'`')
+    client.recache(client)
 
       
 }

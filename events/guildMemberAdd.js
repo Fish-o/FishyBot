@@ -1,72 +1,30 @@
 const Discord = require('discord.js');
-const fs = require('fs');
+
+
+const  User = require('../database/schemas/User')
+const  Guild = require('../database/schemas/Guild')
 
 const MongoClient = require('mongodb').MongoClient;
-module.exports = (client, member) =>{
+exports.event = async (client, member) =>{
 	
 
     const uri = client.config.dbpath;
 	let current_member = member
 
-	/*		
-	current_member.id
-	current_member.tag
-	current_member.guild.id
-	var userObject = {
-		id : current_member.id,
-		guild : current_member.guild.id,
-		warns : [],
-		data:{
-			usernames:{}
-		}
-	}
+    let guild = member.guild;
+    var guildID = guild.id;
 
-	
-	const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-	mongoClient.connect(err => {
-		if (err) console.log(err);
-		const collection = mongoClient.db("botdb").collection("users");
-		// perform actions on the collection object
-		collection.insertOne(userObject, function(err, res) {
-			if (err) throw err;
-			console.log("1 document inserted");
-			mongoClient.close();
-		});
-		
-	});
-	*/
 
-	// Get data base data
-	var user_list_promise = new Promise(function(resolve, reject){
-		var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-		mongoClient.connect(err => {
-			console.log('...conect');
-			if (err) throw err;
-			const collection = mongoClient.db("botdb").collection("v2");
-			collection.find({}).toArray(function(err, result) {
-				console.log('...find');
-				if (err) {console.error(err); throw err};
-				
-			
-				
-				//let new_results = [];
-				//for(i = 0; i < result.length; i++){
-				//	new_results.push(JSON.stringify({	id: result[i].id,
-				//						guild: result[i].guild}));
-				//}
-				mongoClient.close();
-				console.log('...close');
-				setTimeout(function(){
-					resolve(result);
-				}, 250);
-					
-			});
-		});
-	});
+    await User.findOneAndUpdate({discordId:member.id },{
+        id:guildID, 
+        discordTag:member.user.tag,
+        avatar:member.user.avatar
+    }, { upsert: true, setDefaultsOnInsert: true })
 
 	// Get guilds
-	
-	user_list_promise.then( async function(value) {
+    await Guild.findOneAndUpdate({id:guild.id}, { $push: {memberlist: member.user.id}})
+    
+	/*user_list_promise.then( async function(value) {
 		var guildID = member.guild.id;
 		db_data = value;
 		if(!db_data[guildID]) {return 0}// message.channel.send('Could not find guild, contact Fish#2455');}
@@ -95,18 +53,7 @@ module.exports = (client, member) =>{
 			db_data[guildID].users[new_user_id] = userObject;
 		})
 
-		/*const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-		mongoClient.connect(err => {
-			if (err) console.log(err);
-			const collection = mongoClient.db("botdb").collection("users");
-			// perform actions on the collection object
-			collection.replaceOne({id:member.guild.id}, db_data, function(err, res) {
-				if (err) throw err;
-				console.log("1 document replaced");
-				mongoClient.close();
-			});
-		});*/
-	});
+	});*/
 
 
 
@@ -141,7 +88,7 @@ module.exports = (client, member) =>{
 
 
     //const uri = client.config.dbpath
-    var guild_data_promise = new Promise(function(resolve, reject){
+    /*var guild_data_promise = new Promise(function(resolve, reject){
         var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
         mongoClient.connect(err => {
             console.log('...conect');
@@ -166,58 +113,49 @@ module.exports = (client, member) =>{
                     
             });
         });
-    });
+    });*/
 
-
+    let db_guild = await Guild.findOne({id: guildID});
 
     // Get guilds
-    guild_data_promise.then( async function(value) {
-        value = value[0]
-        if(!value.joinMsg){return};
 
-        //const member = member;
+    let value = db_guild;
+    if(!value.joinMsg){return};
+    if(!value.joinMsg.channelId){return};
+    //const member = member;
 
-        // Send the message to a designated channel on a server:
-        const channel = member.guild.channels.cache.find(ch => ch.id === value.joinMsg.channelId);
+    // Send the message to a designated channel on a server:
+    const channel = member.guild.channels.cache.find(ch => ch.id === value.joinMsg.channelId);
+    
+    // Do nothing if the channel wasn't found on this server
+    if (!channel) return;
+
+    if(value.joinMsg.dm != '' && value.joinMsg.dm){
         
-        // Do nothing if the channel wasn't found on this server
-        if (!channel) return;
+        member.send(value.joinMsg.dm.replace("{name}", member));
+    }
+    if(value.joinMsg.message) return channel.send(value.joinMsg.message)
+    value.joinMsg.title
+    value.joinMsg.desc
 
-        if(value.joinMsg.dm != '' && value.joinMsg.dm){
-            
-            member.send(value.joinMsg.dm.replace("{name}", member));
-        }
-        if(value.joinMsg.message) return channel.send(value.joinMsg.message)
-        value.joinMsg.title
-        value.joinMsg.desc
+    // Send the message, mentioning the member
+    
+    
+    let sicon = member.user.displayAvatarURL();
+    let serverembed = new Discord.MessageEmbed();
+    serverembed.setColor(value.joinMsg.color);
+    serverembed.setThumbnail(sicon);
+    serverembed.addField(value.joinMsg.title.b.replace("{name}", member.user.username)  ,value.joinMsg.title.s.replace("{name}", member));
+    if(value.joinMsg.desc){
+        serverembed.addField(value.joinMsg.desc.b.replace("{name}", member.user.username)   ,value.joinMsg.desc.s.replace("{name}", member));
+    }
+    try{
+        channel.send(serverembed);
+    } catch(err){
+        console.log(err);
+        console.log('Error in join message');
+    }
 
-        // Send the message, mentioning the member
-        
-        
-        let sicon = member.user.displayAvatarURL();
-        let serverembed = new Discord.MessageEmbed();
-        serverembed.setColor(value.joinMsg.color);
-        serverembed.setThumbnail(sicon);
-        serverembed.addField(value.joinMsg.title.b.replace("{name}", member.user.username)  ,value.joinMsg.title.s.replace("{name}", member));
-        if(value.joinMsg.desc){
-            serverembed.addField(value.joinMsg.desc.b.replace("{name}", member.user.username)   ,value.joinMsg.desc.s.replace("{name}", member));
-        }
-        try{
-            channel.send(serverembed);
-        } catch(err){
-            console.log(err);
-            console.log('Error in join message');
-        }
-        /*
-            .setColor("#ff0000")
-            .setThumbnail(sicon)
-            .addField("Here comes a new quester!",`A new member has joined to The VR Gang ${member}`)
-            .addField("Where should i start ?","Read the 📄-rules, and then try running !friendme in the #🤝-friend-me channel!");
-
-
-
-        */
-    });
     
 
 
@@ -273,3 +211,7 @@ module.exports = (client, member) =>{
 
 	channel.send(serverembed);*/
 }
+
+exports.conf = {
+    event: "guildMemberAdd"
+};

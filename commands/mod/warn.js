@@ -1,10 +1,11 @@
-//const sqlite3 = require('sqlite3').verbose();
-const fs = require('fs');
 const Discord = require('discord.js');
-const MongoClient = require('mongodb').MongoClient;
 
 
-exports.run = (client, message, args) => {
+
+const  User = require('../../database/schemas/User')
+const  Guild = require('../../database/schemas/Guild')
+
+exports.run = async (client, message, args) => {
     function getUserFromMention(mention) {
         if (!mention) return;
     
@@ -39,14 +40,14 @@ exports.run = (client, message, args) => {
     const reason = args.join(' ');
     console.log(action)
     
-
+    let guild = message.guild;
     
     
 
 
     
 
-    const uri = client.config.dbpath;
+
     const guildID = message.guild.id;
     const member = message.mentions.users.first() || message.guild.members.cache.get(args[0]).user
     const memberID = member.id.toString();
@@ -57,94 +58,51 @@ exports.run = (client, message, args) => {
     
     
     if(action == 'list'){
-        //var data = fs.readFileSync(config['dbpath']),user_data;
-
        
 	
         
-        var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-        mongoClient.connect(err => {
-            if (err) return console.error(err);
-            const collection = mongoClient.db("botdb").collection("v2");
-            collection.findOne({id: guildID}, function(err, result){
-                var db_data = result
-                var user_data = db_data.users[memberID]
-                if (err) {console.error(err); throw err};
-                if(!user_data){return message.channel.send('Could not find that user, did you run !dbadd?')}
-                if(user_data['warns'][0]){
+        const dbGuild = await Guild.findOne({id: guildID});
+        const guild_warning = dbGuild.warns;
+        if(guild_warning.get(memberID)){
+            if(guild_warning.get(memberID)[0]){
 
-                    const userID = memberID
-                    const user = client.users.cache.get(userID);
-                    const userTAG = user.tag;
+                const userID = memberID
+                const user = client.users.cache.get(userID);
+                const userTAG = user.tag;
+                
+                const warnings = guild_warning.get(memberID);
+                
+                
+                const embed = new Discord.MessageEmbed()
+    
+                embed.setColor("#ff00ff");
+                embed.setTitle('Warnings for user: '+userTAG);
+                embed.addFields();
+                for (var i = 0; i < warnings.length; i++){
+                    var date_time = new Date(warnings[i]['time']).toDateString()
                     
-                    const warnings = user_data.warns;
-                    
-                    
-                    const embed = new Discord.MessageEmbed()
-        
-                    embed.setColor("#ff00ff");
-                    embed.setTitle('Warnings for user: '+userTAG);
-                    embed.addFields();
-                    for (var i = 0; i < warnings.length; i++){
-                        var date_time = new Date(warnings[i]['time']).toDateString()
-                        
-                        embed.addField(date_time+' - by '+client.users.cache.get(warnings[i]['warner']).tag, 'Reason: ' + warnings[i]['warn']);
-                    }
-                    embed.setThumbnail(user.avatarURL());
-        
-                    message.channel.send(embed);
-        
-                } else {message.channel.send('Could not find any warnings!')}
-                mongoClient.close();
-            });
+                    embed.addField(date_time+' - by '+client.users.cache.get(warnings[i]['warner']).tag, 'Reason: ' + warnings[i]['warn']);
+                }
+                embed.setThumbnail(user.avatarURL());
+    
+                message.channel.send(embed);
+    
+            } else {message.channel.send('Could not find any warnings!')}
+    
+        } else {
+            message.channel.send('No warnings were found')
             
-	    });
+        }
+        //if(!user_data){return message.channel.send('Could not find that user, did you run !dbadd?')}
+       
+
+            
 
 
 
     }
     if(action == 'add'){
         if(args[0]){
-            /*const uri = config['dbpath'];
-            var user_promise = new Promise(function(resolve, reject){
-                var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-                mongoClient.connect(err => {
-                    if (err) throw err;
-                    const collection = mongoClient.db("botdb").collection("v2");
-                    collection.findOne({id:guildID}, function(err, result){
-                        if (err) {console.error(err); throw err};
-                        mongoClient.close();
-                        setTimeout(function(){
-                            resolve(result);
-                        }, 100);
-                            
-                    });
-                });
-            });
-
-            user_promise.then(function(value) {
-                console.log(value);
-                if(!value){message.channel.send('Could not find user, did you run !dbadd?')}
-                else{
-            let db_data = value;*/
-            
-            
-
-            
-
-            
-            
-
-
-            // Extract data used for warings
-            /*user = user_data[member_uuid];
-            var warning_data = user_data[member_uuid]['warn'];
-            if(!warning_data){
-                var warning_data = []
-            }*/
-
-            
-
             // Constructing the warning
             var new_warning = {};
             //const bad_person_uuid =  user['uuid']
@@ -153,43 +111,8 @@ exports.run = (client, message, args) => {
             new_warning['warn'] = reason;
             
 
-        
 
-            // Saving data
-            //db_data.warns.push(new_warning);
-            
-
-            /*fs.writeFile(config['dbpath'], write_data, function (err) {
-            if (err) {
-                console.log('There has been an error saving your data.');
-                console.log(err.message);
-                return;
-            }
-            console.log('Data saved successfully.')
-            });*/
-
-
-
-
-            var newquery = {id: message.guild.id};
-            const locate_string = "users."+memberID+".warns"
-            var newnewvalues = { $addToSet: {[locate_string]:new_warning}}
-
-
-
-
-            const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("v2");
-                // perform actions on the collection object
-                collection.updateOne(newquery, newnewvalues, function(err, res){
-                    if (err) throw err;
-                    console.log("1 document inserted");
-                    mongoClient.close();
-                });
-                
-            });
+            await Guild.updateOne({id: message.guild}, {$push :{[`warns.${memberID}`]: [new_warning]}});
 
             // Making embed
             var bad_pfp = member.avatarURL()
@@ -204,84 +127,14 @@ exports.run = (client, message, args) => {
         }
     }
     if(action == 'removeall'){
-        
-        /*const uri = config['dbpath'];
-        var user_promise = new Promise(function(resolve, reject){
-            var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                if (err) throw err;
-                const collection = mongoClient.db("botdb").collection("users");
-                collection.findOne({id: memberID, guild: guildID}, function(err, result){
-                    if (err) {console.error(err); throw err};
-                    mongoClient.close();
-                    setTimeout(function(){
-                        resolve(result);
-                    }, 100);
-                        
-                });
-            });
-        });
-
-        user_promise.then(function(value) {*/
-        
-        
-        try{
-            //let db_data = value;
-            
-
-            // Constructing the warning
-            
-            
-
-        
-
-            // Saving data
-           //db_data.warns.length = 0;
-           var newquery = {id: message.guild.id};
-           const locate_string = "users."+memberID+".warns"
-           var newnewvalues = { $set: {[locate_string]:[]}}
-        
-            const mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                if (err) console.log(err);
-                const collection = mongoClient.db("botdb").collection("v2");
-                // perform actions on the collection object
-                collection.updateOne(newquery, newnewvalues, function(err, res) {
-                    if (err) throw err;
-                    console.log("1 document inserted");
-                    mongoClient.close();
-                });
-                
-            });
-
-            // Making embed
-            var bad_pfp = member.avatarURL()
-            const embed = new Discord.MessageEmbed()
-            embed.setColor("#00ff00");
-            embed.setTitle('Warnings for user: '+member.tag+' have been deleted');
-            embed.setThumbnail(bad_pfp);
-
-            // Post embed
-            message.channel.send(embed);
-
-        }
-        catch(err){
-            console.log(err)
-        }
-    
-    
-
-    /*fs.writeFile(config['dbpath'], write_data, function (err) {
-    if (err) {
-        console.log('There has been an error saving your data.');
-        console.log(err.message);
-        return;
+        await Guild.updateOne({id: guild},  {[`warns.${memberID}`]: []});
+        var bad_pfp = member.avatarURL()
+        const embed = new Discord.MessageEmbed()
+        embed.setColor("#00ff00");
+        embed.setTitle('Warnings for user: '+member.tag+' have been deleted');
+        embed.setThumbnail(bad_pfp);
+        message.channel.send(embed);
     }
-    message.channel.send('Deleted the warnings from <@' + message.mentions.users.first().id + '>')
-    });*/
-    }
-
-    //message.channel.send("Command 
 }
 exports.conf = {
     enabled: true,
