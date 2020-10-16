@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
     const reason = args.join(' ');
     console.log(action)
     
-
+    let guild = message.guild;
     
     
 
@@ -63,14 +63,14 @@ exports.run = async (client, message, args) => {
         
         const dbGuild = await Guild.findOne({id: guildID});
         const guild_warning = dbGuild.warns;
-        if(guild_warning[memberID]){
-            if(guild_warning[memberID][0]){
+        if(guild_warning.get(memberID)){
+            if(guild_warning.get(memberID)[0]){
 
                 const userID = memberID
                 const user = client.users.cache.get(userID);
                 const userTAG = user.tag;
                 
-                const warnings = guild_warning[memberID];
+                const warnings = guild_warning.get(memberID);
                 
                 
                 const embed = new Discord.MessageEmbed()
@@ -112,7 +112,7 @@ exports.run = async (client, message, args) => {
             
 
 
-            await Guild.updateOne({id: guild}, {$push :{[`warns.${memberID}`]: [new_warning]}});
+            await Guild.updateOne({id: message.guild}, {$push :{[`warns.${memberID}`]: [new_warning]}});
 
             // Making embed
             var bad_pfp = member.avatarURL()

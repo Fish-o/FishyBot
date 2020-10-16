@@ -2,6 +2,7 @@
 const  User = require('../database/schemas/User');
 const  Guild = require('../database/schemas/Guild');
 const cooldown = new Set();
+const cooldown_time = 30;
 const Discord = require('discord.js')
 exports.event = async (client, message) =>{
     if (message.author.bot) return;
@@ -11,18 +12,20 @@ exports.event = async (client, message) =>{
     try{
             
         if (!cooldown.has(message.author.id)) {
-            /*cooldown.add(message.author.id);
+            cooldown.add(message.author.id);
             setTimeout(() => {
-                // Removes the user from the set after a minute
+                // Removes the user from the set after some time
                 cooldown.delete(message.author.id);
-            }, 1000*1);*/
+            }, 1000*cooldown_time);
 
 
             const member = message.member;
             const guild = message.guild;
             const dbGuild = await Guild.findOne({id:guild.id})
 
-
+            if(dbGuild.settings.levels == false){
+                return
+            }
             if(!(member.id in dbGuild.levels.members)){
                 return await Guild.update({id:guild.id}, {['levels.members.'+member.id]: {level:1, exp:1}})
             }

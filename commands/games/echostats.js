@@ -49,8 +49,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send("Could not find user in the ignite database")
     }
 
-    console.log(player_stats)
-    console.log(client.config.igniteapi)
+
     
 
     const user_stats = player_stats.player[0]
@@ -108,12 +107,12 @@ ${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%
     console.log(vrml_stats)
     
     if(!Array.isArray(vrml_stats)){
-        console.log('vrml found')
+
         Embed.addFields(
             { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type !echo ${vrml_stats.team_name}, or !echo ${player_name} to get more info`},
         );
     }
-    console.log(player_stats)
+
     message.channel.send(Embed)
     
 }

@@ -33,8 +33,8 @@ var very_good_name = async function(client, message) {
         client.sendinfo(`Uptime: ${client.uptime / 1000}`)
     }
 
-    // Getting database uri
-    const uri = client.config.dbpath;
+
+    var guildID = message.guild.id;
     
     // I have no idea what this does
     let ops = {
@@ -73,9 +73,11 @@ var very_good_name = async function(client, message) {
     //if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return client.recache(client)}
 
     // If no guild was found, add a new one
-    if(!cache.data.find(db_guild => db_guild.id == message.guild.id)){
-        const dbGuild = await Guild.findOne({id:guildID});
+    if(cache.data.find(db_guild => db_guild.id == message.guild.id) == undefined){
+        console.log('not found')
+        const dbGuild = await Guild.findOne({id:message.guild.id});
         if(!dbGuild){
+            console.log('not found2');
             const uri = client.config.OLDDBPATH
             const guild = message.guild;
             var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -109,11 +111,14 @@ var very_good_name = async function(client, message) {
                         let joinMsg = undefined;
                         let custom_commands = undefined
                         
-                        Object.keys(db_data.users).forEach(userId=>{
-                            if(Object.keys(db_data.users[userId].data.usernames).length > 0){
-                                usernames[userId] = db_data.users[userId].data.usernames.length
+                        await Object.keys(db_data.users).forEach(userId=>{
+                            if(db_data.users[userId].data){
+                                if(db_data.users[userId].data.usernames){
+                                    usernames[userId] = db_data.users[userId].data.usernames
+                                }
+                                
                             }
-                            if(db_data.users[userId].warns.length > 0){
+                            if(db_data.users[userId].warns){
                                 warns[userId] = db_data.users[userId].warns;
                             }
                         })
@@ -138,7 +143,8 @@ var very_good_name = async function(client, message) {
                             logging = db_data.logging;
                         }
 
-                        await Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist,
+
+                        await Guild.findOneAndUpdate({id:guildID }, {id:message.guild.id, memberlist:memberidlist,
                             prefix,
                             settings,
                             warns,
@@ -154,7 +160,7 @@ var very_good_name = async function(client, message) {
                     } 
                     else {
                         client.sendinfo(`[GUILD DB ADD] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
-                        var guildID = guild.id;
+                        
                         guild.members.fetch().then( async (member_list) => {
                             let memberidlist = []
 

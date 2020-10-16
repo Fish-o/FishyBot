@@ -44,18 +44,18 @@ exports.run = async (client, message, args) => {
     }
 
 
-    else if(command == 'say'){
-        const locate_string = "settings.say"
+    else if(command == 'levels'){
+        const locate_string = "settings.levels"
         if(action == 'off' || !action){
             var guildQuery = {id: guildID};
             
             await Guild.updateOne(guildQuery, {[locate_string]:false});
-            message.channel.send("Disabled the `say` command, it might take some time to apply the settings.")
+            message.channel.send("Disabled the leveling system")
         }else if(action == 'on'){
             var guildQuery = {id: guildID};
 
             await Guild.updateOne(guildQuery, {[locate_string]:true});
-            message.channel.send("Enabled the `say` command, it might take some time to apply the settings.")
+            message.channel.send("Enabled the leveling system.")
         }
     } else if(command == 'all_auto'){
         const locate_string = "settings.all_auto"

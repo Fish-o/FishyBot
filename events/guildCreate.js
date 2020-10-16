@@ -13,12 +13,12 @@ exports.event = async (client, guild) => {
     guild.members.fetch().then( async (member_list) => {
         let memberidlist = []
 
-        member_list.forEach( async (member)=>{
+        await member_list.forEach( async (member)=>{
             memberidlist.push(member.id)
-            await User.findOneAndUpdate({discordId:guild_member.id },{
+            await User.findOneAndUpdate({discordId:member.id },{
                 id:guildID, 
-                discordTag:guild_member.user.tag,
-                avatar:guild_member.user.avatar
+                discordTag:member.user.tag,
+                avatar:member.user.avatar
             }, { upsert: true, setDefaultsOnInsert: true })
         })
 

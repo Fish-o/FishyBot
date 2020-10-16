@@ -85,7 +85,6 @@ exports.run = async (client, message, args) =>{
     } else{
         var action = 'message';
     }
-    console.log(action)
     if(!action || action == 'view'){
         // Get guilds
         const DbGuild = await Guild.findOne({id: guild.id});
