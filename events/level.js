@@ -48,8 +48,8 @@ exports.event = async (client, message) =>{
                 lvlUpMsg = lvlUpMsg.replace(/\{level\}/g, level)
 
                 if(dbGuild.levels.channel){
-                    if(guild.channels.cache.has(guild.id)){
-                        guild.channels.cache.get(guild.id).send(lvlUpMsg);
+                    if(guild.channels.cache.has(dbGuild.levels.channel)){
+                        guild.channels.cache.get(dbGuild.levels.channel).send(lvlUpMsg);
                     } else{
                         message.channel.send(`<@${member.id}> has leveld up to level ${level}, but i couldnt find the channel where this message was supposed to be sent to. Please contact an admin of your server. `)
                     }
