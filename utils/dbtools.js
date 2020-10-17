@@ -1,8 +1,5 @@
-var MongoClient = require('mongodb').MongoClient;
-var Canvas = require('canvas');
 var fs = require('fs');
 
-const  User = require('../database/schemas/User');
 const  Guild = require('../database/schemas/Guild');
 
 exports.updatedb = async (client, query, value, msg = '', channel = null) => {

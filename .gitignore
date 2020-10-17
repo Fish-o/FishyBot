@@ -4,4 +4,6 @@ jsonFiles/cache.json
 jsonFiles/cache/stats/*
 jsonFiles/cache/vrml/*
 
-node_modules/
+
+
+node_modules

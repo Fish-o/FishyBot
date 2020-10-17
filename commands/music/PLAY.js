@@ -11,7 +11,7 @@ function validURL(str) {
     return !!pattern.test(str);
   }
   
-exports.run = async  (client, message, args) => {
+exports.run = async  (client, message, args, ops) => {
     voiceChannel = message.member.voice.channel;
     if(!voiceChannel)
         return message.channel.send("You are not in a voice channel");
@@ -40,7 +40,7 @@ exports.run = async  (client, message, args) => {
         }
     } else {
         let ytsearch = client.commands.get('ytsearch');
-        if (playother){
+        if (ytsearch){
             return ytsearch.run(client, message, args, ops);
         }
     }

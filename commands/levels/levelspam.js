@@ -1,5 +1,5 @@
-const  Guild = require('../database/schemas/Guild');
-exports.run = (client, message, args) => {
+const  Guild = require('../../database/schemas/Guild');
+exports.run = async (client, message, args) => {
     if(!message.mentions.channels.first())
         return message.channel.send('You did not specify a valid channel');
 
