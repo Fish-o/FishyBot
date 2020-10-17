@@ -8,7 +8,7 @@ exports.run = async (client, message, args, ops) => {
         }
         let videos = res.videos.slice(0,21);
 
-        const Embed =  Discord.MessageEmbed()
+        const Embed =  new Discord.MessageEmbed()
         .setColor('#001166')
         .setTitle('Choose a number between \`1-${videos.length}\`, or type \`cancel\`')
         .setTimestamp()
