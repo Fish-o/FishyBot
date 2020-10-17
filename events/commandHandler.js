@@ -34,7 +34,7 @@ var very_good_name = async function(client, message) {
     }
 
 
-    var guildID = message.guild.id;
+    
     
     // I have no idea what this does
     let ops = {
@@ -51,6 +51,7 @@ var very_good_name = async function(client, message) {
     if (message.webhookID) return;
     if (message.channel instanceof Discord.DMChannel) return message.reply("blub ".repeat(Math.ceil(Math.random()*50)));
     
+    var guildID = message.guild.id;
     
 
     // Getting cache
