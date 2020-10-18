@@ -50,6 +50,9 @@ exports.run = async (client, message, args) => {
         return message.channel.send('Could not find a valid user to add the amount to')
     }
 
+    if(amount > 1000000){
+        return message.channel.send('to high dumbass')
+    }
 
 
     const guild = message.guild;
