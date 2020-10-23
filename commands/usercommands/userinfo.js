@@ -87,7 +87,6 @@ exports.run = async (client, message, args) =>{
         usernameDict = dbGuild.usernames.get(member.id);
     }
     console.log(dbGuild)
-    console.log(usernameDict)
     for(var username in usernameDict){
         var new_user = ' **'+username+ '**: *' +usernameDict[username] +'* **|**' ;
         usernames = usernames.concat(new_user);

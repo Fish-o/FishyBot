@@ -26,7 +26,7 @@ exports.conf = {
     guildOnly: false,
     aliases: [],
     perms: [
-        ''
+        
     ]
   };
   

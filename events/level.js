@@ -22,7 +22,6 @@ exports.event = async (client, message) =>{
             const member = message.member;
             const guild = message.guild;
             const dbGuild = await Guild.findOne({id:guild.id})
-            console.log(dbGuild.settings.get('levels'))
             if(dbGuild.settings.get('levels') == false){
                 return;
             } else {

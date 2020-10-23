@@ -37,6 +37,7 @@ var very_good_name = async function(client, message) {
     
     
     // I have no idea what this does
+    // Figured it out, its for the music commands
     let ops = {
         active: active
     }
@@ -46,7 +47,7 @@ var very_good_name = async function(client, message) {
     let command;
     let cmd;
     
-    // Ignore all bots
+    // Ignore all bots and other useless stuff
     if (message.author.bot) return;
     if (message.webhookID) return;
     if (message.channel instanceof Discord.DMChannel) return message.reply("blub ".repeat(Math.ceil(Math.random()*50)));
