@@ -135,6 +135,11 @@ const GuildConfigSchema = new mongoose.Schema({
     features:{
         type: Array,
         required: false
+    },
+
+    defaultroles:{
+        type: Array,
+        required: false
     }
 
 

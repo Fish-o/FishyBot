@@ -71,25 +71,42 @@ client.bypass = false;
 client.master = client.config.master
 
 console.log('Loading commands');
+
+// Loads all the subcategories inside the commands dir
 fs.readdir("./commands/", (direrr, dirs) =>{
     if (direrr) {
         return console.log('Unable to scan directory: ' + err);
     }
     console.log(dirs)
     
+
+    // Cycles thru all sub direcoties
     dirs.forEach(dir => {
+
+        // Make a path to that subdir
         const path = "./commands/"+dir+"/";
+        // Read the contents of that subdir
         fs.readdir(path, (err, files) => {
             if (err) return console.error(err);
+
+            // Go thru all files in the subdir
             files.forEach(file => {
+                // Check if they end with .js
                 if (!file.endsWith(".js")) return;
             
-                let props = require(path+file);
-                console.log(`Loading Command: ${props.help.name}`);
-                client.commands.set(props.help.name, props);
+                // Load the command file
+                let command_file = require(path+file);
+                console.log(`Loading Command: ${command_file.help.name}`);
+                
+                // Set the command file to the client.commands map:
+                // Map {name:command}
+                client.commands.set(command_file.help.name, command_file);
 
-                props.conf.aliases.forEach(alias => {
-                    client.aliases.set(alias, props.help.name);
+                // Go thru all the aliases listed in the command file
+                command_file.conf.aliases.forEach(alias => {
+                    // Asign the aliases to the map
+                    // {alias:name}
+                    client.aliases.set(alias, command_file.help.name);
                 });
             });
         });

@@ -5,6 +5,27 @@ const  User = require('../database/schemas/User')
 const  Guild = require('../database/schemas/Guild')
 
 const MongoClient = require('mongodb').MongoClient;
+
+
+
+function checkRoles(db_guild, guild){
+    let wrong = []
+    let ok = []
+    let names = []
+    let roles = []
+    db_guild.defaultroles.forEach(roleid =>{
+        let guild_role = guild.roles.cache.get(roleid)
+        if(!guild_role){
+            wrong.push(roleid)
+        }else{
+            ok.push(roleid)
+            names.push(guild_role.name)
+            roles.push(guild_role)
+        }  
+    })
+    return { wrong, ok, names, roles }
+} 
+
 exports.event = async (client, member) =>{
 	
 
@@ -24,101 +45,29 @@ exports.event = async (client, member) =>{
 	// Get guilds
     await Guild.findOneAndUpdate({id:guild.id}, { $push: {memberlist: member.user.id}})
     
-	/*user_list_promise.then( async function(value) {
-		var guildID = member.guild.id;
-		db_data = value;
-		if(!db_data[guildID]) {return 0}// message.channel.send('Could not find guild, contact Fish#2455');}
-		if(!db_data[guildID].users) {return 0}// message.channel.send('Something went wrong, contact Fish#2455');}
-
-
-		var guild_user_id_list = await member.guild.members.fetch();
-		var db_user_list = db_data[guildID].users;
-		var db_user_id_list;
-
-		db_user_list.forEach(db_user => {
-			db_user_id_list.push(db_user.id);
-		})
-		
-
-		var not_in_db = guild_user_id_list.filter(userID => {!db_user_id_list.includes(userID)});
-		
-		not_in_db.forEach(new_user_id => {
-			var userObject = {
-				warns:[],
-				data:{
-					"usernames":{},
-					"region":null 
-				}
-			}
-			db_data[guildID].users[new_user_id] = userObject;
-		})
-
-	});*/
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //const uri = client.config.dbpath
-    /*var guild_data_promise = new Promise(function(resolve, reject){
-        var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-        mongoClient.connect(err => {
-            console.log('...conect');
-            if (err) throw err;
-            const collection = mongoClient.db("botdb").collection("v2");
-            collection.find({id:member.guild.id}).toArray(function(err, result) {
-                console.log('...find');
-                if (err) {console.error(err); throw err};
-                
-            
-                
-                //let new_results = [];
-                //for(i = 0; i < result.length; i++){
-                //	new_results.push(JSON.stringify({	id: result[i].id,
-                //						guild: result[i].guild}));
-                //}
-                mongoClient.close();
-                console.log('...close');
-                setTimeout(function(){
-                    resolve(result);
-                }, 100);
-                    
-            });
-        });
-    });*/
 
     let db_guild = await Guild.findOne({id: guildID});
 
-    // Get guilds
 
+
+
+    // Default roles
+    let {ok, wrong, roles, names} = checkRoles(db_guild, guild);
+    if(roles.length > 0){
+        member.roles.add(roles, 'Default Roles added on join')
+    }
+    if(wrong.length > 0){
+        await Guild.findOneAndUpdate({id: message.guild.id}, {defaultroles: ok} )
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    // Get guilds
     let value = db_guild;
     if(!value.joinMsg){return};
     if(!value.joinMsg.channelId){return};
@@ -155,61 +104,6 @@ exports.event = async (client, member) =>{
         console.log(err);
         console.log('Error in join message');
     }
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-		
-	
-	// Send the message to a designated channel on a server:
-	const channel = member.guild.channels.cache.find(ch => ch.name === '💬-chit-chat');
-	
-	// Do nothing if the channel wasn't found on this server
-	if (!channel) return;
-
-	// Send the message, mentioning the member
-	member.send(`Welcome to the server ${member} please read the rule channel and enjoy your journey to our server!`);
-	
-	let sicon = member.user.displayAvatarURL();
-	let serverembed = new Discord.MessageEmbed()
-		.setColor("#ff0000")
-		.setThumbnail(sicon)
-		.addField("Here comes a new quester!",`A new member has joined to The VR Gang ${member}`)
-		.addField("Where should i start ?","Read the 📄-rules, and then try running !friendme in the #🤝-friend-me channel!");
-
-	channel.send(serverembed);*/
 }
 
 exports.conf = {
