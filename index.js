@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const  User = require('./database/schemas/User')
 const  Guild = require('./database/schemas/Guild')
 
-const client = new Discord.Client();
+const client = new Discord.Client({partials: ["MESSAGE","REACTION"]});
 
 
 
@@ -34,7 +34,7 @@ client.xpcooldown = {
     time: 15000
 
 }
-
+client.cachedMessageReactions = new Map();
 mongoose.connect(client.config.dbpath, {
     useNewUrlParser: true,
     useUnifiedTopology: true
