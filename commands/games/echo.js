@@ -290,7 +290,7 @@ exports.run = async(client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: ['echovr', 'echoarena', 'echovrml'],
+    aliases: ['echovr', 'echoarena', 'echo'],
     perms: [
 
     ]
@@ -299,7 +299,7 @@ exports.conf = {
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
-    name:"echo",
+    name:"echovrml",
     description: "Returns echo arena vrml stats of a team",
-    usage: "!echo [team / team member]"
+    usage: "!echovrml [team / team member]"
 };

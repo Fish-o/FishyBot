@@ -174,6 +174,41 @@ exports.run = async(client, message, args) => {
             }
         }
 
+        else if(['parkour', 'parcour'].includes(args[1].toLowerCase())){
+            let parkourStats = hp_user_data.parkourCompletions;
+            if(!parkourStats){
+                Embed.setTitle('This user never finished a parkour')
+            } else {
+                Embed.setThumbnail('https://crafatar.com/avatars/' + (hp_user_data.uuid || '') + '?size=100')
+                    .setTitle('Parkour stats: ' + hp_user_data.displayname)
+                    .setURL('https://hypixel.net/player/' + hp_user_data.displayname + '/')
+                    .setColor('#30bb63')
+                    .addField('Rank', (hp_user_data.rank || hp_user_data.packageRank || hp_user_data.newPackageRank || 'None').toString().replace(/_/g, ' '), true)
+                    .addField('Parkours completed',  Object.keys(parkourStats).length || 'Not available', true);
+                    
+                    Object.keys(parkourStats).forEach(parkour_name =>{
+                        let time = 9999999;
+                        parkourStats[parkour_name].forEach(Timing =>{
+                            if(time > Timing.timeTook){
+                                time= Timing.timeTook
+                            }
+
+                        })
+                        let time_obj = moment.duration(time)
+                        Embed.addField(parkour_name, `${time_obj.minutes()}:${time_obj.seconds()}:${time_obj.milliseconds()}`)
+                    })
+
+                
+                
+                let playerGuild;
+
+                if(hp_guild_cache.get(uuid).data.success === true){
+                    playerGuild = hp_guild_cache.get(uuid).data.guild;
+                }
+                Embed.addField('Guild', (playerGuild ? '[' + playerGuild.name + ' [' + (playerGuild.tag||'no tag')  + ']' + '](https://hypixel.net/guilds/' + playerGuild._id + '/)' : 'None'))
+            }
+        }
+
         message.channel.stopTyping();
         message.channel.send(Embed);
     }
@@ -199,6 +234,6 @@ exports.help = {
     name:"hypixel",
     description: `Get hypixel stats:
 !hypixel (user name)
-!hypixel (user name) bedwars/skywars`,
+!hypixel (user name) bedwars/skywars/parkour`,
     usage: "!hypixel"
 };
