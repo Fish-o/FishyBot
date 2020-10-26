@@ -78,30 +78,23 @@ fs.readdir("./commands/", (direrr, dirs) =>{
         return console.log('Unable to scan directory: ' + err);
     }
     console.log(dirs)
-    
-
     // Cycles thru all sub direcoties
     dirs.forEach(dir => {
-
         // Make a path to that subdir
         const path = "./commands/"+dir+"/";
         // Read the contents of that subdir
         fs.readdir(path, (err, files) => {
             if (err) return console.error(err);
-
             // Go thru all files in the subdir
             files.forEach(file => {
                 // Check if they end with .js
                 if (!file.endsWith(".js")) return;
-            
                 // Load the command file
                 let command_file = require(path+file);
                 console.log(`Loading Command: ${command_file.help.name}`);
-                
                 // Set the command file to the client.commands map:
                 // Map {name:command}
                 client.commands.set(command_file.help.name, command_file);
-
                 // Go thru all the aliases listed in the command file
                 command_file.conf.aliases.forEach(alias => {
                     // Asign the aliases to the map
@@ -545,6 +538,8 @@ client.getMember = other.getMember;
 client.sendinfo = function (info){
     client.channels.cache.get('739211875610525746').send(info);
 }
+ 
+
 console.log('Logging on')
 
 
@@ -555,5 +550,9 @@ process.on('SIGTERM', () => {
     client.destroy()
 })
 
+process.on('SIGKILL', () => {
+    client.sendinfo('SIGTERM signal received: stopping bot')
+    client.destroy()
+})
 
 client.login(config.token);

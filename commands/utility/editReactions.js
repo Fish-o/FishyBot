@@ -32,15 +32,26 @@ exports.run = async(client, message, args) => {
                     if(choice.content === "add") {
                         let addMsgPrompt = await channel.send("Please provide all of the emoji names with the role name, one by one, separated with a comma.\ne.g: `🐟, admin`, where the emoji comes first, role name comes second.\nType `done` if you are done");
                         let collectorResult = await handleCollector(fetchedMessage, author, channel, msgModel, args[0]);
-                        MessageModel.findOneAndUpdate ({messageId: fetchedMessage.id},{ emojiRoleMappings: emojiRoleMappings})
+                        await MessageModel.findOneAndUpdate ({messageId: fetchedMessage.id},{ emojiRoleMappings: collectorResult})
                             .catch(err => console.log(err));
+
+
+                        let obj = {};
+                        for (let [k,v] of collectorResult.entries()) {
+                            // We don’t escape the key '__proto__'
+                            // which can cause problems on older engines
+                            obj[k] = v;
+                        }
+                        client.cachedMessageReactions.set(fetchedMessage.id, obj);
                         message.channel.send('The reactions have been added')
                         
                     } 
                     else if(choice.content === "remove" || choice.content === "delete") {
-                        MessageModel.findOneAndDelete ({
+                        await MessageModel.deleteOne({
                             messageId: fetchedMessage.id
                         });
+                        client.cachedMessageReactions.delete(fetchedMessage.id);
+                        fetchedMessage.reactions.removeAll()
                         message.channel.send('The reaction roles have been removed')
                     } else{
                         channel.send('Option not found.')
@@ -64,7 +75,7 @@ exports.run = async(client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    aliases: ['editreaction', 'addreactions', 'addreaction'],
     perms: [
         'ADMINISTRATOR'
     ]
@@ -123,7 +134,15 @@ function handleCollector(fetchedMessage, author, channel, msgModel, messageId) {
                         .then(msg => msg.delete({ timeout: 2000 }))
                         .catch(err => console.log(err));
                     return;
+                } 
+                if(!role.editable){
+                    msg.channel.send("The bot does not have the permissions to assign this role.")
+                        .then(msg => msg.delete({ timeout: 3500 }))
+                        .catch(err => console.log(err));
+                    return;
                 }
+
+
                 if(emoji){
                     fetchedMessage.react(emoji)
                         .catch(err => console.log(err));

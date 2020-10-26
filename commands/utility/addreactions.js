@@ -92,6 +92,16 @@ exports.run = async (client, message, args) =>{
                         dbMsgModel.save()
                             .then(m => console.log(m))
                             .catch(err => console.log(err));
+
+                        let obj = {};
+                        for (let [k,v] of emojiRoleMappings.entries()) {
+                            // We don’t escape the key '__proto__'
+                            // which can cause problems on older engines
+                            obj[k] = v;
+                        }
+                        
+                        client.cachedMessageReactions.set(fetchedMessage.id, obj);
+
                     }
                 });
             }

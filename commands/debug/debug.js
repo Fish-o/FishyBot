@@ -1,6 +1,7 @@
 exports.run = (client, message, args) => {
     //emoji = client.emojis.cache.get('729618946382364783')
     //message.channel.send()
+    console.log(client.cachedMessageReactions)
     console.log(args.join())
 
 }
