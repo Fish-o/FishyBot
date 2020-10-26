@@ -3,11 +3,14 @@ const Enmap = require("enmap");
 const moment  = require("moment");
 
 const fs = require('fs');
+const ms = require("ms");
 
 const mongoose = require('mongoose')
 
 const  User = require('./database/schemas/User')
 const  Guild = require('./database/schemas/Guild')
+
+const Reminder = require('./database/schemas/Reminder');
 
 const client = new Discord.Client({partials: ["MESSAGE","REACTION"]});
 
@@ -134,6 +137,36 @@ fs.readdir("./auto_commands/", (direrr, dirs) =>{
     })
 })
 
+
+let reminderInterval = setInterval(async function () {
+    let time = Date.now();
+    let reminders = await Reminder.find();
+    let to_be_reminded = reminders.filter(reminder => {return reminder.timelenght + reminder.timeStamp <= time});
+    if(to_be_reminded.length > 0){
+        to_be_reminded.forEach( async (reminder) =>{
+            try{
+                let user = client.users.cache.get(reminder.toMention);
+                if(user){
+                    let time_started = new Date(reminder.timeStamp);
+                    let Embed = new Discord.MessageEmbed()
+                        .setTitle('Reminder: '+reminder.message)
+                        .setDescription(`On: ${time_started.toString()}
+For: ${ms(reminder.timelenght)}`);
+
+                    user.send(Embed)
+                }
+            }catch(err){
+                console.log(err)
+                console.log('Error in reminder to user')
+            }
+        })
+        let ids = to_be_reminded.map(function (el) { return el._id; })
+        
+        await Reminder.remove({_id: {$in: ids}})
+    }        
+
+
+},15*1000)
 
 
 
@@ -547,8 +580,9 @@ console.log('Logging on')
 
 
 
-process.on('SIGTERM', () => {
+process.on('SIGTERM', async() => {
     client.sendinfo('SIGTERM signal received: stopping bot')
+    clearInterval(reminderInterval)
     await Promise.all([
         mongoose.connection.close(),
         client.destroy()
@@ -558,6 +592,7 @@ process.on('SIGTERM', () => {
 
 process.on('SIGINT', async () => {
     client.sendinfo('SIGINT signal received: stopping bot')
+    clearInterval(reminderInterval)
     await Promise.all([
         mongoose.connection.close(),
         client.destroy()
