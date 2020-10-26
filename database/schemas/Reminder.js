@@ -4,7 +4,8 @@ const MessageSchema = new mongoose.Schema({
     toMention: { type: String, required: true },
     timeStamp:{ type: Number, require:true },
     timelenght:{ type: Number, require:true },
-    message:{ type: String, require:true, default: "You are being reminded!" }
+    message:{ type: String, require:true, default: "You are being reminded!" },
+    guildName:{type: String, required:false, default:"Not available"}
 });
 
 const MessageModel = module.exports = mongoose.model('reminders', MessageSchema);

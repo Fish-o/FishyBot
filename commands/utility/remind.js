@@ -37,10 +37,11 @@ exports.run = async (client, message, args) => {
             toMention:member.id,
             timeStamp:Date.now(),
             timelenght:lenght,
-            message:args.join(' ')
+            message:args.join(' '),
+            guildName:message.guild.name
         })
         
-    await new_reminder.save().then((err)=>{
+    await new_reminder.save().then((doc, err)=>{
         console.log(err)
     })
 

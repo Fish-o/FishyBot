@@ -151,7 +151,8 @@ let reminderInterval = setInterval(async function () {
                     let Embed = new Discord.MessageEmbed()
                         .setTitle('Reminder: '+reminder.message)
                         .setDescription(`On: ${time_started.toString()}
-For: ${ms(reminder.timelenght)}`);
+For: ${ms(reminder.timelenght)}
+In: ${reminder.guildName}`);
 
                     user.send(Embed)
                 }
