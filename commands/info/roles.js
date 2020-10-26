@@ -15,7 +15,7 @@ exports.run = (client, message, args) => {
             }
         }
 
-        let sortedRole = Array.from(RoleCache.values()).sort(compare);
+        let sortedRole = Array.from(RoleCache.values()).sort(compare).reverse();
         
         let Text = ``
         sortedRole.forEach(role => {
