@@ -32,6 +32,16 @@ exports.run = async (client, message, args) => {
 
 
         let color = "#5555ff";
+
+        let catstext = ""
+        Object.keys(cats).forEach(cat => {
+            if(client.config.features.includes(cat)){
+                catstext+= cat+ '** (PREMIUM)\n**'
+            }else{
+                catstext+= cat+ '**\n**'
+            }
+        })
+        catstext = catstext.slice(0, catstext.length-2)
         const InfoEmbed = new Discord.MessageEmbed()
         .setColor(color)
         .setAuthor(client.user.tag, client.user.displayAvatarURL(), 'https://fishman.live/')
@@ -39,7 +49,7 @@ exports.run = async (client, message, args) => {
         .setDescription(
 `This is the [FishyBot](https://fishman.live) help page.
 There are ${Object.keys(cats).length} categories:
-**${Object.keys(cats).join('**\n**')}**
+**${catstext}
 To get more info about a specific category type \`!help (category name)\`.
 To get more info about a specific command, type \`!help (command name)\`
 
@@ -137,11 +147,14 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
                     color = '#c90000'
                 }
                 
-                
+                let premium = '';
+                if(client.config.features.includes(cat)){
+                    premium = " (PREMIUM)"
+                }
                 const CatEmbed = new Discord.MessageEmbed()
                 .setColor(color)
                 .setAuthor(client.user.tag, client.user.displayAvatarURL(), 'https://fishman.live/')
-                .setTitle('Help for: '+ jsUcfirst(cat));
+                .setTitle('Help for: '+ jsUcfirst(cat) +premium);
                 
                 
                 
@@ -161,7 +174,9 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
                     CatEmbed.setDescription('Just stuff that didnt fit nicely in any other categories, try some out')
                 }else if(cat == 'usercommands'){
                     CatEmbed.setDescription('Commands in the usercommands category allow members to add data like usernames and region data to their account.')
-                } else {
+                } else if(cat == 'utility'){
+                    CatEmbed.setDescription('Utility commands are all round usefull commands to have')
+                }else {
                     CatEmbed.setDescription('Nameless category')
                 }
 
