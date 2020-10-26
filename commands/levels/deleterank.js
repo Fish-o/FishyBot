@@ -89,5 +89,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"deleterank",
     description: "Lets an admin reset a users rank",
-    usage: "f!deleterank (member)"
+    usage: "deleterank (member)"
 };

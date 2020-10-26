@@ -65,5 +65,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"roles",
     description: "Displays all roles of the server, and lets you see specific perms of a single roleS",
-    usage: "f!roles (role)"
+    usage: "roles (role)"
 };

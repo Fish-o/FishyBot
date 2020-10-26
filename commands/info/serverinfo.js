@@ -182,5 +182,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"serverinfo",
     description: "Gives the info of the server",
-    usage: "f!serverinfo"
+    usage: "serverinfo"
 };

@@ -41,5 +41,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"deletetrack",
     description: "Deletes a track",
-    usage: "f!deletetrack (track number)"
+    usage: "deletetrack (track number)"
 };

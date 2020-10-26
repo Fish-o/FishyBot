@@ -17,5 +17,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"avatar",
     description: "get the url of a persons avatar",
-    usage: "f!avatar [user]"
+    usage: "avatar [user]"
 };

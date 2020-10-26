@@ -25,7 +25,7 @@ exports.run = async(client, message, args) => {
                 client.emit('msgDocFetched', msgModel);
                 // Prompt the user for configurations.
                 let filter = m => m.author.id === author.id && (m.content.toLowerCase() === 'add' || m.content.toLowerCase() === 'remove' || m.content.toLowerCase() === 'delete');
-                let tempMsg = channel.send("Do you want to add a emoji role pair or want to remove the configuration? Type add or remove");
+                let tempMsg = channel.send("Do you want to add a emoji role pair or want to remove the configuration? Type `add` or `remove`");
                 try {
                     let awaitMsgOps = { max: 1, time: 4000, errors: ['time'] };
                     let choice = (await channel.awaitMessages(filter, awaitMsgOps)).first();
@@ -54,7 +54,7 @@ exports.run = async(client, message, args) => {
                         fetchedMessage.reactions.removeAll()
                         message.channel.send('The reaction roles have been removed')
                     } else{
-                        channel.send('Option not found.')
+                        message.channel.send('Option not found.')
                     }
                 }
                 catch(err) {
@@ -86,7 +86,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"editreactions",
     description: "Edits the role reaction configuration",
-    usage: "f!editreactions (message id)"
+    usage: "editreactions (message id)"
 };
 
 

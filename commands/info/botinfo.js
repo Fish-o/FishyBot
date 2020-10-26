@@ -61,5 +61,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"botinfo",
     description: "Gives the info of the bot",
-    usage: "f!botinfo"
+    usage: "botinfo"
 };

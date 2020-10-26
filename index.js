@@ -536,7 +536,9 @@ const other = require("./utils/other");
 client.getMember = other.getMember;
 
 client.sendinfo = function (info){
-    client.channels.cache.get('739211875610525746').send(info);
+    if(client.config.infochannel){
+        client.channels.cache.get(client.config.infochannel).send(info);
+    }
 }
  
 

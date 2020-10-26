@@ -21,5 +21,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"lvlspam",
     description: "Set the level spam to a specified channel",
-    usage: "f!lvlspam (channel mention)"
+    usage: "lvlspam (channel mention)"
 };

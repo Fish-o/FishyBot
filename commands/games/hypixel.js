@@ -235,5 +235,5 @@ exports.help = {
     description: `Get hypixel stats:
 !hypixel (user name)
 !hypixel (user name) bedwars/skywars/parkour`,
-    usage: "f!hypixel"
+    usage: "hypixel"
 };

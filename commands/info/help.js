@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
         let cats = {};
         client.commands.forEach(c=>{if(c.help.category != 'debug'){if(!cats[c.help.category]){cats[c.help.category] = []} cats[c.help.category].push({  name:c.help.name,
                                                                                                                                                         desc:c.help.description,
-                                                                                                                                                        usage:c.help.usage})}})
+                                                                                                                                                        usage:client.config.prefix+c.help.usage})}})
         cats=sortOnKeys(cats)
 
 
@@ -92,7 +92,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
         let cats = {};
         client.commands.forEach(c=>{if(c.help.category != 'debug'){if(!cats[c.help.category]){cats[c.help.category] = []} cats[c.help.category].push({  name:c.help.name,
                                                                                                                                                         desc:c.help.description,
-                                                                                                                                                        usage:c.help.usage})}})
+                                                                                                                                                        usage:client.config.prefix+c.help.usage})}})
         cats=sortOnKeys(cats)
         let command = args[0];
         if(client.commands.has(command)) {
@@ -114,7 +114,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
             .setTitle(`Help for: ${help_command_obj.help.name}`)
             .addField('Name and aliases',`\`${help_command_obj.help.name}\`, \`${help_command_obj.conf.aliases.join('\`, \`')}\``)
             .addField('Description', help_command_obj.help.description)
-            .addField('Usage', help_command_obj.help.usage)
+            .addField('Usage', client.config.prefix+help_command_obj.help.usage)
             .addField('Required permisions', perms);
             message.channel.send(CommandEmbed);
             
@@ -185,5 +185,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"help",
     description: "Shows the help page of any command, or a list of commands",
-	usage: "f!help [command / category]"
+	usage: "help [command / category]"
 };

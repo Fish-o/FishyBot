@@ -57,5 +57,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"cat",
     description: "Shows a catto",
-    usage: "f!cat"
+    usage: "cat"
 };

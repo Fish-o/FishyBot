@@ -86,5 +86,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"playtube",
     description: "Play a music from youtube",
-    usage: "f!playtube (youtube url)"
+    usage: "playtube (youtube url)"
 };

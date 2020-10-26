@@ -131,5 +131,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"addreactions",
     description: "Enables a message to listen to reactions to give roles.",
-    usage: "f!addreactions (message id)"
+    usage: "addreactions (message id)"
 };

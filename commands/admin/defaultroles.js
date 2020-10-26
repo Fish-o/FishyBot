@@ -81,6 +81,6 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"defaultrole",
     description: "Set a default role. Default roles will be aplied to people who join.",
-    usage: "f!defaultrole list/clear/add/set (role) "
+    usage: "defaultrole list/clear/add/set (role) "
 };
 

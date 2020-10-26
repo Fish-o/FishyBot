@@ -47,5 +47,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"addrole",
     description: "Adds a role to a specific user",
-    usage: "f!addrole [user] [role]"
+    usage: "addrole [user] [role]"
 };

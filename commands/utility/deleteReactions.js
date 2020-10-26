@@ -56,7 +56,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"deletereactions",
     description: "Remove all reaction roles from a message",
-    usage: "f!deletereactions (message id)"
+    usage: "deletereactions (message id)"
 };
 
 

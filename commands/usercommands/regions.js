@@ -91,5 +91,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"region",
     description: "Saves your region, so other people can see it with !userinfo",
-    usage: "f!region"
+    usage: "region"
 };

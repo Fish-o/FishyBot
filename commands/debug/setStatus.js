@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-    if(message.author.id !== '325893549071663104') return message.channel.send("Oops looks like you dont have the right permissions :(");
+    if(message.author.id !== client.config.master) return message.channel.send("Oops looks like you dont have the right permissions :(");
     let activity = args[0]
     args.shift();
     client.user.setActivity(args.join(' '), {type: activity})

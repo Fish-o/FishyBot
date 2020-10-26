@@ -60,7 +60,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"membercount",
     description: "Shows how many members your server has!",
-    usage: "f!membercount [on/off] [#channel]"
+    usage: "membercount [on/off] [#channel]"
 };
 
 /*

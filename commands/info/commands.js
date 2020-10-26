@@ -38,7 +38,7 @@ exports.run = (client, message, args) => {
             if(c.help.category != 'debug'){
                 cats[c.help.category].push({name:c.help.name,
                                             desc:c.help.description,
-                                            usage:c.help.usage})
+                                            usage:client.config.prefix+c.help.usage})
             }
         })
         cats=sortOnKeys(cats)
@@ -66,12 +66,12 @@ exports.run = (client, message, args) => {
         commands_string
 
 
-		message.channel.send(`[FishyBot](https://discord.com/users/325893549071663104/)\n\n${index_string} ${commands_string}`, {code: "markdown"});
+		message.channel.send(`[FishyBot](https://discord.com/users/${client.config.master}/)\n\n${index_string} ${commands_string}`, {code: "markdown"});
 	} else {
 	  let command = args[0];
 	  if(client.commands.has(command)) {
 		command = client.commands.get(command);
-		message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}`, {code: "asciidoc"});
+		message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${client.config.prefix+command.help.usage}`, {code: "asciidoc"});
 	  }
 	}
 
@@ -89,5 +89,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"commands",
     description: "Shows a list of all commands",
-	usage: "f!commands"
+	usage: "commands"
 };

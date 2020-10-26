@@ -46,5 +46,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"dog",
     description: "Shows a cute doggo",
-    usage: "f!dog"
+    usage: "dog"
 };

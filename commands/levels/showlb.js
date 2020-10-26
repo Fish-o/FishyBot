@@ -114,5 +114,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"leaderboard",
     description: "Shows the xp leaderboard of the server",
-    usage: "f!leaderboard"
+    usage: "leaderboard"
 };

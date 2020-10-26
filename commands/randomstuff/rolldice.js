@@ -25,5 +25,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"rolldice",
     description: "Roll a dice",
-    usage: "f!rolldice"
+    usage: "rolldice"
 };

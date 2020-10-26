@@ -301,5 +301,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"echovrml",
     description: "Returns echo arena vrml stats of a team",
-    usage: "f!echovrml [team / team member]"
+    usage: "echovrml [team / team member]"
 };

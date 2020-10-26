@@ -50,5 +50,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"removerole",
     description: "Remove a role from an user",
-    usage: "f!removerole [user] [role]"
+    usage: "removerole [user] [role]"
 };

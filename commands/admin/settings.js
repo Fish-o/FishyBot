@@ -12,7 +12,7 @@ exports.run = async (client, message, args) => {
     var guildID = message.guild.id;
     
     auto_commands = ['dadjokes']
-    if(command == 'global' && message.author.id == '325893549071663104'){
+    if(command == 'global' && message.author.id == client.config.master){
         const locate_string = "settings."+action
         let guilds = client.guilds.cache
         guilds.forEach(guild =>{
@@ -131,5 +131,5 @@ exports.help = {
     dadjokes
         its stupid ik
     `,
-    usage: "f!settings [setting/list] [off/on]"
+    usage: "settings [setting/list] [off/on]"
 };

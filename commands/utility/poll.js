@@ -85,5 +85,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"poll",
     description: "Start a poll",
-    usage: "f!poll (time) (text)"
+    usage: "poll (time) (text)"
 };

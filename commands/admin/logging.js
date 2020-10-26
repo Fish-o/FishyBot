@@ -82,7 +82,7 @@ GuildMemberUpdate:
 messageDelete
 
 more will be added over time.`,
-    usage: "f!log [channel / 'off']"
+    usage: "log [channel / 'off']"
 };
 
 
