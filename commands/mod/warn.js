@@ -21,9 +21,7 @@ exports.run = async (client, message, args) => {
     }
     const time_utc = new Date().getTime();
 
-	if(!message.member.hasPermission("MANAGE_MESSAGES") && message.author.id !== '325893549071663104'){
-        return message.channel.send("You don't have the permissions to use this command!");
-    }
+
 
     var bad_person;
     if(!getUserFromMention(args[0])){return message.channel.send('Please mention a user')}
@@ -150,5 +148,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"warn",
     description: "Warns the user in chat and safes the warning, command includes: 'add', 'list' and 'removeall'",
-    usage: "!warn user [action (if none then add)] [reason]"
+    usage: "warn user [action (if none then add)] [reason]"
   };

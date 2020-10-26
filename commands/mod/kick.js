@@ -34,5 +34,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"kick",
     description: "Kick a user from the server.",
-    usage: "!kick [user] [reason]"
+    usage: "kick [user] [reason]"
 };

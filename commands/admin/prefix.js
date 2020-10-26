@@ -30,5 +30,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"prefix",
     description: "Change the prefix",
-    usage: "!prefix [new prefix]"
+    usage: "prefix [new prefix]"
 };

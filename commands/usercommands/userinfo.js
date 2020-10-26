@@ -144,5 +144,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"userinfo",
     description: "Shows the info of a user, including any saved usernames",
-    usage: "!userinfo [user]"
+    usage: "userinfo [user]"
 };

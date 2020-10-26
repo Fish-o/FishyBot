@@ -51,5 +51,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"say",
     description: "Lets the bot say a message in chat",
-    usage: "!say [text]"
+    usage: "say [text]"
 };

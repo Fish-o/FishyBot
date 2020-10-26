@@ -1,5 +1,5 @@
 exports.run = (client, message, args) => {
-    if(message.author.id !== '325893549071663104'){return message.channel.send('1-800-273-8255')}
+    if(message.author.id !== client.config.master){return message.channel.send('1-800-273-8255')}
     message.channel.send('Goodbey cruel world')
     message.guild.leave();
 }
@@ -16,5 +16,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"suicide",
     description: "NO DONT DO IT, YOU HAVE SO MUCH TO LIVE FOR",
-    usage: "!suicide"
+    usage: "suicide"
 };

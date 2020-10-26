@@ -23,5 +23,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"join",
     description: "Joins a voice channel",
-    usage: "!join"
+    usage: "join"
 };

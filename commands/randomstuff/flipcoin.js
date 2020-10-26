@@ -22,5 +22,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"flipcoin",
     description: "Flip a coin",
-    usage: "!flipcoin"
+    usage: "flipcoin"
 };

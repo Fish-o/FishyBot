@@ -37,5 +37,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"nowplaying",
     description: "Shows what track is playing",
-    usage: "!nowplaying"
+    usage: "nowplaying"
 };

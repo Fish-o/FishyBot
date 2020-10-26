@@ -14,7 +14,7 @@ exports.event = async (client, message) =>{
     // Recaching if the time since it was last cached is shorter then recache_time
     const utc_time = new Date().getTime()
     const recache_time = 5 * 1000
-    if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == '325893549071663104') || Math.random()<0.1){
+    if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == client.config.master) || Math.random()<0.1){
         
         // Updating member count
         cache.data.forEach(cache_guild => {

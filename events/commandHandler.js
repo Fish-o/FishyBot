@@ -338,7 +338,7 @@ var very_good_name = async function(client, message) {
 
 
         var succes = true;
-        if(!client.bypass || message.author.id !== '325893549071663104'){
+        if(!client.bypass || message.author.id !== client.config.master){
             cmd.conf.perms.forEach(permision => {
                 try{
                     if(!message.member.hasPermission(permision)){succes = false;}

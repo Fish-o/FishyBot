@@ -43,5 +43,6 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"spam",
     description: "Sends a random amount of messages to the user who called it in dm's",
-    usage: "!spam"
+    usage: "spam"
 };
+

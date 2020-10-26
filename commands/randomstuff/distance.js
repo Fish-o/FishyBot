@@ -35,5 +35,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"distance",
     description: "Gives distance between 2 coardinates",
-    usage: "!distance [latitude1] [longitude1] [latitude2] [longitude2]"
+    usage: "distance [latitude1] [longitude1] [latitude2] [longitude2]"
 };

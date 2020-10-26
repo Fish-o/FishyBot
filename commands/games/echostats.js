@@ -131,5 +131,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"echostats",
     description: "Get a users echo stats",
-    usage: "!stats [player]"
+    usage: "stats [player]"
 };

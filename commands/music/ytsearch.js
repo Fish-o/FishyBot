@@ -53,5 +53,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"ytsearch",
     description: "Search on youtubefor a song",
-    usage: "!ytsearch (query)"
+    usage: "ytsearch (query)"
 };

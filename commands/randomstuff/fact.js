@@ -43,7 +43,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"fact",
     description: "Shows a random fact",
-    usage: "!fact"
+    usage: "fact"
 };
         
 

@@ -26,5 +26,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"volume",
     description: "Change the volume of the music",
-    usage: "!volume (0-200)"
+    usage: "volume (0-200)"
 };

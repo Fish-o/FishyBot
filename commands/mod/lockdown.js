@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 
 exports.run = (client, message, args) => {
     var splitter = new GraphemeSplitter();
-    if(!message.member.hasPermission("MANAGE_MESSAGES") && message.author.id !== '325893549071663104'){
+    if(!message.member.hasPermission("MANAGE_MESSAGES") && message.author.id !== client.config.master){
         return message.channel.send("You don't have the permissions to use this command!");
     }
     var channel = message.mentions.channels.first()
@@ -51,7 +51,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"lockdown",
     description: "Locks the channel where the command was run down",
-    usage: "!lockdown"
+    usage: "lockdown"
 };
 
 

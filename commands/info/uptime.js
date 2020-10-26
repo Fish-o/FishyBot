@@ -53,5 +53,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"uptime",
     description: "Gives the time the bot has been online for",
-    usage: "!uptime"
+    usage: "uptime"
 };
