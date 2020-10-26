@@ -54,5 +54,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"ban",
     description: "Ban a user from the server",
-    usage: "!ban [user] [reason]"
+    usage: "f!ban [user] [reason]"
 };

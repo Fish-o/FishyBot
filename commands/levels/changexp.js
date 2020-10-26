@@ -136,5 +136,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"addxp",
     description: "Lets an admin add xp to a user",
-    usage: "!addxp (member) (amount)"
+    usage: "f!addxp (member) (amount)"
 };

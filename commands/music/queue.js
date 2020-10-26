@@ -40,5 +40,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"queue",
     description: "Shows the queue",
-    usage: "!queue"
+    usage: "f!queue"
 };

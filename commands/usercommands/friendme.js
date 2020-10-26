@@ -94,5 +94,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"friendme",
     description: "Saves your usernames, so other people can see it with !userinfo",
-    usage: "!friendme"
+    usage: "f!friendme"
 };

@@ -64,5 +64,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name: "mute",
   description: "Mute a user for a specific amount of time",
-  usage: "!mute [user] [time]"
+  usage: "f!mute [user] [time]"
 };

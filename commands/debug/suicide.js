@@ -16,5 +16,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"suicide",
     description: "NO DONT DO IT, YOU HAVE SO MUCH TO LIVE FOR",
-    usage: "!suicide"
+    usage: "f!suicide"
 };

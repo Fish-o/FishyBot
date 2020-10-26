@@ -47,7 +47,7 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"unlock",
     description: "unlocks the channel where the command was run down",
-    usage: "!unlockdown"
+    usage: "f!unlockdown"
 };
 
 

@@ -19,7 +19,7 @@ exports.run = async (client, message, args) =>{
         try {
             let fetchedMessage = await message.channel.messages.fetch(args[0]);
             if(fetchedMessage) {
-                await message.channel.send("Please provide all of the emoji names with the role name, one by one, separated with a comma.\ne.g: `:fish:, admin`, where the emoji comes first, role name comes second.\nType `done` if you are done");
+                await message.channel.send("Please provide all of the emoji names with the role name, one by one, separated with a comma.\ne.g: `🐟, admin`, where the emoji comes first, role name comes second.\nType `done` if you are done");
                 let collector = new MessageCollector(message.channel, msgCollectorFilter.bind(null, message));
                 let emojiRoleMappings = new Map();
                 collector.on('collect', msg => {
@@ -31,7 +31,6 @@ exports.run = async (client, message, args) =>{
                     let [ emojiText, roleName ] = msg.content.split(/,\s+/);
                     if(!emojiText && !roleName) return;
                     let custom_regex = /<:[a-zA-Z0-9]+:(\d+)>/
-                    console.log(emojiText)
                     let emoji;
                     if(custom_regex.test(emojiText)){
                         console.log('Custom emoji')
@@ -122,5 +121,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"addreactions",
     description: "Enables a message to listen to reactions to give roles.",
-    usage: "!addreactions (message id)"
+    usage: "f!addreactions (message id)"
 };

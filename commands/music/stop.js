@@ -20,5 +20,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"stop",
     description: "Leaves the voice channel",
-    usage: "!stop"
+    usage: "f!stop"
 };

@@ -16,5 +16,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"ping",
     description: "Ping the bot",
-    usage: "!ping"
+    usage: "f!ping"
 };

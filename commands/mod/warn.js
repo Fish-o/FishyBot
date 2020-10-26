@@ -150,5 +150,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"warn",
     description: "Warns the user in chat and safes the warning, command includes: 'add', 'list' and 'removeall'",
-    usage: "!warn user [action (if none then add)] [reason]"
+    usage: "f!warn user [action (if none then add)] [reason]"
   };

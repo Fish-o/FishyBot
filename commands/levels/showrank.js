@@ -140,5 +140,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"rank",
     description: "Shows the rank and xp of a given user",
-    usage: "!rank (user)"
+    usage: "f!rank (user)"
 };

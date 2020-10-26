@@ -30,5 +30,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name: "purge",
   description: "Delete an amount of messages",
-  usage: "!purge [number]"
+  usage: "f!purge [number]"
 };

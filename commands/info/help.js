@@ -185,5 +185,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"help",
     description: "Shows the help page of any command, or a list of commands",
-	usage: "!help [command / category]"
+	usage: "f!help [command / category]"
 };

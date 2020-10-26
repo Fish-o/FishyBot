@@ -131,5 +131,5 @@ exports.help = {
     dadjokes
         its stupid ik
     `,
-    usage: "!settings [setting/list] [off/on]"
+    usage: "f!settings [setting/list] [off/on]"
 };

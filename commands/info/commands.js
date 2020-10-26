@@ -89,5 +89,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"commands",
     description: "Shows a list of all commands",
-	usage: "!commands"
+	usage: "f!commands"
 };

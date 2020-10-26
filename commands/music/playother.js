@@ -39,5 +39,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"playother",
     description: "use to play any other audio using an url",
-    usage: "!playother (audio url)"
+    usage: "f!playother (audio url)"
 };

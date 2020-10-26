@@ -306,5 +306,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"onward",
     description: "Returns onward vrml stats of a team",
-    usage: "!onward [team / team member]"
+    usage: "f!onward [team / team member]"
 };

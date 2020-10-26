@@ -53,5 +53,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"skip",
     description: "Skips the current song",
-    usage: "!skip"
+    usage: "f!skip"
 };

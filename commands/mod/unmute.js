@@ -54,5 +54,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name: "unmute",
   description: "Unmute a user",
-  usage: "!unmute [user]"
+  usage: "f!unmute [user]"
 };

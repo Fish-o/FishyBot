@@ -323,5 +323,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"joinmsg",
     description: "Allows you to add remove or view a join embed or message.\nFor easely adding a join message, use the generator on: https://fishman.live/",
-    usage: "!joinmsg [view/embed/remove/message]"
+    usage: "f!joinmsg [view/embed/remove/message]"
 };

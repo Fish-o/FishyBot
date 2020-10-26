@@ -37,5 +37,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"resume",
     description: "Resumes paused music",
-    usage: "!resume"
+    usage: "f!resume"
 };

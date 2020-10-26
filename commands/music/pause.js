@@ -35,5 +35,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"pause",
     description: "Pauses the music",
-    usage: "!pause"
+    usage: "f!pause"
 };

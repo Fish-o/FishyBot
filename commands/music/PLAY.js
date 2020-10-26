@@ -61,5 +61,5 @@ exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"play",
     description: "A universal play command",
-    usage: "!play (yt url / audio url / yt search qeuery)"
+    usage: "f!play (yt url / audio url / yt search qeuery)"
 };
