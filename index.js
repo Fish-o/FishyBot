@@ -549,17 +549,19 @@ console.log('Logging on')
 
 process.on('SIGTERM', () => {
     client.sendinfo('SIGTERM signal received: stopping bot')
-    Promise.all([
+    await Promise.all([
         mongoose.connection.close(),
         client.destroy()
     ])
+    process.exit()
 })
 
 process.on('SIGINT', async () => {
     client.sendinfo('SIGINT signal received: stopping bot')
-    Promise.all([
+    await Promise.all([
         mongoose.connection.close(),
         client.destroy()
     ])
+    process.exit()
 })
 client.login(config.token);
