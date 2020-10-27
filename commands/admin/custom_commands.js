@@ -129,7 +129,7 @@ exports.run = async function (client, message, args) {
                     message.channel.send('Could not find the command')
                 } else{
                     const locate = "custom_commands."+name;
-                    const value = {[locate]:undefined};
+                    const value = {$unset: {[locate]:""}};
                     client.updatedb(client, {id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
                     return;
                 }
