@@ -222,6 +222,8 @@ var very_good_name = async function(client, message) {
             asyncForEach(Object.keys(guild_custom_commands), async (guild_custom_command) => {
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
+                if(!response)
+                    return;
                 let isRegex = true;
                 try {
                     new RegExp(test);
