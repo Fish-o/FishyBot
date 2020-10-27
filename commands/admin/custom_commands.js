@@ -20,7 +20,7 @@ output
 
 
 */
-
+const fs = require('fs')
 const Discord = require('discord.js');
 exports.run = async function (client, message, args) {
     let action = 'new';
@@ -102,6 +102,7 @@ exports.run = async function (client, message, args) {
             }
         }else return message.channel.send('That command name is invalid!');
     } else if(action == 'data'){
+        
         const obj = JSON.parse(args.join(' '))
         if(!obj.a || !Array.isArray(obj.b)){
             return message.channel.send('That json is invalid!')
