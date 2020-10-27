@@ -217,12 +217,17 @@ var very_good_name = async function(client, message) {
             }
             var msg = message.content;
            
-
+            console.log('guild_custom_commands:')
+            console.log(guild_custom_commands)
             
-            asyncForEach(Object.keys(guild_custom_commands), async (guild_custom_command) => {
+
+
+            Object.keys(guild_custom_commands).forEach( async (guild_custom_command) => {
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
-                if(!response)
+                console.log('Responses:')
+                console.log(responses)
+                if(!responses[0])
                     return;
                 let isRegex = true;
                 try {
@@ -232,6 +237,7 @@ var very_good_name = async function(client, message) {
                 }
                 if(isRegex) {
                     var response = responses[Math.floor(Math.random() * responses.length)];
+                    console.log(response)
                     var test_regex = new RegExp(test, 'g');
                 
                     var result = msg.match(test_regex);
