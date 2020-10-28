@@ -12,7 +12,7 @@ const  Guild = require('./database/schemas/Guild')
 
 const Reminder = require('./database/schemas/Reminder');
 
-const client = new Discord.Client({partials: ["MESSAGE","REACTION"]});
+const client = new Discord.Client({partials: ["MESSAGE","REACTION"], ws: { intents: Discord.Intents.ALL } });
 
 
 
