@@ -6,16 +6,16 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develope ]
     
   pull_request:
-    branches: [ master ]
+    branches: [ develope ]
 
 
 jobs:
-  build:
+  deploy:
 
-    runs-on: google 
+    runs-on: FishyBotTest 
 
     strategy:
       matrix:
@@ -23,10 +23,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v1
+      with:
+        envkey_DBPATH:  ${{ secrets.DBPATH }}
+        envkey_OLDDBPATH:  ${{ secrets.OLDDBPATH }}
+        envkey_TOKEN: ${{ secrets.TOKEN }}
+        envkey_prefix: f!
+        
+        envkey_igniteapi: ${{ secrets.igniteapi }}
+        envkey_CAT_TOKEN: ${{ secrets.CAT_TOKEN }}
+        envkey_HYPIXELTOKEN: ${{ secrets.HYPIXELTOKEN }}
+
     - run: npm i
     - run: npm run build --if-present
-    - run: pm2 restart index
+    - run: pm2 restart FishyBotTest
