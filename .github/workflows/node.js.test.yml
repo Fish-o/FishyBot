@@ -37,7 +37,7 @@ jobs:
         envkey_TOKEN: ${{ secrets.TOKEN }}
         envkey_prefix: f!
         
-        envkey_igniteapi: ${{ secrets.igniteapi }}
+        envkey_igniteapi: ${{ secrets.IGNITEAPI }}
         envkey_CAT_TOKEN: ${{ secrets.CAT_TOKEN }}
         envkey_HYPIXELTOKEN: ${{ secrets.HYPIXELTOKEN }}
 
