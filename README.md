@@ -5,6 +5,17 @@
 
 A crappy discord bot
 
+
+To run the bot yourself, you will need a .env file in the root of the project with in it:
+```
+TOKEN=your discord bot client token
+DBPATH=the path to a mongodb database
+```
+To make use of all features, also add this:
+```
+wip
+```
+
 A basic command example:
 ```js
 exports.run = (client, message, args) => { 	// The args are formed like this:
@@ -36,4 +47,18 @@ exports.help = {
 	usage:  "!ping"					// Simple guide on how to use 
 							//the command
 };
+```
+
+
+Events are strutured like this:
+```js
+exports.event = (client, event specific args) =>
+	// Code that should be run on the event
+};
+
+
+exports.conf = {
+    event: "event name" // https://discord.js.org/#/docs/main/stable/typedef/WSEventType
+};
+
 ```
