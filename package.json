@@ -13,7 +13,6 @@
         "chartjs-node-canvas": "*",
         "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
-        "enmap": "^5.4.1",
         "geolib": "^3.3.1",
         "grapheme-splitter": "^1.0.4",
 
