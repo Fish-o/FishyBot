@@ -28,13 +28,22 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    
-    
-      
-    - uses: "finnp/create-file-action@master"
-      env:
-        FILE_NAME: ".env"
-        FILE_DATA: "DBPATH=${{ secrets.DBPATH }}\nOLDDBPATH=${{ secrets.OLDDBPATH }}\nTOKEN=${{ secrets.TOKEN }}\nprefix=f!\nigniteapi=${{ secrets.IGNITEAPI }}\nCAT_TOKEN=${{ secrets.CAT_TOKEN }}\nHYPIXELTOKEN=${{ secrets.HYPIXELTOKEN }}"
+        
+    - name: Create .env file
+      # You may pin to the exact commit or the version.
+      # uses: SpicyPizza/create-envfile@68bc962e171da964dea0d34ca817dd5f246a8f53
+      uses: SpicyPizza/create-envfile@v1.0
+      with:
+
+        envkey_DBPATH:  ${{ secrets.DBPATH }}
+        envkey_OLDDBPATH:  ${{ secrets.OLDDBPATH }}
+        envkey_TOKEN: ${{ secrets.TOKEN }}
+        envkey_prefix: t!
+        
+        envkey_igniteapi: ${{ secrets.IGNITEAPI }}
+        envkey_CAT_TOKEN: ${{ secrets.CAT_TOKEN }}
+        envkey_HYPIXELTOKEN: ${{ secrets.HYPIXELTOKEN }}
+
     - run: npm i
     - run: npm run build --if-present
     - run: pm2 restart FishyBotTest
