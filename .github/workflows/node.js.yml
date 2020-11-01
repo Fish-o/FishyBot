@@ -15,7 +15,7 @@ on:
 jobs:
   deploy:
 
-    runs-on: FishyBotTest 
+    runs-on: FishyBot2 
 
     strategy:
       matrix:
@@ -37,8 +37,8 @@ jobs:
 
         envkey_DBPATH:  ${{ secrets.DBPATH }}
         envkey_OLDDBPATH:  ${{ secrets.OLDDBPATH }}
-        envkey_TOKEN: ${{ secrets.TESTTOKEN }}
-        envkey_prefix: t!
+        envkey_TOKEN: ${{ secrets.TOKEN }}
+        envkey_prefix: r!
         
         envkey_igniteapi: ${{ secrets.IGNITEAPI }}
         envkey_CAT_TOKEN: ${{ secrets.CAT_TOKEN }}
@@ -46,4 +46,4 @@ jobs:
 
     - run: npm i
     - run: npm run build --if-present
-    - run: pm2 restart FishyBotTest
+    
