@@ -1,4 +1,6 @@
 .env
+package-lock.json
+
 
 jsonFiles/cache.json
 jsonFiles/cache/stats/*

@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const Enmap = require("enmap");
 const moment  = require("moment");
 
 const fs = require('fs');

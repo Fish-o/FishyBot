@@ -6,16 +6,16 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ develope ]
+    branches: [ master ]
     
   pull_request:
-    branches: [ develope ]
+    branches: [ master ]
 
 
 jobs:
   deploy:
 
-    runs-on: FishyBotTest 
+    runs-on: FishyBot2 
 
     strategy:
       matrix:
@@ -37,8 +37,8 @@ jobs:
 
         envkey_DBPATH:  ${{ secrets.DBPATH }}
         envkey_OLDDBPATH:  ${{ secrets.OLDDBPATH }}
-        envkey_TOKEN: ${{ secrets.TESTTOKEN }}
-        envkey_prefix: t!
+        envkey_TOKEN: ${{ secrets.TOKEN }}
+        envkey_prefix: f!
         
         envkey_igniteapi: ${{ secrets.IGNITEAPI }}
         envkey_CAT_TOKEN: ${{ secrets.CAT_TOKEN }}
@@ -46,4 +46,5 @@ jobs:
 
     - run: npm i
     - run: npm run build --if-present
-    - run: pm2 restart FishyBotTest
+    - run: pm2 restart FishyBot2
+    
