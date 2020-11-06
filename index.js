@@ -25,7 +25,7 @@ config.OLDDBPATH = process.env.OLDDBPATH
 if(process.env.prefix){
     config.prefix = process.env.prefix;
 }
-config.igniteapi = process.env.igniteapi;
+config.igniteapi = process.env.IGNITEAPI;
 
 client.config = config;
 const rawdata = fs.readFileSync(__dirname + '/jsonFiles/emojis.json');
