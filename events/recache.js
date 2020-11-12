@@ -1,3 +1,5 @@
+
+
 exports.event = async (client, message) =>{
     // Getting cache
     var cache_raw = null;
@@ -17,7 +19,7 @@ exports.event = async (client, message) =>{
     if(cache.timestamp+recache_time <= utc_time || (message.content == 'recache' && message.author.id == client.config.master) || Math.random()<0.1){
         
         // Updating member count
-        cache.data.forEach(cache_guild => {
+        /*cache.data.forEach(cache_guild => {
             if(cache_guild.member_count_channel){
                 try{
                     let guild_count = client.guilds.cache.find(search_guild => search_guild.id == cache_guild.id)
@@ -34,7 +36,7 @@ exports.event = async (client, message) =>{
                     message.channel.send('An error has occurred')
                 }
             }
-        })
+        })*/
         // Recaching
     }
 }

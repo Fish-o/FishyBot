@@ -23,7 +23,7 @@ config.token = process.env.TOKEN
 config.dbpath = process.env.DBPATH
 config.OLDDBPATH = process.env.OLDDBPATH
 if(process.env.prefix){
-    config.prefix = process.env.prefix;
+    config.prefix = process.env.PREFIX;
 }
 config.igniteapi = process.env.IGNITEAPI;
 
@@ -557,6 +557,7 @@ events.ban
 
 const dbtools = require("./utils/dbtools");
 
+client.getDbGuild = dbtools.getDbGuild;
 client.updatedb = dbtools.updatedb;
 client.recache = dbtools.recache;
 client.dbgetuser = dbtools.dbgetuser;
@@ -573,7 +574,10 @@ client.sendinfo = function (info){
         client.channels.cache.get(client.config.infochannel).send(info);
     }
 }
- 
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 console.log('Logging on')
 
@@ -583,6 +587,7 @@ console.log('Logging on')
 process.on('SIGTERM', async() => {
     client.sendinfo('SIGTERM signal received: stopping bot')
     clearInterval(reminderInterval)
+    await sleep(100);
     await Promise.all([
         mongoose.connection.close(),
         client.destroy()
@@ -591,8 +596,9 @@ process.on('SIGTERM', async() => {
 })
 
 process.on('SIGINT', async () => {
-    client.sendinfo('SIGINT signal received: stopping bot')
-    clearInterval(reminderInterval)
+    client.sendinfo('SIGINT signal received: stopping bot');
+    clearInterval(reminderInterval);
+    await sleep(100);
     await Promise.all([
         mongoose.connection.close(),
         client.destroy()

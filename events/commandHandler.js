@@ -1,16 +1,16 @@
 const active = new Map();
 const talkedRecently = new Set();
-const { time } = require('console');
+
 const Discord = require('discord.js');
 var fs = require("fs");
-const path = require("path");
-const { config } = require('process');
+
 const MongoClient = require('mongodb').MongoClient;
 
 const  User = require('../database/schemas/User')
 const  Guild = require('../database/schemas/Guild');
-const { CANCELLED } = require('dns');
-const { db } = require('../database/schemas/User');
+const { relativeTimeRounding } = require('moment');
+
+
 
 
 function sleep(ms) {
@@ -24,6 +24,8 @@ async function asyncForEach(array, callback) {
 }
 
 var very_good_name = async function(client, message) {
+    if(message.partial)
+        return;
     // Fall back options to shut down the bot
     if(message.content == client.config.prefix + 'botshut' && message.author.id == client.master){
         client.sendinfo('Shutting down')
@@ -238,7 +240,7 @@ var very_good_name = async function(client, message) {
                 if(isRegex) {
                     var response = responses[Math.floor(Math.random() * responses.length)];
                     console.log(response)
-                    var test_regex = new RegExp(test, 'g');
+                    var test_regex = new RegExp(test, 'gi');
                 
                     var result = msg.match(test_regex);
                     if(result){
@@ -346,10 +348,14 @@ var very_good_name = async function(client, message) {
 
 
         var succes = true;
+        let required = 'You are missing the following permisions:\n';
         if(!client.bypass || message.author.id !== client.config.master){
             cmd.conf.perms.forEach(permision => {
                 try{
-                    if(!message.member.hasPermission(permision)){succes = false;}
+                    if(!message.member.hasPermission(permision)){
+                        succes = false;
+                        required += permision + ' '
+                    }
                 }
                 catch(err){
                     console.log(err)
@@ -357,7 +363,7 @@ var very_good_name = async function(client, message) {
                 }
             });
         }
-        if(!succes) return message.channel.send("Oops looks like you dont have the right permissions :(");
+        if(!succes) return message.channel.send(required);
 
 
 

@@ -1,10 +1,34 @@
 const path = require("path");
-const MongoClient = require('mongodb').MongoClient;
-exports.event = (client) => {
+const  Guild = require('../database/schemas/Guild');
+
+exports.event = async (client) => {
+
+
     client.recache(client)
     client.sendinfo('Bot gone online')
 	console.log('I am ready to serve you!');
-	client.user.setStatus('online');
+    client.user.setStatus('online');
+    
+
+
+
+    setInterval(async () =>{
+        let db_guilds = await Guild.find(); 
+        let member_count_guilds = db_guilds.filter(db_guild => !isNaN(db_guild.member_count_channel))
+        member_count_guilds.forEach(async (member_count_db) => {
+            let channel = client.channels.cache.get(member_count_db.member_count_channel);
+            
+            if(channel && channel.type == 'text'){
+                await channel.fetch();
+                let membercount = channel.guild.members.cache.filter(member => !member.user.bot).size;
+                console.log(channel.guild.members.cache.filter(member => !member.user.bot))
+                console.log(membercount)
+                channel.setName(`members ${membercount}`)
+            }
+
+        });
+    },0.5*60*1000);
+    
     //client.user.setActivity('New Update!');
 
     

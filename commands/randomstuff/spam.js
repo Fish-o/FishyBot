@@ -13,13 +13,17 @@ exports.run = (client, message, args) => {
     var i = 0;                  //  set your counter to 1
     message.channel.send(`${rounded} messages coming up!`)
     function myLoop() {         //  create a loop function
-        setTimeout(function() {   //  call a 3s setTimeout when the loop is called
-            message.author.send(`Ping ${i + 1}`)   //  your code here
-            i++;                    //  increment the counter
-            if (i < rounded) {           //  if the counter < 10, call the loop function
-                myLoop();             //  ..  again which will trigger another 
-            }                       //  ..  setTimeout()
-        }, 1200)
+        setTimeout(function() { //  call a 3s setTimeout when the loop is called
+            try{                    
+                message.author.send(`Ping ${i + 1}`)   //  your code here
+                i++;                            //  increment the counter
+                if (i < rounded) {              //  if the counter < 10, call the loop function
+                    myLoop();                   //  ..  again which will trigger another 
+                }   
+            }  catch(err){
+
+            }                                  //  ..  setTimeout()
+        }, 2000)
     }
 
     myLoop();   

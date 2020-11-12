@@ -5,6 +5,8 @@ const cooldown = new Set();
 const cooldown_time = 30;
 const Discord = require('discord.js')
 exports.event = async (client, message) =>{
+    if(message.partial)
+        return;
     if (message.author.bot) return;
     if (message.webhookID) return;
     if (message.channel instanceof Discord.DMChannel) return;
