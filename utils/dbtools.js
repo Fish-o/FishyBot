@@ -51,8 +51,72 @@ exports.recache = async function (client, id=''){
     }
 }
 
+let dbGuildCache = {};
+let refres_cooldown = 15 * 1000;
+let max_cooldown = 10 * 60 * 1000;
 
+exports.getDbGuild = async (id=undefined, focus="normal") => {
+    return new Promise( (resolve,reject) => {
+        let response;
 
+        
+        if(id){
+            if(!dbGuildCache[id]){
+                let new_db_guild = Guild.findOne({id: id})
+                if(new_db_guild){
+                    resolve(new_db_guild)
+                    dbGuildCache[id] = new_db_guild;
+                }
+            }else if(focus == 'normal'){
+                if(dbGuildCache[id].timestamp > Date.now()-max_cooldown){
+                    let new_db_guild = Guild.findOne({id: id});
+                    if(new_db_guild){
+                        dbGuildCache[id] = new_db_guild;
+                        resolve(dbGuildCache[id])
+                    } else {
+                        resolve(dbGuildCache[id])
+                        delete dbGuildCache[id];
+                    }
+                    
+                } else if(dbGuildCache[id].timestamp > Date.now()-refres_cooldown){
+                    resolve(dbGuildCache[id])
+                    let new_db_guild = Guild.findOne({id: id});
+                    if(new_db_guild)
+                        dbGuildCache[id] = new_db_guild;
+                    else
+                        delete dbGuildCache[id];
+                }
+                
+            }else if(focus == 'speed'){
+                resolve(dbGuildCache[id])
+                if(dbGuildCache[id].timestamp > Date.now()-refres_cooldown){
+                    let new_db_guild = Guild.findOne({id: id});
+                    if(new_db_guild)
+                        dbGuildCache[id] = new_db_guild;
+                    else
+                        delete dbGuildCache[id];
+                }
+                
+            }else if(focus == 'acc'){
+                if(dbGuildCache[id].timestamp > Date.now()-5000){
+                    let new_db_guild = Guild.findOne({id: id});
+                    
+                    if(new_db_guild){
+                        dbGuildCache[id] = new_db_guild;
+                        resolve(dbGuildCache[id]);
+                    }
+                    else
+                        delete dbGuildCache[id];
+                }
+                
+            }
+        } else{
+            if(focus == 'speed'){
+                resolve(Object.values(dbGuildCache))
+            }
+        }
+    })
+}
 
 
 /*exports.AddGuildToMember = async (memberID, guildID) =>{

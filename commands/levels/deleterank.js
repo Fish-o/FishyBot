@@ -25,7 +25,7 @@ exports.run = async (client, message, args) => {
         match(args.join(" ").toLowerCase(), message.guild)
 
     if(!user){
-        await Guild.update({id:guild.id}, {['levels.members.'+user.id]: undefined})
+        await Guild.update({id:guild.id}, {$pull: {'levels.members': user.id}})
     }
     if(user.bot){
         return message.channel.send('You can not change the xp of a bot')
