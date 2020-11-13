@@ -6,5 +6,7 @@
     "master":"325893549071663104",
     "infochannel":"739211875610525746",
     "prefix":"f!",
-    "features":[]
+    "features":[],
+
+    "membercountcannelname":"Members: "
 }

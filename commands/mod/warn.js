@@ -1,6 +1,21 @@
 const Discord = require('discord.js');
 
 
+function match(msg, i) {
+    if (!msg) return undefined;
+    if (!i) return undefined;
+    let user = i.members.cache.find(
+        m =>
+            m.user.username.toLowerCase().startsWith(msg) ||
+            m.user.username.toLowerCase() === msg ||
+            m.user.username.toLowerCase().includes(msg) ||
+            m.displayName.toLowerCase().startsWith(msg) ||
+            m.displayName.toLowerCase() === msg ||
+            m.displayName.toLowerCase().includes(msg)
+    );
+    if (!user) return undefined;
+    return user;
+}
 
 const  User = require('../../database/schemas/User')
 const  Guild = require('../../database/schemas/Guild')
@@ -21,14 +36,19 @@ exports.run = async (client, message, args) => {
     }
     const time_utc = new Date().getTime();
 
+    const member =
+    message.mentions.users.first() ||
+    message.guild.members.cache.get(args[0]) ||
+    match(args.join(" ").toLowerCase(), message.guild);
 
-
-    var bad_person;
+    /*var bad_person;
     if(!getUserFromMention(args[0])){return message.channel.send('Please mention a user')}
     else{
         args.shift()
         var bad_person = getUserFromMention(args[0]);
-    }
+    }*/
+    if(!member){return message.channel.send('Please mention a user')}
+
     if(!args[0]) {args[0] = 'list'}//return message.channel.send("Please state a reason or action")
     var action = args[0].toLowerCase();
     if (!['add','list','removeall'].includes(args[0])){action = 'add';}
@@ -47,7 +67,7 @@ exports.run = async (client, message, args) => {
 
 
     const guildID = message.guild.id;
-    const member = message.mentions.users.first() || message.guild.members.cache.get(args[0]).user
+    
     const memberID = member.id.toString();
 
 

@@ -69,40 +69,52 @@ exports.event = async (client, member) =>{
     
     // Get guilds
     let value = db_guild;
-    if(!value.joinMsg){return};
-    if(!value.joinMsg.channelId){return};
-    //const member = member;
 
-    // Send the message to a designated channel on a server:
-    const channel = member.guild.channels.cache.find(ch => ch.id === value.joinMsg.channelId);
-    
-    // Do nothing if the channel wasn't found on this server
-    if (!channel) return;
+    if(value.member_count_channel){
+        let membercount_channel = guild.channels.cache.get(value.member_count_channel);
+        if(membercount_channel){
+            let membercount = guild.members.cache.filter(member => !member.user.bot).size;
+            membercount_channel.setName(client.config.membercountcannelname+membercount)
+        }
+    }
 
-    if(value.joinMsg.dm != '' && value.joinMsg.dm){
+    if(!value.joinMsg || !value.joinMsg.channelId){}
+    else{
         
-        member.send(value.joinMsg.dm.replace("{name}", member));
-    }
-    if(value.joinMsg.message) return channel.send(value.joinMsg.message)
-    value.joinMsg.title
-    value.joinMsg.desc
+        //const member = member;
 
-    // Send the message, mentioning the member
-    
-    
-    let sicon = member.user.displayAvatarURL();
-    let serverembed = new Discord.MessageEmbed();
-    serverembed.setColor(value.joinMsg.color);
-    serverembed.setThumbnail(sicon);
-    serverembed.addField(value.joinMsg.title.b.replace("{name}", member.user.username)  ,value.joinMsg.title.s.replace("{name}", member));
-    if(value.joinMsg.desc){
-        serverembed.addField(value.joinMsg.desc.b.replace("{name}", member.user.username)   ,value.joinMsg.desc.s.replace("{name}", member));
-    }
-    try{
-        channel.send(serverembed);
-    } catch(err){
-        console.log(err);
-        console.log('Error in join message');
+        // Send the message to a designated channel on a server:
+        const channel = member.guild.channels.cache.find(ch => ch.id === value.joinMsg.channelId);
+
+        // Do nothing if the channel wasn't found on this server
+        if (channel){
+
+            if(value.joinMsg.dm != '' && value.joinMsg.dm){
+                
+                member.send(value.joinMsg.dm.replace("{name}", member));
+            }
+            if(value.joinMsg.message) return channel.send(value.joinMsg.message)
+            value.joinMsg.title
+            value.joinMsg.desc
+
+            // Send the message, mentioning the member
+            
+            
+            let sicon = member.user.displayAvatarURL();
+            let serverembed = new Discord.MessageEmbed();
+            serverembed.setColor(value.joinMsg.color);
+            serverembed.setThumbnail(sicon);
+            serverembed.addField(value.joinMsg.title.b.replace("{name}", member.user.username)  ,value.joinMsg.title.s.replace("{name}", member));
+            if(value.joinMsg.desc){
+                serverembed.addField(value.joinMsg.desc.b.replace("{name}", member.user.username)   ,value.joinMsg.desc.s.replace("{name}", member));
+            }
+            try{
+                channel.send(serverembed);
+            } catch(err){
+                console.log(err);
+                console.log('Error in join message');
+            }
+        }
     }
 }
 

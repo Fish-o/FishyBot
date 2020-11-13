@@ -1,14 +1,32 @@
 const ms = require("ms");
 
-exports.run = async (bot, message, args) => {
+function match(msg, i) {
+    if (!msg) return undefined;
+    if (!i) return undefined;
+    let user = i.members.cache.find(
+        m =>
+            m.user.username.toLowerCase().startsWith(msg) ||
+            m.user.username.toLowerCase() === msg ||
+            m.user.username.toLowerCase().includes(msg) ||
+            m.displayName.toLowerCase().startsWith(msg) ||
+            m.displayName.toLowerCase() === msg ||
+            m.displayName.toLowerCase().includes(msg)
+    );
+    if (!user) return undefined;
+    return user;
+}
+
+exports.run = async (client, message, args) => {
+    let tounmute =
+    message.mentions.members.first() ||
+    message.guild.members.cache.get(args[0]) ||
+    match(args.join(" ").toLowerCase(), message.guild);
 
   //!tempmute @user 1s/m/h/d
-  if(!message.member.hasPermission("ADMINISTRATOR")){
-    return message.channel.send("You don't have the permissions to use this command!");
-  }
-  let tounmute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
+
+
   if(!tounmute) return message.reply("Couldn't find user.");
-  if(tounmute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't unmute them!");
+
   let muterole = message.guild.roles.cache.find(role => role.name === "muted");
   //start of create role
   if(!muterole){

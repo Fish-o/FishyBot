@@ -1,12 +1,31 @@
 const ms = require("ms");
 
-exports.run = async (bot, message, args) => {
+function match(msg, i) {
+    if (!msg) return undefined;
+    if (!i) return undefined;
+    let user = i.members.cache.find(
+        m =>
+            m.user.username.toLowerCase().startsWith(msg) ||
+            m.user.username.toLowerCase() === msg ||
+            m.user.username.toLowerCase().includes(msg) ||
+            m.displayName.toLowerCase().startsWith(msg) ||
+            m.displayName.toLowerCase() === msg ||
+            m.displayName.toLowerCase().includes(msg)
+    );
+    if (!user) return undefined;
+    return user;
+}
+
+exports.run = async(client, message, args) => {
+    let tomute =
+    message.mentions.members.first() ||
+    message.guild.members.cache.get(args[0]) ||
+    match(args.join(" ").toLowerCase(), message.guild);
 
   //!tempmute @user 1s/m/h/d
 
-  let tomute = message.guild.member(message.mentions.users.first() || message.guild.members.cache.get(args[0]));
   if(!tomute) return message.reply("Couldn't find user.");
-  //if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
+  if(tomute.hasPermission("MANAGE_MESSAGES")) return message.reply("Can't mute them!");
   let muterole = message.guild.roles.cache.find(role => role.name === "muted");
   //start of create role
   if(!muterole){
@@ -37,7 +56,7 @@ exports.run = async (bot, message, args) => {
     }
   }
   //end of create role
-let lenght = ms(args[1]+ " "+ args[2]);
+    let lenght = ms(args[1]+ " "+ args[2]);
     if(lenght){
         args.shift();
         args.shift();
@@ -56,7 +75,7 @@ let lenght = ms(args[1]+ " "+ args[2]);
         return message.channel.send(`The time given (${ms(lenght)}) exceeded the limit of 31 days`);
 
     
-  let mutetime = length;
+  let mutetime = lenght;
   if(!mutetime) return message.reply("You didn't specify a time!");
 
   await(tomute.roles.add(muterole.id));
