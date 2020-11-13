@@ -56,7 +56,7 @@ exports.run = async(client, message, args) => {
     }
   }
   //end of create role
-let lenght = ms(args[1]+ " "+ args[2]);
+    let lenght = ms(args[1]+ " "+ args[2]);
     if(lenght){
         args.shift();
         args.shift();
@@ -75,7 +75,7 @@ let lenght = ms(args[1]+ " "+ args[2]);
         return message.channel.send(`The time given (${ms(lenght)}) exceeded the limit of 31 days`);
 
     
-  let mutetime = length;
+  let mutetime = lenght;
   if(!mutetime) return message.reply("You didn't specify a time!");
 
   await(tomute.roles.add(muterole.id));
