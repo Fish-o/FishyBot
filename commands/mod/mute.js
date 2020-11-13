@@ -84,7 +84,7 @@ exports.run = async(client, message, args) => {
   setTimeout(function(){
     tomute.roles.remove(muterole.id);
     message.channel.send(`<@${tomute.id}> has been unmuted!`);
-  }, ms(mutetime));
+  }, mutetime);
 }
 
 
