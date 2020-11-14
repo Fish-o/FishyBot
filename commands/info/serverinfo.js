@@ -1,9 +1,10 @@
 const Discord = require('discord.js');
 var moment = require('moment'); // require
 
-//const { createCanvas, loadImage } = require('canvas')
-const { CanvasRenderService } = require('chartjs-node-canvas');
-//const Chart = require('chart.js');
+
+const ChartJsImage = require('chartjs-to-image');
+
+
 
 exports.run = async (client, message, args) =>{
     
@@ -82,7 +83,7 @@ exports.run = async (client, message, args) =>{
     //var canvas = createCanvas(600,400)//600, 400)
     //var ctx = canvas.getContext('2d')
     //console.log(JSON.stringify(ctx))
-    const myChart = {
+    const mychartOptions = {
         type: 'line',
         
         data: {
@@ -98,60 +99,39 @@ exports.run = async (client, message, args) =>{
             legend: {
                 labels: {
                     fontColor: 'White'
-                    }
-                },
-            /*title: {
-                display: true,
-                fontColor: 'blue',
-                text: 'Custom Chart Title'
-            },*/
+                }
+            },
             scales: {
                 xAxes: [{
                     type: 'time',
                     ticks:{
                         fontColor: 'white'
                     }
-                    /*gridLines: {
-                        lineWidth:3,
-                        color: 'rgba(255, 255, 255, 0.7)'
-                      }*//*,
-                    time: {
-                        unit: 'day'
-                    },
-                    distribution: 'linear'*/
                 }],
                 yAxes:[{
                     ticks:{
                         fontColor: 'white'
                     }
-                    /*gridLines: {
-                        lineWidth:3,
-                        color: 'rgba(255, 255, 255, 0.7)'
-                      },*/
                 }]
             }
         }
     };
 
-    //var buf = canvas.toBuffer();
+    const myChart = new ChartJsImage();
+    myChart.setConfig(mychartOptions)
+    myChart.setBackgroundColor('transparent').setWidth(500).setHeight(300).setDevicePixelRatio(10);
+    const buf = await myChart.toBinary();
     
     
-    
-    
-    /*const canvasRenderService = new CanvasRenderService(400, 400)
-    const to_buffer_rendered = await canvasRenderService.renderToBuffer(configuration);
-    fs.writeFile(`${__dirname}/../../images/${message.guild.id}.png`, to_buffer_rendered);*/
 
-    var IMAGE = "https://cdn.pixabay.com/photo/2015/07/09/19/32/dog-838281_960_720.jpg"
+    const attachment = new Discord.MessageAttachment(buf,'chart.png'); 
 
-    if(encodeURIComponent(JSON.stringify(myChart).length < 1700)){
-        IMAGE = "https://quickchart.io/chart?c="+encodeURIComponent(JSON.stringify(myChart)); //`${__dirname}/../../images/${message.guild.id}.png`; //
-        console.log(IMAGE)
-    }
+
+    
     let sicon = message.guild.iconURL;
     let serverembed = new Discord.MessageEmbed()
-        //.setImage(IAMGE)
-        .setAuthor(`${message.guild.name} - Informations`, message.guild.iconURL)
+        
+        .setTitle(`${message.guild.name} - Information`, message.guild.iconURL)
         .setColor("#15f153")
         .addField('Server owner', message.guild.owner, true)
         .addField('Server region', message.guild.region, true)
@@ -165,8 +145,13 @@ exports.run = async (client, message, args) =>{
         .addField('Online', checkOnlineUsers(message.guild))
         
         .setFooter(message.guild.id+ ' created at:')
-        .setTimestamp(message.guild.createdAt);
+        .setTimestamp(message.guild.createdAt)
 
+        .attachFiles(attachment)
+        .setImage('attachment://chart.png');
+    /*    if(IMAGE){
+        serverembed.setImage(IAMGE)
+    }*/
     message.channel.send(serverembed);
 }
 exports.conf = {
