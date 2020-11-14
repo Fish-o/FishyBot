@@ -3,29 +3,32 @@
     "version": "1.5.0",
     "description": "A crappy discord bot",
     "dependencies": {
+        "@discordjs/opus": "^0.3.2",
         "bad-words": "^3.0.3",
         "cached-request": "^3.0.0",
-        "query-string": "^6.13.1",
-        "r2": "^2.0.1",
-        "chart.js": "*",
         "canvacord": "^5.0.7",
-        "chartjs-node-canvas": "*",
+
+        "chart.js": "^2.9.3",
+        "chartjs-to-image": "^1.0.2",
+ 
         "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
+        "ffmpeg-static": "^4.2.2",
         "geolib": "^3.3.1",
         "grapheme-splitter": "^1.0.4",
         "moment": "^2.27.0",
         "mongodb": "^3.6.0",
         "mongoose": "^5.10.7",
         "ms": "^2.1.2",
+        "query-string": "^6.13.1",
+
         "random-puppy": "^1.1.0",
+
         "request": "^2.88.2",
-        "superagent": "^6.1.0",
         "string-similarity": "^4.0.2",
+        "superagent": "^6.1.0",
         "yt-search": "^2.3.1",
-        "ytdl-core": "^2.1.5",
-        "ffmpeg-static": "^4.2.2",
-        "@discordjs/opus": "^0.3.2"
+        "ytdl-core": "^2.1.5"
     },
     "scripts": {
         "test": "node index.js"
