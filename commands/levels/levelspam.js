@@ -3,7 +3,7 @@ exports.run = async (client, message, args) => {
     if(!message.mentions.channels.first())
         return message.channel.send('You did not specify a valid channel');
 
-        await Guild.update({id:guild.id}, {['levels.channel']: message.mentions.channels.first().id})
+        await Guild.update({id:message.guild.id}, {['levels.channel']: message.mentions.channels.first().id})
         message.mentions.channels.first().send('set this channel to recieve level up messages')
 }
 
