@@ -206,8 +206,7 @@ var very_good_name = async function(client, message) {
         } 
 
         // Handeling special commands (commands not needing a prefix)
-        if(!client.commands.has(command))
-            {
+        if(!client.commands.has(command)){
             var guild_custom_commands = {};
             
             if(guild_cache.custom_commands){
@@ -219,16 +218,14 @@ var very_good_name = async function(client, message) {
             }
             var msg = message.content;
            
-            console.log('guild_custom_commands:')
-            console.log(guild_custom_commands)
+
             
 
 
             Object.keys(guild_custom_commands).forEach( async (guild_custom_command) => {
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
-                console.log('Responses:')
-                console.log(responses)
+
                 if(!responses[0])
                     return;
                 let isRegex = true;
@@ -239,7 +236,6 @@ var very_good_name = async function(client, message) {
                 }
                 if(isRegex) {
                     var response = responses[Math.floor(Math.random() * responses.length)];
-                    console.log(response)
                     var test_regex = new RegExp(test, 'gi');
                 
                     var result = msg.match(test_regex);
@@ -340,7 +336,7 @@ var very_good_name = async function(client, message) {
             
             const value = {features:[]}
 
-            return client.updatedb(client, {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, contact Fish#2455', message.channel)
+            return client.updatedb(client, {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, please contact '+client.config.author, message.channel)
         }
         if(client.config.features.includes(cmd.help.category) && !guild_cache.features.includes(cmd.help.category) && !guild_cache.features.includes('all')){
             return message.channel.send('This is a premium feature, and not enabled on this server')
@@ -359,7 +355,7 @@ var very_good_name = async function(client, message) {
                 }
                 catch(err){
                     console.log(err)
-                    return message.channel.send("Something went wrong, please contact Fish#2455 ");
+                    return message.channel.send("Something went wrong, please contact "+client.config.author);
                 }
             });
         }
