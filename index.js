@@ -570,8 +570,12 @@ const other = require("./utils/other");
 client.getMember = other.getMember;
 
 client.sendinfo = function (info){
-    if(client.config.infochannel){
-        client.channels.cache.get(client.config.infochannel).send(info);
+    try{
+        if(client.config.infochannel){
+            client.channels.cache.get(client.config.infochannel).send(info);
+        }
+    }catch(err){
+        console.log(err)
     }
 }
 

@@ -21,6 +21,11 @@ const GuildConfigSchema = new mongoose.Schema({
         required: true,
         default: {"dadjokes":false}
     },
+    filters:{
+        type: Object,
+        required: false,
+        default: {}
+    },
     warns:{
         type:Map,
         required: true,

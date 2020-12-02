@@ -189,10 +189,28 @@ var very_good_name = async function(client, message) {
     
     }
     else{
-        // Get prefix
-        let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
-        const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
+
+        // Get guild cache
+        let guild_cache = await client.getDbGuild(message.guild.id) //cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
         
+
+        // Checking for an existing filter and the members permisions
+        if(guild_cache.filters && guild_cache.filters[message.channel.id]){
+            try{
+                let regex = new RegExp(guild_cache.filters[message.channel.id])
+                if(!regex.test(message.content) && !message.member.hasPermission('MANAGE_MESSAGES')){
+                    message.delete()
+                    message.author.send(`Your message in \`${message.guild.name}\` => \`${message.channel.name}\` has been deleted`)
+                }
+            }catch(err){
+                client.sendinfo('error with filtering')
+                console.log(err)
+                message.channel.send('Something has gone wrong with the text filter on this channel')
+            }
+        }
+
+        // Getting guild prefix
+        const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
     
         // Ignore messages not starting with the prefix from the guild, or the global one
         if (message.content.indexOf(client.config.prefix) == 0 ){
@@ -206,8 +224,7 @@ var very_good_name = async function(client, message) {
         } 
 
         // Handeling special commands (commands not needing a prefix)
-        if(!client.commands.has(command))
-            {
+        if(!client.commands.has(command)){
             var guild_custom_commands = {};
             
             if(guild_cache.custom_commands){
@@ -219,16 +236,14 @@ var very_good_name = async function(client, message) {
             }
             var msg = message.content;
            
-            console.log('guild_custom_commands:')
-            console.log(guild_custom_commands)
+
             
 
 
             Object.keys(guild_custom_commands).forEach( async (guild_custom_command) => {
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
-                console.log('Responses:')
-                console.log(responses)
+
                 if(!responses[0])
                     return;
                 let isRegex = true;
@@ -239,7 +254,6 @@ var very_good_name = async function(client, message) {
                 }
                 if(isRegex) {
                     var response = responses[Math.floor(Math.random() * responses.length)];
-                    console.log(response)
                     var test_regex = new RegExp(test, 'gi');
                 
                     var result = msg.match(test_regex);
@@ -340,7 +354,7 @@ var very_good_name = async function(client, message) {
             
             const value = {features:[]}
 
-            return client.updatedb(client, {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, contact Fish#2455', message.channel)
+            return client.updatedb(client, {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, please contact '+client.config.author, message.channel)
         }
         if(client.config.features.includes(cmd.help.category) && !guild_cache.features.includes(cmd.help.category) && !guild_cache.features.includes('all')){
             return message.channel.send('This is a premium feature, and not enabled on this server')
@@ -359,7 +373,7 @@ var very_good_name = async function(client, message) {
                 }
                 catch(err){
                     console.log(err)
-                    return message.channel.send("Something went wrong, please contact Fish#2455 ");
+                    return message.channel.send("Something went wrong, please contact "+client.config.author);
                 }
             });
         }
