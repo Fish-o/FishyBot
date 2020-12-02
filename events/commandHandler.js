@@ -189,10 +189,28 @@ var very_good_name = async function(client, message) {
     
     }
     else{
-        // Get prefix
-        let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
-        const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
+
+        // Get guild cache
+        let guild_cache = await client.getDbGuild(message.guild.id) //cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
         
+
+        // Checking for an existing filter and the members permisions
+        if(guild_cache.filters && guild_cache.filters[message.channel.id]){
+            try{
+                let regex = new RegExp(guild_cache.filters[message.channel.id])
+                if(!regex.test(message.content) && !message.member.hasPermission('MANAGE_MESSAGES')){
+                    message.delete()
+                    message.author.send(`Your message in \`${message.guild.name}\` => \`${message.channel.name}\` has been deleted`)
+                }
+            }catch(err){
+                client.sendinfo('error with filtering')
+                console.log(err)
+                message.channel.send('Something has gone wrong with the text filter on this channel')
+            }
+        }
+
+        // Getting guild prefix
+        const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
     
         // Ignore messages not starting with the prefix from the guild, or the global one
         if (message.content.indexOf(client.config.prefix) == 0 ){

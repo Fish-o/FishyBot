@@ -85,6 +85,8 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
                         dbGuildCache[id] = new_db_guild;
                     else
                         delete dbGuildCache[id];
+                } else{
+                    resolve(dbGuildCache[id])
                 }
                 
             }else if(focus == 'speed'){
@@ -95,6 +97,8 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
                         dbGuildCache[id] = new_db_guild;
                     else
                         delete dbGuildCache[id];
+                }else{
+                    resolve(dbGuildCache[id])
                 }
                 
             }else if(focus == 'acc'){
@@ -107,6 +111,8 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
                     }
                     else
                         delete dbGuildCache[id];
+                }else{
+                    resolve(dbGuildCache[id])
                 }
                 
             }
