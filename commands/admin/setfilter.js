@@ -18,13 +18,14 @@ exports.run = async (client, message, args) => {
     else if(['set', 'change'].includes(args[0].toLowerCase())){
         args.shift()
         let channelMention = message.mentions.channels.first();
-        let regextxt = args.join();
+        let regextxt = args.join(' ');
         let channel = message.channel;
         if(channelMention && channelMention.type == 'text'){
-            regextxt = regextxt.replace(channelMention.toString())
+            regextxt = regextxt.replace(channelMention.toString(), '').trim()
             channel = channelMention;
         }
-
+        console.log(regextxt)
+        console.log(args.join(' '))
         let isValid = true;
         try {
             new RegExp(regextxt);
@@ -70,7 +71,8 @@ exports.conf = {
     ]
   };
   
-const path = require("path")
+const path = require("path");
+const { chown } = require('fs');
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"filter",

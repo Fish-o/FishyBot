@@ -197,7 +197,7 @@ var very_good_name = async function(client, message) {
         // Checking for an existing filter and the members permisions
         if(guild_cache.filters && guild_cache.filters[message.channel.id]){
             try{
-                let regex = new RegExp(guild_cache.filters[message.channel.id], 'i')
+                let regex = new RegExp(guild_cache.filters[message.channel.id], 'im')
                 if(!regex.test(message.content) && !message.member.hasPermission('MANAGE_MESSAGES')){
                     message.delete()
                     message.author.send(`Your message in \`${message.guild.name}\` => \`${message.channel.name}\` has been deleted`)
