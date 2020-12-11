@@ -317,24 +317,25 @@ var very_good_name = async function(client, message) {
 
 
             // Auto Commands
-            if(!client.allow_test("all_auto", guild_cache)){return}
-            for (let [activation_key, value] of client.auto_activations) {
-                if(message.content.toLowerCase().includes(activation_key)){
-                    if(!client.allow_test(value, guild_cache)){return}
-                    cmd = client.auto_commands.get(value)
-                    // If that command doesn't exist, silently exit and do nothing
-                    if (!cmd) return;
-                    cmd.run(client, message, ops);
+            if(await client.allow_test("all_auto", guild_cache)){
+                for (let [activation_key, value] of client.auto_activations) {
+                    if(message.content.toLowerCase().includes(activation_key)){
+                        if(!await client.allow_test(value, guild_cache)){return}
+                        cmd = client.auto_commands.get(value)
+                        // If that command doesn't exist, silently exit and do nothing
+                        if (!cmd) return;
+                        
+                        cmd.run(client, message, ops);
+                    }
                 }
             }
-            
 
         }
 
 
         // Our standard argument/command name definition.
         if (!command) return;
-        if(!client.allow_test(command, guild_cache)){return}
+        if(!await client.allow_test(command, guild_cache)){return}
         
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {
