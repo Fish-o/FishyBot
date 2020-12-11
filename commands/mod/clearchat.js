@@ -10,10 +10,11 @@ exports.run = async (client, message, args) =>{
             if(emoji == '✔️'){
                 // DELETE IT ALLLLLLLLLLLLL
                 let old_channel = message.channel;
-                let new_channel = await old_channel.clone();  
+                let new_channel = await old_channel.clone();
+                new_channel.permissionOverwrites = old_channel.permissionOverwrites
                 old_channel.delete()
                 let msg = await new_channel.send('Cleared the chat!')
-                msg.delete({ timeout: 5000 })
+                msg.delete({ timeout: 7500 })
 
             } else if (emoji == '❌'){
                 message.channel.send('Stopped')

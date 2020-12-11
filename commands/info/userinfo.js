@@ -13,7 +13,7 @@ const status = {
     offline: "Offline/Invisible"
 };
 
-exports.run = async (client, message, args) =>{
+exports.run = async (client, message, args, dbGuild) =>{
     
 
     var permissions = [];
@@ -72,7 +72,7 @@ exports.run = async (client, message, args) =>{
         acknowledgements = 'Server Owner';
     }
 
-    const dbGuild = await Guild.findOne({id: message.guild.id});
+    //const dbGuild = await Guild.findOne({id: message.guild.id});
 
 
     //var db_user = db_data.users[member.id]

@@ -232,7 +232,7 @@ var very_good_name = async function(client, message) {
             }else{
                 const locates = "custom_commands";
                 const values = {[locates]:{}};
-                client.updatedb(client, {id:message.guild.id}, values)
+                client.updatedb( {id:message.guild.id}, values)
             }
             var msg = message.content;
            
@@ -317,10 +317,10 @@ var very_good_name = async function(client, message) {
 
 
             // Auto Commands
-            if(!client.allow_test(client, "all_auto", message.guild.id)){return}
+            if(!client.allow_test("all_auto", guild_cache)){return}
             for (let [activation_key, value] of client.auto_activations) {
                 if(message.content.toLowerCase().includes(activation_key)){
-                    if(!client.allow_test(client, value, message.guild.id)){return}
+                    if(!client.allow_test(value, guild_cache)){return}
                     cmd = client.auto_commands.get(value)
                     // If that command doesn't exist, silently exit and do nothing
                     if (!cmd) return;
@@ -334,7 +334,7 @@ var very_good_name = async function(client, message) {
 
         // Our standard argument/command name definition.
         if (!command) return;
-        if(!client.allow_test(client, command, message.guild.id)){return}
+        if(!client.allow_test(command, guild_cache)){return}
         
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {
@@ -354,7 +354,7 @@ var very_good_name = async function(client, message) {
             
             const value = {features:[]}
 
-            return client.updatedb(client, {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, please contact '+client.config.author, message.channel)
+            return client.updatedb( {id: message.guild.id}, value, 'Something went wrong, try again, if this message keeps apearing, please contact '+client.config.author, message.channel)
         }
         if(client.config.features.includes(cmd.help.category) && !guild_cache.features.includes(cmd.help.category) && !guild_cache.features.includes('all')){
             return message.channel.send('This is a premium feature, and not enabled on this server')
@@ -364,9 +364,18 @@ var very_good_name = async function(client, message) {
         var succes = true;
         let required = 'You are missing the following permisions:\n';
         if(!client.bypass || message.author.id !== client.config.master){
+            let permroles = [];
+
+            if(guild_cache.roleperms){
+                Object.keys(guild_cache.roleperms).forEach(roleid => {
+                    if(message.member.roles.cache.has(roleid)){
+                        permroles.push(guild_cache.roleperms[roleid]) 
+                    }
+                })
+            }
             cmd.conf.perms.forEach(permision => {
                 try{
-                    if(!message.member.hasPermission(permision)){
+                    if(!message.member.hasPermission(permision) && !permroles.find(perms => perms.includes(permision.toLowerCase()))){
                         succes = false;
                         required += permision + ' '
                     }
@@ -384,10 +393,8 @@ var very_good_name = async function(client, message) {
         if (talkedRecently.has(message.author.id)) {
             message.channel.send("So fast! Wait a moment please!");
         } else {
-            // Test for perms
-            
             // Run the command
-            cmd.run(client, message, args, ops);
+            cmd.run(client, message, args, guild_cache, ops);
 
             // Adds the user to the set so that they can't talk for a minute
             talkedRecently.add(message.author.id);

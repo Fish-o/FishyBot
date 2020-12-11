@@ -22,7 +22,7 @@ output
 */
 const fs = require('fs')
 const Discord = require('discord.js');
-exports.run = async function (client, message, args) {
+exports.run = async function (client, message, args, cache_guild) {
     let action = 'new';
     `rand: {r10|20} {r10|20} {r10|20} rand done. w8 5 secs {w5} {user} {mention}`;
 
@@ -97,7 +97,7 @@ exports.run = async function (client, message, args) {
 
                 const locate = "custom_commands."+command_name_raw;
                 const value = {[locate]:responses};
-                client.updatedb(client, {id:message.guild.id}, value, `Added custom command!`, message.channel)
+                client.updatedb({id:message.guild.id}, value, `Added custom command!`, message.channel)
 
             }
         }else return message.channel.send('That command name is invalid!');
@@ -111,7 +111,7 @@ exports.run = async function (client, message, args) {
 
         const locate = "custom_commands."+obj.a;
         const value = {[locate]:obj.b};
-        client.updatedb(client, {id:message.guild.id}, value, `Added custom command: ${obj.a}!`, message.channel)
+        client.updatedb( {id:message.guild.id}, value, `Added custom command: ${obj.a}!`, message.channel)
     } else if(action == 'del'){
         if(!isNaN(args[0])){
             var cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
@@ -130,24 +130,21 @@ exports.run = async function (client, message, args) {
                 } else{
                     const locate = "custom_commands."+name;
                     const value = {$unset: {[locate]:""}};
-                    client.updatedb(client, {id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
+                    client.updatedb( {id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
                     return;
                 }
             }
         }else if(args[0]){
             const locate = "custom_commands."+args.join(' ');
             const value = {[locate]:undefined};
-            client.updatedb(client, {id:message.guild.id}, value, `Removed custom command: ${args.join(' ')}!`, message.channel)
+            client.updatedb( {id:message.guild.id}, value, `Removed custom command: ${args.join(' ')}!`, message.channel)
         }
     } else if(action == 'list'){
-        var cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
-        var cache = JSON.parse(cache_raw);
-        const cache_guild = cache.data.find(db_guild => db_guild.id == message.guild.id);
         const cache_guild_custom_commands = cache_guild.custom_commands;
         if(!cache_guild_custom_commands){
             const locate = "custom_commands";
             const value = {[locate]:{}};
-            client.updatedb(client, {id:message.guild.id}, value, `Something went wrong, it should be fixxed now, try again!`, message.channel)
+            client.updatedb( {id:message.guild.id}, value, `Something went wrong, it should be fixxed now, try again!`, message.channel)
         } else{
             const embed = new Discord.MessageEmbed();
             embed.setTitle('All custom commands of this server')

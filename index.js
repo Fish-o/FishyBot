@@ -289,7 +289,7 @@ client.on('WEBHOOKS_UPDATE', async function(channel){
     if(!db_guild.logging){
         const locate = "logging";
         const value = {$set: {[locate]:{}}};
-        client.updatedb(client, {id:channel.guild.id}, value);
+        client.updatedb({id:channel.guild.id}, value);
     } 
     else if(db_guild.logging.WEBHOOKS_UPDATE.id){
         const log = new Discord.WebhookClient(db_guild.logging.webhook.id, db_guild.logging.webhook.token);

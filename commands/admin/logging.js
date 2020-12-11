@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
             const locate_string = "logging"
             const db_data = undefined;
             var value = {[locate_string]:db_data}
-            client.updatedb(client, query, value, 'Stopped logging', message.channel)
+            client.updatedb( query, value, 'Stopped logging', message.channel)
 
         }).catch(console.error);
 
@@ -48,7 +48,7 @@ exports.run = (client, message, args) => {
                             channel_id: channel.id
                         }
                         var value = {[locate_string]:db_data}
-                        client.updatedb(client, query, value, 'Started logging!', wb)
+                        client.updatedb( query, value, 'Started logging!', wb)
                     }).catch(console.error)
             }).catch(console.error);
     }

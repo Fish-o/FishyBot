@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
         guilds.forEach(guild =>{
             var guildQuery = {id: guild.id};
             var newnewvalues = {[locate_string]:false}
-            client.updatedb(client, guildQuery, newnewvalues, "done some shit", message.channel)
+            client.updatedb( guildQuery, newnewvalues, "done some shit", message.channel)
         })
         
 

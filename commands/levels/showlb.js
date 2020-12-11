@@ -44,12 +44,12 @@ function sortObject(obj) {
 }
 
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, dbGuild) => {
 
     let user = message.author;
 
 
-    let dbGuild = await Guild.findOne({id:message.guild.id});
+    //let dbGuild = await Guild.findOne({id:message.guild.id});
     if(!(user.id in dbGuild.levels.members)){
         dbGuild =  await Guild.update({id:message.guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
     }

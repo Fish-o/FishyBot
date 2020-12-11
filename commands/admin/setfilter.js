@@ -3,7 +3,7 @@ const  Guild = require('../../database/schemas/Guild')
 Need to deal with deleted channelss
 
 */
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, dbGuild) => {
     if(['remove', 'rem', 'delete', 'del'].includes(args[0].toLowerCase())){
         let channelMention = message.mentions.channels.first();
         let channel = message.channel;
@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
 
     else if(['list', 'view', 'display'].includes(args[0].toLowerCase())){
         let channelMention = message.mentions.channels.first();
-        let dbGuild = await client.getDbGuild(message.guild.id)
+        //let dbGuild = await client.getDbGuild(message.guild.id)
         if(channelMention){
             if(dbGuild.filters[channelMention.id]){
                 message.channel.send(`The filter for channel ${channelMention} is: _${dbGuild.filters[channelMention.id]}_`)
