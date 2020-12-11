@@ -15,7 +15,7 @@ exports.run = (client, message, args) =>{
             const locate_string = "member_count_channel" 
             var values = {[locate_string]:mention_channel.id}
 
-            client.updatedb(client, query, values, `Set the member counter to **${mention_channel.name}**`, message.channel)
+            client.updatedb( query, values, `Set the member counter to **${mention_channel.name}**`, message.channel)
 
         } /*else if(message.guild.channels.find(channel => channel.id === cachedID)){
 
@@ -39,7 +39,7 @@ exports.run = (client, message, args) =>{
         const locate_string = "member_count_channel" 
         var values = {[locate_string]:undefined}
 
-        client.updatedb(client, query, values, `Disabled the member counter`, message.channel)
+        client.updatedb( query, values, `Disabled the member counter`, message.channel)
     } else{
         message.channel.send('Use the option `on` or `of`')
     }

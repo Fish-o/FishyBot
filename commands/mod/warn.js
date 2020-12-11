@@ -20,7 +20,7 @@ function match(msg, i) {
 const  User = require('../../database/schemas/User')
 const  Guild = require('../../database/schemas/Guild')
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, dbGuild) => {
     function getUserFromMention(mention) {
         if (!mention) return;
     
@@ -78,8 +78,6 @@ exports.run = async (client, message, args) => {
     if(action == 'list'){
        
 	
-        
-        const dbGuild = await Guild.findOne({id: guildID});
         const guild_warning = dbGuild.warns;
         if(guild_warning.get(memberID)){
             if(guild_warning.get(memberID)[0]){

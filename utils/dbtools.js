@@ -2,7 +2,8 @@ var fs = require('fs');
 
 const  Guild = require('../database/schemas/Guild');
 
-exports.updatedb = async (client, query, value, msg = '', channel = null) => {
+exports.updatedb = async (query, value, msg = '', channel = null) => {
+
     try{
         await Guild.updateOne(query, value)
         if(msg != '' && channel){
@@ -56,13 +57,13 @@ let refres_cooldown = 15 * 1000;
 let max_cooldown = 10 * 60 * 1000;
 
 exports.getDbGuild = async (id=undefined, focus="normal") => {
-    return new Promise( (resolve,reject) => {
+    return new Promise( async(resolve,reject) => {
         let response;
-
         
         if(id){
             if(!dbGuildCache[id]){
-                let new_db_guild = Guild.findOne({id: id})
+                let new_db_guild = await Guild.findOne({id: id})
+                new_db_guild.timestamp = Date.now();
                 if(new_db_guild){
                     resolve(new_db_guild)
                     dbGuildCache[id] = new_db_guild;
@@ -70,6 +71,7 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
             }else if(focus == 'normal'){
                 if(dbGuildCache[id].timestamp > Date.now()-max_cooldown){
                     let new_db_guild = Guild.findOne({id: id});
+                    new_db_guild.timestamp = Date.now();
                     if(new_db_guild){
                         dbGuildCache[id] = new_db_guild;
                         resolve(dbGuildCache[id])
@@ -80,7 +82,9 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
                     
                 } else if(dbGuildCache[id].timestamp > Date.now()-refres_cooldown){
                     resolve(dbGuildCache[id])
-                    let new_db_guild = Guild.findOne({id: id});
+                    let new_db_guild = await Guild.findOne({id: id});
+                    new_db_guild.timestamp = Date.now();
+
                     if(new_db_guild)
                         dbGuildCache[id] = new_db_guild;
                     else
@@ -91,8 +95,10 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
                 
             }else if(focus == 'speed'){
                 resolve(dbGuildCache[id])
-                if(dbGuildCache[id].timestamp > Date.now()-refres_cooldown){
-                    let new_db_guild = Guild.findOne({id: id});
+                if(dbGuildCache[id].timestamp < Date.now()-refres_cooldown){
+                    let new_db_guild = await Guild.findOne({id: id});
+                    new_db_guild.timestamp = Date.now();
+                    
                     if(new_db_guild)
                         dbGuildCache[id] = new_db_guild;
                     else
@@ -102,9 +108,10 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
                 }
                 
             }else if(focus == 'acc'){
-                if(dbGuildCache[id].timestamp > Date.now()-5000){
-                    let new_db_guild = Guild.findOne({id: id});
-                    
+                if(dbGuildCache[id].timestamp < Date.now()-1500){
+                    let new_db_guild = await Guild.findOne({id: id});
+                    new_db_guild.timestamp = Date.now();
+
                     if(new_db_guild){
                         dbGuildCache[id] = new_db_guild;
                         resolve(dbGuildCache[id]);
@@ -135,12 +142,16 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
     }
 }*/
 
-exports.allow_test = function(client, cmd_name, guild_id){
-    let cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
-    let cache = JSON.parse(cache_raw);
-
-    
-    let guild_cache = cache.data.find(guild_cache_raw => guild_cache_raw.id == guild_id)
+exports.allow_test = async (cmd_name, guild_cache_arg) =>{
+    let guild_cache = guild_cache_arg;// || await client.getDbGuild(guild_id, 'speed');
     if(guild_cache.settings[cmd_name] == false){return false};
     return true
 }
+
+
+
+
+
+
+
+

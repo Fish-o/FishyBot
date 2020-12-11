@@ -18,7 +18,7 @@ function match(msg, i) {
 
 
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, dbGuild) => {
     const user =
         message.mentions.users.first() ||
         message.guild.members.cache.get(args[0]) ||
@@ -56,7 +56,7 @@ exports.run = async (client, message, args) => {
 
 
     const guild = message.guild;
-    const dbGuild = await Guild.findOne({id:guild.id})
+    //const dbGuild = await Guild.findOne({id:guild.id})
     if(!(user.id in dbGuild.levels.members)){
         dbGuild = await Guild.update({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
     }

@@ -26,6 +26,11 @@ const GuildConfigSchema = new mongoose.Schema({
         required: false,
         default: {}
     },
+    roleperms:{
+        type: Object,
+        required: false,
+        default: {}
+    },
     warns:{
         type:Map,
         required: true,
@@ -35,6 +40,16 @@ const GuildConfigSchema = new mongoose.Schema({
         type:Map,
         required: true,
         default:{}
+    },
+    randomstuff:{
+        type:{
+            simpcounter:{
+                type:Object,
+                required: true,
+                default: {}
+            }
+        },
+        required: true
     },
     member_count_channel: {
         type: mongoose.SchemaTypes.String,

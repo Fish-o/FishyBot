@@ -37,7 +37,7 @@ function colourNameToHex(colour){
 }
 
 
-exports.run = async (client, message, args) =>{
+exports.run = async (client, message, args, DbGuild) =>{
     var action = ''
     if(args[0]){
         var text = args.join(' ')
@@ -87,7 +87,7 @@ exports.run = async (client, message, args) =>{
     }
     if(!action || action == 'view'){
         // Get guilds
-        const DbGuild = await Guild.findOne({id: guild.id});
+        //const DbGuild = await Guild.findOne({id: guild.id});
         const value = DbGuild
         if(!value.joinMsg){return};
 

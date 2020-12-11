@@ -18,7 +18,7 @@ function checkRoles(db_guild, guild){
 } 
 
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, db_guild) => {
     
 
     var lowercase = [];
@@ -50,7 +50,6 @@ exports.run = async (client, message, args) => {
 
 
     } else if(lowercase.includes('list')){
-        let db_guild = await Guild.findOne({id:message.guild.id})
         let {ok, wrong, names} = checkRoles(db_guild, message.guild)
         if(wrong.length > 0){
             await Guild.findOneAndUpdate({id: message.guild.id}, {defaultroles: ok} )
