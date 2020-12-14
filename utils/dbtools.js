@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-const  Guild = require('../database/schemas/Guild');
+const Guild = require('../database/schemas/Guild');
 
 exports.updatedb = async (query, value, msg = '', channel = null) => {
 

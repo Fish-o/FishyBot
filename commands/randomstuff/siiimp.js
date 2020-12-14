@@ -76,8 +76,6 @@ exports.run = async (client, message, args, db_guild) => {
 
 
 
-
-
 }
 
 exports.conf = {

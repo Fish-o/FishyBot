@@ -2,7 +2,6 @@ exports.run = async (client, message, args, guild_cache) => {
     if(!args[0]){
         return message.channel.send('Please enter commands to run')
     }
-
     
     let whole_msg = message.content.slice(message.content.split(args[0])[0].length)
     let commands = whole_msg.split(/\n|\|/g)
@@ -14,7 +13,6 @@ exports.run = async (client, message, args, guild_cache) => {
     if(!guild_cache){
         return message.channel.send('Cache not found')
     }
-
     commands.forEach(command_txt => {
         args = command_txt.trim().split(/ +/g);
         command = args.shift().toLowerCase();

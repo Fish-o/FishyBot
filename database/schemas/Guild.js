@@ -126,7 +126,7 @@ const GuildConfigSchema = new mongoose.Schema({
         required: false
     },
     custom_commands:{
-        type: Map,
+        type: Object,
         required: false,
         default: {}
     },

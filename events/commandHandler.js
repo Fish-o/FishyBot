@@ -237,9 +237,6 @@ var very_good_name = async function(client, message) {
             var msg = message.content;
            
 
-            
-
-
             Object.keys(guild_custom_commands).forEach( async (guild_custom_command) => {
                 let test = guild_custom_command;
                 const responses = guild_custom_commands[guild_custom_command]
