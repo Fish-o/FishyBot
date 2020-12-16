@@ -56,37 +56,41 @@ exports.run = async(client, message, args) => {
     }
   }
   //end of create role
-    let lenght = ms(args[1]+ " "+ args[2]);
-    if(lenght){
-        args.shift();
-        args.shift();
+    if(!args[1]){
+        await(tomute.roles.add(muterole.id));
+        message.reply(`${tomute} has been muted for indefinetly`);
     } else{
-        lenght = ms(args[1]);
+        let lenght = ms(args[1]+ " "+ args[2]);
         if(lenght){
             args.shift();
+            args.shift();
         } else{
-           return message.channel.send('You have to set a length of time to mute for!')
+            lenght = ms(args[1]);
+            if(lenght){
+                args.shift();
+            } else{
+            return message.channel.send('You have to set a length of time to mute for!')
+            }
         }
+        
+        
+
+        if(lenght > 31*24*60*60*1000)
+            return message.channel.send(`The time given (${ms(lenght)}) exceeded the limit of 31 days`);
+
+        
+    let mutetime = lenght;
+    if(!mutetime) return message.reply("You didn't specify a time!");
+
+    await(tomute.roles.add(muterole.id));
+    message.reply(`${tomute} has been muted for ${ms(mutetime)}`);
+
+    setTimeout(function(){
+        tomute.roles.remove(muterole.id);
+        message.channel.send(`${tomute} has been unmuted!`);
+    }, mutetime);
     }
-    
-    
-
-    if(lenght > 31*24*60*60*1000)
-        return message.channel.send(`The time given (${ms(lenght)}) exceeded the limit of 31 days`);
-
-    
-  let mutetime = lenght;
-  if(!mutetime) return message.reply("You didn't specify a time!");
-
-  await(tomute.roles.add(muterole.id));
-  message.reply(`<@${tomute.id}> has been muted for ${ms(mutetime)}`);
-
-  setTimeout(function(){
-    tomute.roles.remove(muterole.id);
-    message.channel.send(`<@${tomute.id}> has been unmuted!`);
-  }, mutetime);
 }
-
 
 exports.conf = {
   enabled: true,
