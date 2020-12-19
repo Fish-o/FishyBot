@@ -43,3 +43,5 @@ exports.help = {
     description: "Clears the entire chat",
     usage: "clear"
 };
+
+
