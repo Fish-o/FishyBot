@@ -12,6 +12,7 @@ const url_name_uuid = "https://api.mojang.com/users/profiles/minecraft/";
 
 const Discord = require('discord.js');
 const moment = require('moment')
+const fetch = require('node-fetch');
 
 function expToLevel(exp){
     const EXP_FIELD = "networkExp";
@@ -26,6 +27,8 @@ function expToLevel(exp){
     return exp < 0 ? 1 : Math.floor(1 + REVERSE_PQ_PREFIX + Math.sqrt(REVERSE_CONST + GROWTH_DIVIDES_2 * exp));
 }
 exports.run = async(client, message, args) => {
+    if(!args[0])
+        return message.channel.send('Please enter a username to find')
     try{
         const api_key = process.env.HYPIXELTOKEN
         let user_name = args[0]
