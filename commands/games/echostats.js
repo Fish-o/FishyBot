@@ -45,8 +45,9 @@ let getEchoStats = async function (client, args){
         // Get data
         let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
 
+        console.log(player_stats)
         // Return if nothing was found
-        if(!player_stats.player[0]){
+        if(!player_stats.player || !player_stats.player[0]){
             resolve(new Discord.MessageEmbed().setColor('RED').setTitle("Could not find user in the ignite database").setTimestamp());
             return
         }
