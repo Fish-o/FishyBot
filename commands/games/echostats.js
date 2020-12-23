@@ -36,7 +36,6 @@ function getPlayerStats(player, token, ttl= 10*60*1000) {
 
 let getEchoStats = async function (client, args){
     return new Promise( async(resolve,reject) => {
-        console.log(args)
         if(!args[0]){
             resolve(new Discord.MessageEmbed().setColor('RED').setTitle(`Please enter an Echo username`).setTimestamp());
             return
@@ -44,7 +43,7 @@ let getEchoStats = async function (client, args){
 
         
         // Get data
-        let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
+        let player_stats = await getPlayerStats(args[0].joi, client.config.igniteapi)
 
         // Return if nothing was found
         if(!player_stats.player[0]){
@@ -107,7 +106,6 @@ let getEchoStats = async function (client, args){
         }
 
         )*/
-        console.log(vrml_stats)
         
         if(!Array.isArray(vrml_stats)){
 
