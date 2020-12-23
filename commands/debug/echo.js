@@ -1,7 +1,5 @@
 exports.run = async (client, message, args) => {
-    message.channel.send('did you mean !echovrml, or !onward?')
-    let commandFile = require ("/../games/echovrml.js");
-    commandFile.run(client, message, args);
+    message.channel.send('did you mean f!echovrml')
 }
 
 exports.conf = {
@@ -16,7 +14,7 @@ exports.conf = {
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
-    name:"vrml",
+    name:"echo",
     description: "blank",
     usage: "blank"
 };
