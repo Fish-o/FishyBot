@@ -1,5 +1,5 @@
 bot_id = '780862029803945995'
-bot_token = 'NzgwODYyMDI5ODAzOTQ1OTk1.X71Qbw.NSsblXoFPBqVss89VXj-S12NyRE'
+bot_token = ''
 
 import requests
 
