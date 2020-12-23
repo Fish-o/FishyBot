@@ -43,7 +43,7 @@ let getEchoStats = async function (client, args){
 
         
         // Get data
-        let player_stats = await getPlayerStats(args[0].joi, client.config.igniteapi)
+        let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
 
         // Return if nothing was found
         if(!player_stats.player[0]){
