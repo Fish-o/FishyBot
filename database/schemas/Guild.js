@@ -49,7 +49,8 @@ const GuildConfigSchema = new mongoose.Schema({
                 default: {}
             }
         },
-        required: true
+        required: true,
+        default:{simpcounter:{}}
     },
     member_count_channel: {
         type: mongoose.SchemaTypes.String,

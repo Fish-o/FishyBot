@@ -43,14 +43,80 @@ exports.run = async (client, message, args, db_guild) => {
     message.guild.members.cache.get(args[0]) ||
     match(args.join(" ").toLowerCase(), message.guild);
 
-    if(!member){
+
+    if(['list', 'view', 'leaderboard', 'lb'].includes(args[0].toLowerCase())){
+        member = member || message.member;
+
+        let msg = 
+`
+**Simpcounter for **\`${message.guild.name}\`:`
+        
+        let arr = [];
+        var prop;
+        for (prop in db_guild.randomstuff.simpcounter) {
+            if (db_guild.randomstuff.simpcounter.hasOwnProperty(prop)) {
+                arr.push({
+                    'key': prop,
+                    'value': db_guild.randomstuff.simpcounter[prop]
+                });
+            }
+        }
+        let sorted = arr.sort(function(a, b) {
+            a = a.value
+            b = b.value
+            if(a < b) return 1;
+            else if(a > b) return -1;
+            else if(a == b) {
+                return 0
+            }
+            else return 0;
+        });
+
+
+        sorted = sorted.slice(0,9)
+        let userRank = sorted.find(lbMember => lbMember.key == member.id)
+        let count = db_guild.randomstuff.simpcounter[member.id] || 0;
+        if(!userRank){
+            sorted = sorted.slice(0,8)
+            sorted.forEach( (userRank, index) =>{
+                index ++
+                let lb_member =  message.guild.members.cache.get(userRank.key);
+                if(!lb_member){
+                    msg = msg.concat(`\n[\`${index}\`] _${userRank.key}_ (member not found) - Count: ${userRank.value}`)
+                } else {
+                    msg = msg.concat(`\n[\`${index}\`] _${lb_member.nickname || lb_member.user.tag }_ - Count: **${userRank.value}**`)
+                }
+            })
+            let rank = sorted.indexOf(sorted.find(lbMember => lbMember.key == member.id))+1 || 0
+            msg = msg.concat(`\n\n[\`${rank}\`] _**${message.member.nickname || member.tag }**_ - Count: **${count}**`)
+        }else if(userRank){
+            sorted = sorted.slice(0,9)
+            sorted.forEach( (userRank, index) =>{
+                index ++
+                let lb_member =  message.guild.members.cache.get(userRank.key);
+                if(!lb_member){
+                    msg = msg.concat(`\n[\`${index}\`] _${userRank.key}_ (member not found) - Count: ${userRank.value.level}`)
+                } else {
+                    if(lb_member.id == message.author.id){
+                        msg = msg.concat(`\n[\`${index}\`] _**${lb_member.nickname || lb_member.user.tag }**_ - Count: **${userRank.value}**`)
+                    }else{
+                        msg = msg.concat(`\n[\`${index}\`] _${lb_member.nickname || lb_member.user.tag }_ - Count: **${userRank.value}**`)
+                    }
+                }
+            })
+        }
+        if(msg){
+            message.channel.send(msg)
+        }
+
+    }
+
+
+    else if(!member){
         return message.channel.send('Mention someone to call them out for simping!')
     }
-    console.log('hasntcrasched')
-    //let db_guild = await client.getDbGuild(message.guild.id, 'acc');
-    console.log('hasntcrasched2')
-    if(['clear', 'remove', 'delete'].includes(args[0].toLowerCase()) ){
-        console.log('hasntcrasched3')
+
+    else if(['clear', 'remove', 'delete'].includes(args[0].toLowerCase()) ){
         if(message.member.hasPermission('MANAGE_ROLES')){
             await client.updatedb({id:message.guild.id}, {['randomstuff.simpcounter.'+member.id]: 0})
             message.channel.send(`${member}'s simp counter has been rest. (prev: ${db_guild.randomstuff.simpcounter[member.id] || '0'})`)
@@ -59,21 +125,19 @@ exports.run = async (client, message, args, db_guild) => {
         }
 
     }
-    console.log('hasntcrasched4')
-    db_guild = await client.getDbGuild(message.guild.id, 'acc')
-    console.log(db_guild)
-    console.log(db_guild.randomstuff.simpcounter)
-    console.log(member.id)
-    if(!db_guild.randomstuff.simpcounter[member.id]){
-        await client.updatedb( {id:message.guild.id}, {['randomstuff.simpcounter.'+member.id]: 1});
-        message.channel.send(`${member} has become a simp! (count: 1)`)
+    
+    else{
+        db_guild = await client.getDbGuild(message.guild.id, 'acc')
+        if(!db_guild.randomstuff.simpcounter[member.id]){
+            await client.updatedb( {id:message.guild.id}, {['randomstuff.simpcounter.'+member.id]: 1});
+            message.channel.send(`${member} has become a simp! (count: 1)`)
 
-        
-    }else{
-        await client.updatedb( {id:message.guild.id}, {['randomstuff.simpcounter.'+member.id]: (db_guild.randomstuff.simpcounter[member.id]+1)});
-        message.channel.send(`${(simp_responses[Math.floor(Math.random() * simp_responses.length)]).split('@').join(member)} (count:${db_guild.randomstuff.simpcounter[member.id]+1})`)
+            
+        }else{
+            await client.updatedb( {id:message.guild.id}, {['randomstuff.simpcounter.'+member.id]: (db_guild.randomstuff.simpcounter[member.id]+1)});
+            message.channel.send(`${(simp_responses[Math.floor(Math.random() * simp_responses.length)]).split('@').join(member)} (count:${db_guild.randomstuff.simpcounter[member.id]+1})`)
+        }
     }
-
 
 
 }

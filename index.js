@@ -568,6 +568,7 @@ client.allow_test = dbtools.allow_test;
 
 const other = require("./utils/other");
 client.getMember = other.getMember;
+client.helpFunc = other.helpFunc;
 
 client.sendinfo = function (info){
     try{
