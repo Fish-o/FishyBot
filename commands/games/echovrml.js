@@ -144,7 +144,7 @@ let getVrmlStats = async function (client, args){
             team_name = ratings.bestMatch.target
             team_name_url = team_name.split(' ').join('%20')
             team = all_teams.TeamPlayers.find(team => team.Name == team_name)
-            message.channel.send(`Could not find exact team, going with: \`${team_name}\` (${Math.round(ratings.bestMatch.rating*100)}% sure)`)
+            //message.channel.send(`Could not find exact team, going with: \`${team_name}\` (${Math.round(ratings.bestMatch.rating*100)}% sure)`)
         }
 
         if(!team){
