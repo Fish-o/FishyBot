@@ -101,7 +101,7 @@ exports.event = async (client) => {
                     data: {
                         type: 4,
                         data: {
-                            embeds:[await require("./../commands/games/echovrml.js").getVrmlStats(client, interaction.data.options[0].value.split(/(\w+)/g).filter(Boolean))]
+                            embeds:[await require("./../commands/games/echovrml.js").getVrmlStats(client, interaction.data.options[0].value.split())]
                         }
                     }
                 })
@@ -112,7 +112,7 @@ exports.event = async (client) => {
                     data: {
                         type: 4,
                         data: {
-                            embeds:[await require("./../commands/games/echostats.js").getEchoStats(client, interaction.data.options[0].value.split(/(\w+)/g).filter(Boolean))]
+                            embeds:[await require("./../commands/games/echostats.js").getEchoStats(client, interaction.data.options[0].value.split())]
                         }
                     }
                 })
