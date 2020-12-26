@@ -13,23 +13,49 @@ DBPATH=the path to a mongodb database
 ```
 To make use of all features, also add this:
 ```
-wip
+prefix=
+HYPIXELTOKEN=
+IGNITEAPI=
+CAT_TOKEN=
 ```
 
 A basic command example:
 ```js
+
+// The actual code that returns the response
+let command = async(client, args) => {
+	return `pong = \`${client.ws.ping} ms\``;
+}
+
+
+
+// The message command code
 exports.run = (client, message, args) => { 	// The args are formed like this:
 	// args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
-	// And then args.shift()
-	
-	message.channel.send(`pong = \`${client.ws.ping} ms\``).catch(console.error);
+    // And then args.shift()
+    let resp = command(client);
+	message.channel.send(resp);
+}
+
+// The slash command (interaction) code
+exports.interaction = async (client, interaction, args){
+    let resp = command(client);
+    interaction.send(resp); 
+    // interaction.send() is different from message.send() in a couple of ways:
+    // 1) interaction.send() can only be called once for each interaction
+    // 2) i think thats it rn
 }
 
   
 
+
+
 exports.conf = {
-	enabled:  true, 	// Does nothing rn
-	guildOnly:  false, 	// Does nothing rn
+    enabled:  true, 	// Does nothing rn
+    guildOnly:  false, 	// Does nothing rn
+    interaction: {      // if no name/description entered then it uses the one from help
+        options: []
+    },
 	aliases: [], 		// Alliasses for commands
 	perms: [ 		// Permisions users need to use the command
 	]	// https://anidiots.guide/understanding/roles#addendum-permission-names
@@ -38,8 +64,8 @@ exports.conf = {
 const  path = require("path")
 exports.help = {
 	category:  __dirname.split(path.sep).pop(), 	// The category name, this returns the 
-							// name of the dir it is in
-	name:"ping",					// The default command  name
+                                // name of the dir it is in
+	name:"ping",            // The default command  name
 	description:  "Returns the ping of the bot",
 							// Detailed description on what 
 							//the command does

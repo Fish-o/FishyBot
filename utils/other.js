@@ -49,7 +49,8 @@ exports.getMember = function(message, toFind = '') {
 exports.helpFunc = async (client, args) => {
     if (!args[0]) {
         let cats = {};
-        client.commands.forEach(c => {
+        client.commands.forEach(cName => {
+            let c = client.commandFiles.get(cName);
             if (c.help.category != 'debug') {
                 if (!cats[c.help.category]) { cats[c.help.category] = []; } cats[c.help.category].push({
                     name: c.help.name,
@@ -103,7 +104,7 @@ If you need any more help ask an admin, moderator, or message ${client.config.au
         let command = args[0];
         if (client.commands.has(command)) {
 
-            help_command_obj = client.commands.get(command);
+            help_command_obj = client.commandFiles.get(client.commands.get(command));
             let perms = '\`';
             help_command_obj.conf.perms.forEach(perm => {
                 perms = perms + perm + '\`,';

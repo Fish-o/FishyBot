@@ -4,32 +4,36 @@ const request = require('request');
 cachedRequest = require('cached-request')(request);
 cacheDirectory = "/../../jsonFiles/cache/stats/";
 cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
+const axios = require('axios');
 
+let cache = {}
+let refresh_time = 30*60*1000
 
-
-function getPlayerStats(player, token, ttl= 10*60*1000) {
-    return new Promise(function (resolve, reject) {
-
-        let url = `https://ignitevr.gg/cgi-bin/EchoStats.cgi/get_player_stats?player_name=${player}&fuzzy_search=true`
-
-        let options = {
-            url: url,
-            method: 'GET',
-            ttl:ttl,
-            json: true,
-            headers: {
-                "x-api-key":token,
-                'User-Agent': 'FishyBot'
-            }
-        };
-
-        cachedRequest(options, function (error, res, body) {
-            if (!error && res.statusCode == 200) {
-                resolve(body);
+function getPlayerStats(player, token) {
+    return new Promise(async function (resolve, reject) {
+        try{
+            if(!cache[player] || cache[player].timestamp+refresh_time <= Date.now()){
+                let url = `https://ignitevr.gg/cgi-bin/EchoStats.cgi/get_player_stats?player_name=${player}&fuzzy_search=true`
+                let headers = {
+                    "x-api-key":token,
+                    'User-Agent': 'FishyBot'
+                }
+                
+                let r2 = await axios.get(
+                    url,
+                    {headers}
+                )
+                resolve(r2.data)
+                cache[player] = r2.data
+                cache[player].time = Date.now()
             } else {
-                reject(error);
+                resolve(cache[player])
             }
-        });
+
+        }
+        catch{
+            resolve(undefined)
+        }
     });
 }
 
@@ -45,7 +49,6 @@ let getEchoStats = async function (client, args){
         // Get data
         let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
 
-        console.log(player_stats)
         // Return if nothing was found
         if(!player_stats.player || !player_stats.player[0]){
             resolve(new Discord.MessageEmbed().setColor('RED').setTitle("Could not find user in the ignite database").setTimestamp());
@@ -121,18 +124,41 @@ let getEchoStats = async function (client, args){
     
 }
 exports.run = async (client, message, args) => {
+    message.channel.startTyping()
     let Embed = await getEchoStats(client, args);
+    message.channel.stopTyping()
     message.channel.send(Embed)
+    
 }
 
-exports.getEchoStats = async(client, args) => {
-    return new Promise( async(resolve,reject) => {
-        resolve(await getEchoStats(client, args));   
-    });
+exports.interaction = async(client, interaction, args) => {
+    
+    interaction.channel.startTyping();
+    try{
+        let embed = await getEchoStats(client, args[0].value.split());
+        interaction.send(embed)
+    }
+    catch(err){
+        console.log(err)
+        client.sendInfo(`ERROR: echostats interaction (${Date.now()})`)
+        interaction.channel.send('Something has gone wrong with the echo stats command')
+    } finally{
+        interaction.channel.stopTyping()
+    }
 }
 exports.conf = {
     enabled: true,
     guildOnly: false,
+    interaction: {
+        options: [
+            {
+                name: "Name",
+                description: "A users Oculus name",
+                required: true,
+                type: 3
+            }
+        ]
+    },
     aliases: ['ignite', 'statsecho', 'ignitestats', 'ignitevr'],
     perms: [
         
@@ -143,6 +169,6 @@ const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"echostats",
-    description: "Get a users echo stats",
+    description: "Gets a persons echo ignite stats",
     usage: "echostats [player]"
 };

@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const moment  = require("moment");
+const axios = require("axios");
 
 const fs = require('fs');
 const ms = require("ms");
@@ -54,15 +55,22 @@ if(!fs.existsSync(__dirname + '/jsonFiles/cache.json')){
 console.log('Loading events')
 fs.readdir("./events/", (err, files) => {
     if (err) return console.error(err);
+    let discordEvents = Discord.Constants.Events;
     files.forEach(file => {
         const event = require(`./events/${file}`);
         //let eventName = file.split(".")[0];
-        client.on(event.conf.event, event.event.bind(null, client));
+        if(Object.keys(discordEvents).includes(event.conf.event.toUpperCase()) || Object.values(discordEvents).includes(event.conf.event.toLowerCase()))
+            client.on(event.conf.event, event.event.bind(null, client));
+        else
+            client.ws.on(event.conf.event, event.event.bind(null, client));
     });
 });
 
 //client.commands = new Enmap();
+
+client.commandFiles = new Discord.Collection();
 client.commands = new Discord.Collection();
+client.interactions = new Discord.Collection();
 client.aliases = new Discord.Collection();
 
 client.auto_commands = new Discord.Collection();
@@ -72,41 +80,79 @@ client.auto_activations = new Discord.Collection();
 client.bypass = false;
 client.master = client.config.master
 
+
+
+
+
 console.log('Loading commands');
 
 // Loads all the subcategories inside the commands dir
-fs.readdir("./commands/", (direrr, dirs) =>{
+fs.readdir("./commands/", async (direrr, dirs) =>{
+    let userdata = await axios.get('https://discordapp.com/api/users/@me', {headers:{'Authorization': `Bot ${client.config.token}`}})
+    user = userdata.data
+    let discordSlashCommands = await client.api.applications(user.id).commands.get();
+
     if (direrr) {
         return console.log('Unable to scan directory: ' + err);
     }
     console.log(dirs)
+
+    client.setInteractions = [];
+
     // Cycles thru all sub direcoties
-    dirs.forEach(dir => {
+    dirs.forEach((dir) => {
         // Make a path to that subdir
         const path = "./commands/"+dir+"/";
         // Read the contents of that subdir
         fs.readdir(path, (err, files) => {
             if (err) return console.error(err);
             // Go thru all files in the subdir
-            files.forEach(file => {
+            files.forEach((file) => {
                 // Check if they end with .js
                 if (!file.endsWith(".js")) return;
                 // Load the command file
                 let command_file = require(path+file);
+
+                // Set the command file with the file path
                 console.log(`Loading Command: ${command_file.help.name}`);
-                // Set the command file to the client.commands map:
-                // Map {name:command}
-                client.commands.set(command_file.help.name, command_file);
-                // Go thru all the aliases listed in the command file
-                command_file.conf.aliases.forEach(alias => {
-                    // Asign the aliases to the map
-                    // {alias:name}
-                    client.aliases.set(alias, command_file.help.name);
-                });
+                client.commandFiles.set(path+file, command_file);
+
+                // Check if the file has a message command for it
+                if( typeof command_file.run == 'function') {
+                    client.commands.set(command_file.help.name, path+file);
+                    command_file.conf.aliases.forEach(alias => {
+                        client.aliases.set(alias, command_file.help.name);
+                    });
+                }
+
+                // Check if the file has an interaction for it
+                if( typeof command_file.interaction == 'function') {
+                    
+                    let interaction = command_file.conf.interaction;
+                    interaction.name = interaction.name || command_file.help.name
+                    interaction.description = interaction.description || command_file.help.description
+
+                    console.log(`Loading Interaction: ${interaction.name}`);
+                    client.setInteractions.push(interaction.name)
+
+                    if(!discordSlashCommands.find(slashCommand => {
+                        slashCommand.name === interaction.name &&
+                        slashCommand.description === interaction.name &&
+                        slashCommand.options === interaction.options
+                    })){
+                        client.api.applications(user.id).commands.post({data: interaction})
+                        console.log(`Updated Interaction: ${interaction.name}`)
+                    }
+
+                    client.interactions.set(interaction.name, path+file)
+                }
+
             });
         });
 
     })
+    
+    
 })
 
 console.log('Loading autocommands');

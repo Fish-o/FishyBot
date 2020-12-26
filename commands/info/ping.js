@@ -1,13 +1,36 @@
-exports.run = (client, message, args) => {
-    message.channel.send("pong = " + `\`${client.ws.ping} ms\``).catch(console.error);
+exports.run = async (client, message, args) => {
+    let beforeTime = Date.now()
+    let msg = await message.channel.send('Pong...')
+    msg.edit(
+`Bot latency is \`${Date.now() - msg.createdTimestamp}ms\`. 
+API Latency is \`${Math.round(client.ws.ping)}ms\`.
+Your latency to the bot \`${(beforeTime - message.createdTimestamp )}ms\`.
+`);
+    
 }
+
+exports.interaction = async (client, interaction, args) => {
+    let beforeTime = Date.now()
+    let msg = await interaction.channel.send('Calculating....')
+    msg.delete()
+    interaction.send(
+`Bot latency is \`${Date.now() - msg.createdTimestamp}ms\`. 
+API Latency is \`${Math.round(client.ws.ping)}ms\`.
+`);
+}
+
+
 
 exports.conf = {
     enabled: true,
     guildOnly: false,
+    interaction: {
+        description: "Returns the latency of the bot",
+        options: []
+    },
     aliases: [],
     perms: [
-        
+        "ADMINISTRATOR"
     ]
   };
   

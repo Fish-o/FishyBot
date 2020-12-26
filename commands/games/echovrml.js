@@ -298,10 +298,22 @@ let getVrmlStats = async function (client, args){
     // Send the embed!
     
 }
-exports.getVrmlStats = async(client, args) =>{
-    return new Promise( async(resolve,reject) => {
-        resolve(await getVrmlStats(client, args))
-    });
+
+
+
+exports.interaction = async(client, interaction, args) => {
+    interaction.channel.startTyping();
+    try{
+        let embed = await getVrmlStats(client, args[0].value.split());
+        interaction.send(embed)
+    }
+    catch(err){
+        console.log(err)
+        client.sendInfo(`ERROR: echovrml interaction (${Date.now()})`)
+        interaction.channel.send('Something has gone wrong with the echovrml command')
+    } finally{
+        interaction.channel.stopTyping()
+    }
 }
 exports.run = async(client, message, args) => {
     let embed = await getVrmlStats(client, args)
@@ -311,6 +323,16 @@ exports.run = async(client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
+    interaction:{
+        options: [
+            {
+                name: "Team",
+                description: "An Echo Vrml team's name",
+                required: true,
+                type: 3
+            }
+        ]
+    },
     aliases: ['vrmlecho', 'echoteam'],
     perms: [
 
@@ -324,3 +346,7 @@ exports.help = {
     description: "Returns echo arena vrml stats of a team",
     usage: "echovrml [team / team member]"
 };
+
+
+
+
