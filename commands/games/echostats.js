@@ -1,9 +1,4 @@
 const Discord = module.require('discord.js');
-
-const request = require('request');
-cachedRequest = require('cached-request')(request);
-cacheDirectory = "/../../jsonFiles/cache/stats/";
-cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
 const axios = require('axios');
 
 let cache = {}
@@ -25,7 +20,7 @@ function getPlayerStats(player, token) {
                 )
                 resolve(r2.data)
                 cache[player] = r2.data
-                cache[player].time = Date.now()
+                cache[player].timestamp = Date.now()
             } else {
                 resolve(cache[player])
             }

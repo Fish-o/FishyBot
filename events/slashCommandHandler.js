@@ -53,7 +53,16 @@ exports.event = async (client, interaction) => {
             embed = message;
             message = undefined;
         }
-        client.api.interactions(this.id, this.token).callback.post( {data: { type: 4, data: { content: message, embeds:(embed) ? [embed] : undefined } } }) }
+        client.api.interactions(this.id, this.token).callback.post( {data: { type: 4, data: { content: message, embeds:(embed) ? [embed] : undefined } } }) 
+    }
+    interaction.error = async function(message, embed){ 
+        if(typeof message == 'object'){
+            embed = message;
+            message = undefined;
+        }
+        return embed || new Discord.MessageEmbed().setColor('RED').setTitle(message).setTimestamp();
+
+    }
 
 
     // Define the command and the args

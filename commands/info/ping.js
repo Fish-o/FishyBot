@@ -10,13 +10,13 @@ Your latency to the bot \`${(beforeTime - message.createdTimestamp )}ms\`.
 }
 
 exports.interaction = async (client, interaction, args) => {
-    let beforeTime = Date.now()
     let msg = await interaction.channel.send('Calculating....')
-    msg.delete()
+    
     interaction.send(
 `Bot latency is \`${Date.now() - msg.createdTimestamp}ms\`. 
 API Latency is \`${Math.round(client.ws.ping)}ms\`.
 `);
+msg.delete()
 }
 
 

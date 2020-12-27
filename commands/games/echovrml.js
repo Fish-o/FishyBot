@@ -1,10 +1,6 @@
 const Discord = module.require('discord.js');
 
-const request = require('request');
-cachedRequest = require('cached-request')(request);
-cacheDirectory = "/../../jsonFiles/cache/vrml/";
-cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
-
+const axios = require('axios');
 
 
 const fs = require('fs');
@@ -15,22 +11,28 @@ var stringSimilarity = require('string-similarity');
 
 
 
+let cache = new Discord.Collection();;
 function doRequest(url, ttl= 10*60*1000) {
-    return new Promise(function (resolve, reject) {
-        var options = {
-            url: url,
-            ttl:ttl,
-            json: true
-        };
-        cachedRequest(options, function (error, res, body) {
-            if (!error && res.statusCode == 200) {
-                resolve(body);
+    return new Promise(async function (resolve, reject) {
+        try{
+            if(!cache.has(url) || cache.get(url).timestamp <= Date.now()){
+                let r2 = await axios.get(
+                    url
+                )
+                let data = r2.data;
+                data.timestamp = Date.now() +ttl
+                cache.set(url, data)
             } else {
-                reject(error);
+                resolve(cache.get(url))
             }
-        });
+
+        }
+        catch{
+            resolve(undefined)
+        }
     });
 }
+
 
 let getVrmlStats = async function (client, args){
     return new Promise( async(resolve,reject) => {

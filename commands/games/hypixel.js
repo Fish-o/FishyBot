@@ -12,7 +12,7 @@ const url_name_uuid = "https://api.mojang.com/users/profiles/minecraft/";
 
 const Discord = require('discord.js');
 const moment = require('moment')
-const fetch = require('node-fetch');
+const axios = require('axios');
 
 function expToLevel(exp){
     const EXP_FIELD = "networkExp";
@@ -34,12 +34,12 @@ exports.run = async(client, message, args) => {
         let user_name = args[0]
         if(uuid_cache.has(user_name)){
             if(uuid_cache.get(user_name).ts < Date.now() - uuid_cooldown){
-                let mc_uuid = await fetch(url_name_uuid+user_name)
+                let mc_uuid = await axios.get(url_name_uuid+user_name)
             let jsondata = await mc_uuid.json()
                 uuid_cache.set(user_name, {ts: Date.now(), uuid:jsondata.id})
             }
         } else {
-            let mc_uuid = await fetch(url_name_uuid+user_name)
+            let mc_uuid = await axios.get(url_name_uuid+user_name)
             if(mc_uuid.status == 204){
                 uuid_cache.set(user_name, {ts: Date.now(), uuid:undefined})
             } else{
@@ -57,12 +57,12 @@ exports.run = async(client, message, args) => {
 
         if(hp_user_cache.has(uuid)){
             if(hp_user_cache.get(uuid).ts < Date.now() - hp_cooldown){
-                let hp_response = await fetch(`https://api.hypixel.net/player?uuid=${uuid}&key=${api_key}`);
+                let hp_response = await axios.get(`https://api.hypixel.net/player?uuid=${uuid}&key=${api_key}`);
                 let hp_response_json = await hp_response.json()
                 hp_user_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
             }
         } else{
-            let hp_response = await fetch(`https://api.hypixel.net/player?uuid=${uuid}&key=${api_key}`);
+            let hp_response = await axios.get(`https://api.hypixel.net/player?uuid=${uuid}&key=${api_key}`);
             let hp_response_json = await hp_response.json()
             hp_user_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
         }
@@ -77,12 +77,12 @@ exports.run = async(client, message, args) => {
         
         if(hp_guild_cache.has(uuid)){
             if(hp_guild_cache.get(uuid).ts < Date.now() - hp_cooldown){
-                let hp_response = await fetch(`https://api.hypixel.net/guild?player=${uuid}&key=${api_key}`);
+                let hp_response = await axios.get(`https://api.hypixel.net/guild?player=${uuid}&key=${api_key}`);
                 let hp_response_json = await hp_response.json()
                 hp_guild_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
             }
         } else{
-            let hp_response = await fetch(`https://api.hypixel.net/guild?player=${uuid}&key=${api_key}`);
+            let hp_response = await axios.get(`https://api.hypixel.net/guild?player=${uuid}&key=${api_key}`);
             let hp_response_json = await hp_response.json()
             hp_guild_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
         }
