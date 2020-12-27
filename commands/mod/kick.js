@@ -13,7 +13,7 @@ function match(msg, i) {
     if (!user) return undefined;
     return user;
 }
-
+let Discord = require('discord.js')
 exports.run = (client, message, args) => {
     let member =
         message.mentions.members.first() ||
@@ -39,15 +39,63 @@ exports.run = (client, message, args) => {
 
 }
 
+
+exports.interaction = async (client, interaction, args) => {
+    console.log(args)
+    let member = args.find(arg => arg.name == 'member').value;
+    
+    
+    if(!member)
+        //you have to type !kick then @username#1234 as an example
+        return interaction.send(await interaction.error("Please mention a valid member of this server"));
+
+    member = interaction.guild.members.cache.get(member);
+    if(!member.kickable) 
+        return interaction.send(await interaction.error("I cannot kick this user!","Do they have a higher role? Do I have kick permissions?"));
+
+    // slice(1) removes the first part, which here should be the user mention or ID
+    // join(' ') takes all the various parts to make it a single string.
+    let reason = args.find(arg => arg.name == 'reason');
+    if(!reason) reason = "No reason provided";
+    else reason = reason.value;
+
+    try{
+        member.kick(reason)
+        interaction.send(await interaction.succes(`${member.user.tag} has been kicked`, `By: ${interaction.member}\nReason: ${reason}`));
+    }catch(error){
+        interaction.send(await interaction.error(`Kicking failed`, 'Reason: '+error));
+    }
+        
+
+}
+
 exports.conf = {
     enabled: true,
     guildOnly: false,
-    aliases: [],
+    interaction:{
+        options:[
+            {
+                name:'Member',
+                description:'Description',
+                type:6,
+                required:true
+            },
+            {
+                name:'Reason',
+                description:'The reason for the kick',
+                type:3,
+                required:false
+            }
+        ]
+
+    },
+    aliases: ['yeet'],
     perms: [
         'KICK_MEMBERS'
     ]
   };
   
+
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),

@@ -49,19 +49,38 @@ exports.event = async (client, interaction) => {
 
     // Make .send a propperty of the interaction
     interaction.send = async function(message, embed){ 
-        if(typeof message == 'object'){
-            embed = message;
-            message = undefined;
-        }
-        client.api.interactions(this.id, this.token).callback.post( {data: { type: 4, data: { content: message, embeds:(embed) ? [embed] : undefined } } }) 
+        return new Promise(async(resolve, reject)=>{
+            if(typeof message == 'object'){
+                embed = message;
+                message = undefined;
+            }
+            resolve(await client.api.interactions(this.id, this.token).callback.post( {data: { type: 4, data: { content: message, embeds:(embed) ? [embed] : undefined } } })) 
+        })
     }
-    interaction.error = async function(message, embed){ 
-        if(typeof message == 'object'){
-            embed = message;
-            message = undefined;
-        }
-        return embed || new Discord.MessageEmbed().setColor('RED').setTitle(message).setTimestamp();
-
+    interaction.error = async function(message, desc){
+        return new Promise(async (resolve, reject) =>{
+            let embed = new Discord.MessageEmbed().setColor('RED').setTitle(message).setTimestamp();
+            if(desc){
+                embed.setDescription(desc);
+            }
+            resolve(await embed) 
+        })
+    }
+    interaction.succes = async function(message, desc){
+        return new Promise(async (resolve, reject) =>{
+            let embed = new Discord.MessageEmbed().setColor('GREEN').setTitle(message).setTimestamp();
+            if(desc){
+                embed.setDescription(desc);
+            }
+            resolve(await embed) 
+        })
+    }
+    interaction.delResponse = async function(time){
+        return new Promise(async(resolve, reject)=>{
+            if(time)
+                await client.func.sleep();
+            client.api.webhooks(user.id, this.token).messages.delete()
+        })
     }
 
 
@@ -74,7 +93,9 @@ exports.event = async (client, interaction) => {
     let cmd = client.commandFiles.get(client.interactions.get(commandName))
     if(!cmd) return;
 
-
+    // Check if it is disabled
+    if(!await client.allow_test(cmd.help.name, guild_cache))
+        return;
 
     // Check for the name of the command
     var succes = true;

@@ -322,14 +322,7 @@ var very_good_name = async function(client, message) {
                         // If that command doesn't exist, silently exit and do nothing
                         if (!cmd) return;
                         
-                        message.error = async function(message, embed){ 
-                            if(typeof message == 'object'){
-                                embed = message;
-                                message = undefined;
-                            }
-                            return embed || new Discord.MessageEmbed().setColor('RED').setTitle(message).setTimestamp();
-                    
-                        }
+                        
 
 
                         cmd.run(client, message, ops);
