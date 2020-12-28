@@ -1,16 +1,23 @@
 
 const superagent = require('superagent');
 const Discord = module.require('discord.js');
+
+let command = async function(){
+    return new Promise(async(resolve, reject)=>{
+        let replies = ['Run!', 'RUN!', 'Lay on the ground, it will think you are dead.','Hide the children!','SHOOT IT','this is where it will all end...','There is no point in running','you cannot escape the might of the goose','it wants to eat you','look at those devilish eyes','turn around an run','grab it by the neck and shake it', 'kill it before it lays eggs', 'kill it!','murder it!','SHOOT IT','call the military','CALL THA NAVY', 'CALL THE POLICE', 'Call an ambulance'];
+        const reply = replies[Math.floor(Math.random() * replies.length)];
+        const { body } = await superagent
+        .get("https://nekos.life/api/v2/img/goose")
+        const embed = new Discord.MessageEmbed()
+            .setColor("RANDOM")
+            .setTitle(reply)
+            .setImage(body.url)
+        resolve(embed)
+    });
+}
+exports.command = command;
 exports.run = async (client, message, args) => {
-    let replies = ['Run!', 'RUN!', 'Lay on the ground, it will think you are dead.','Hide the children!','SHOOT IT','this is where it will all end...','There is no point in running','you cannot escape the might of the goose','it wants to eat you','look at those devilish eyes','turn around an run','grab it by the neck and shake it', 'kill it before it lays eggs', 'kill it!','murder it!','SHOOT IT','call the military','CALL THA NAVY', 'CALL THE POLICE', 'Call an ambulance'];
-    const reply = replies[Math.floor(Math.random() * replies.length)];
-    const { body } = await superagent
-    .get("https://nekos.life/api/v2/img/goose")
-    const embed = new Discord.MessageEmbed()
-    .setColor("RANDOM")
-    .setTitle(reply)
-    .setImage(body.url)
-    message.channel.send({embed})
+    message.channel.send(await command())
 }
 
 exports.conf = {

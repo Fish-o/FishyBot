@@ -1,34 +1,43 @@
-exports.run = (client, message, args) => {
-    try{
-    const Discord = require('discord.js');
-    const request = require('request');
-    
-    
-    let url = "https://uselessfacts.jsph.pl/random.json?language=en";
-
-    let options = {json: true};
+const Discord = require('discord.js');
+const axios = require('axios');
 
 
+let command = async function(){
+    return new Promise(async (resolve, reject)=>{
+        try{
+        let errEmbed = new Discord.MessageEmbed()
+            .setTitle('Fact command failed')
+            .setColor('RED')
+            .setTimestamp();
+        let url = "https://uselessfacts.jsph.pl/random.json?language=en";
+        
 
-    request(url, options, (error, res, body) => {
-        if (error) {
-            return  console.log(error)
-        };
 
-        if (!error && res.statusCode == 200) {
+        let res = await axios.get(url)
+        if (res.status == 200) {
             // do something with JSON, using the 'body' variable
-
-            message.channel.send(body.text);
+             
+            resolve(res.data.text);
+            return;
+        }else{
+            let embed = errEmbed.setDescription('Invalid status code: '+res.status)
+            resolve(embed);
+            return;
         };
-    });
-    }
-    catch (err){
-        console.log(err);
-        message.channel.send("The command failed");
-    }
-
+        
+        }
+        catch (err){
+            console.log(err);
+            let embed = errEmbed.setDescription('Reason: '+err)
+            resolve(embed);
+            return;
+        }
+    })
 };
-
+exports.command = command;
+exports.run = async (client, message, args) => {
+    message.channel.send(await command())
+}
 exports.conf = {
     enabled: true,
     guildOnly: false,
@@ -38,6 +47,7 @@ exports.conf = {
     ]
   };
   
+const { WSASERVICE_NOT_FOUND } = require('constants');
 const path = require("path")
 exports.help = {
     category: __dirname.split(path.sep).pop(),

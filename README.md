@@ -16,7 +16,6 @@ To make use of all features, also add this:
 prefix=
 HYPIXELTOKEN=
 IGNITEAPI=
-CAT_TOKEN=
 ```
 
 A basic command example:

@@ -48,13 +48,18 @@ exports.event = async (client, interaction) => {
     interaction.member = interaction.guild.members.cache.get(interaction.member.user.id)
 
     // Make .send a propperty of the interaction
-    interaction.send = async function(message, embed){ 
+    interaction.send = async function(message, options){ 
         return new Promise(async(resolve, reject)=>{
+            let embed;
             if(typeof message == 'object'){
                 embed = message;
                 message = undefined;
             }
-            resolve(await client.api.interactions(this.id, this.token).callback.post( {data: { type: 4, data: { content: message, embeds:(embed) ? [embed] : undefined } } })) 
+            let DATA = { content: message, embeds:(embed) ? [embed] : undefined }
+            if(options){
+                let DATA = Object.assign(DATA, options);
+            }
+            resolve(await client.api.interactions(this.id, this.token).callback.post( {data: { type: 4, data: DATA } })) 
         })
     }
     interaction.error = async function(message, desc){
