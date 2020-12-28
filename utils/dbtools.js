@@ -144,7 +144,7 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
 
 exports.allow_test = async (cmd_name, guild_cache_arg) =>{
     let guild_cache = guild_cache_arg;// || await client.getDbGuild(guild_id, 'speed');
-    if(guild_cache.settings.get(cmd_name) == false){return false};
+    if(guild_cache.settings[cmd_name] == false){return false};
     return true
 }
 

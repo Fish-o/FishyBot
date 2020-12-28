@@ -322,6 +322,9 @@ var very_good_name = async function(client, message) {
                         // If that command doesn't exist, silently exit and do nothing
                         if (!cmd) return;
                         
+                        
+
+
                         cmd.run(client, message, ops);
                     }
                 }
@@ -333,15 +336,15 @@ var very_good_name = async function(client, message) {
         // Our standard argument/command name definition.
         if (!command) return;
         if(!await client.allow_test(command, guild_cache)){return}
-        
+        let cmdPath;
         // Grab the command data from the client.commands Enmap
         if (client.commands.has(command)) {
-            cmd = client.commands.get(command);
+            cmdPath = client.commands.get(command);
         } else if (client.aliases.has(command)) {
-            cmd = client.commands.get(client.aliases.get(command));
+            cmdPath = client.commands.get(client.aliases.get(command));
         }
-        //const cmd = client.commands.get(command);
-    
+        if (!cmdPath) return;
+        const cmd = client.commandFiles.get(cmdPath);
         // If that command doesn't exist, silently exit and do nothing
         if (!cmd) return;
 

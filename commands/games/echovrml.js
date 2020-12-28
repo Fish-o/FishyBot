@@ -1,10 +1,6 @@
 const Discord = module.require('discord.js');
 
-const request = require('request');
-cachedRequest = require('cached-request')(request);
-cacheDirectory = "/../../jsonFiles/cache/vrml/";
-cachedRequest.setCacheDirectory(__dirname + cacheDirectory);
-
+const axios = require('axios');
 
 
 const fs = require('fs');
@@ -15,22 +11,28 @@ var stringSimilarity = require('string-similarity');
 
 
 
+let cache = new Discord.Collection();;
 function doRequest(url, ttl= 10*60*1000) {
-    return new Promise(function (resolve, reject) {
-        var options = {
-            url: url,
-            ttl:ttl,
-            json: true
-        };
-        cachedRequest(options, function (error, res, body) {
-            if (!error && res.statusCode == 200) {
-                resolve(body);
+    return new Promise(async function (resolve, reject) {
+        try{
+            if(!cache.has(url) || cache.get(url).timestamp <= Date.now()){
+                let r2 = await axios.get(
+                    url
+                )
+                let data = r2.data;
+                data.timestamp = Date.now() +ttl
+                cache.set(url, data)
             } else {
-                reject(error);
+                resolve(cache.get(url))
             }
-        });
+
+        }
+        catch{
+            resolve(undefined)
+        }
     });
 }
+
 
 let getVrmlStats = async function (client, args){
     return new Promise( async(resolve,reject) => {
@@ -298,10 +300,22 @@ let getVrmlStats = async function (client, args){
     // Send the embed!
     
 }
-exports.getVrmlStats = async(client, args) =>{
-    return new Promise( async(resolve,reject) => {
-        resolve(await getVrmlStats(client, args))
-    });
+
+
+
+exports.interaction = async(client, interaction, args) => {
+    interaction.channel.startTyping();
+    try{
+        let embed = await getVrmlStats(client, args[0].value.split());
+        interaction.send(embed)
+    }
+    catch(err){
+        console.log(err)
+        client.sendInfo(`ERROR: echovrml interaction (${Date.now()})`)
+        interaction.channel.send('Something has gone wrong with the echovrml command')
+    } finally{
+        interaction.channel.stopTyping()
+    }
 }
 exports.run = async(client, message, args) => {
     let embed = await getVrmlStats(client, args)
@@ -311,6 +325,16 @@ exports.run = async(client, message, args) => {
 exports.conf = {
     enabled: true,
     guildOnly: false,
+    interaction:{
+        options: [
+            {
+                name: "Team",
+                description: "An Echo Vrml team's name",
+                required: true,
+                type: 3
+            }
+        ]
+    },
     aliases: ['vrmlecho', 'echoteam'],
     perms: [
 
@@ -324,3 +348,7 @@ exports.help = {
     description: "Returns echo arena vrml stats of a team",
     usage: "echovrml [team / team member]"
 };
+
+
+
+

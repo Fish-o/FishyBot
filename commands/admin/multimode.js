@@ -21,11 +21,11 @@ exports.run = async (client, message, args, guild_cache) => {
         if (!command) message.channel.send(`❗ Something went wrong with the text (No command name found): \`${command_txt}\`\nproceeding to run the other commands`);
         if(!client.allow_test(command, guild_cache)){return}
 
-        if (client.commands.has(command)) {
-            cmd = client.commands.get(command);
+        if (client.commandFiles.get(client.commands.has(command))) {
+            cmd = client.commandFiles.get(client.commands.get(command));
         } else if (client.aliases.has(command)) {
             command =  client.aliases.get(command)
-            cmd = client.commands.get(command);
+            cmd = client.commandFiles.get(client.commands.get(command));
         }
         if(command == "multiplecmds"){
             return message.channel.send('It is not allowed to run this command from within this command')

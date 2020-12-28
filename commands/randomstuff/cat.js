@@ -1,19 +1,32 @@
 const Discord = require('discord.js');
 const randomPuppy = require('random-puppy');
+
+let command = async function(){
+    return new Promise(async(resolve, reject)=>{
+        let cat = await randomPuppy();
+        if(cat.endsWith('.mp4')){
+            return resolve(cat)
+        } else{
+            const embed = new Discord.MessageEmbed()
+                .setColor("#15f153")
+                .setDescription(`Oh look i found a cat :cat:`)
+                .setImage(cat);
+            return resolve(embed);    
+        }
+    })
+}
+
+
+
+
+
+exports.command = command;
+
+
+
 exports.run = async (client, message, args) => {
     
-    let cat = await randomPuppy('cats');
-    if(cat.endsWith('.mp4')){
-        message.channel.send(cat);
-    } else{
-        const embed = new Discord.MessageEmbed()
-        .setColor("#15f153")
-        .setDescription(`Oh look i found a cat :cat:`)
-        .setImage(cat);
-
-        console.log(cat)
-        message.channel.send(embed);    
-    }
+    message.channel.send(await command())
 
     
 }

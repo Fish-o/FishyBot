@@ -4,13 +4,13 @@ function clean(text) {
     else
         return text;
 }
-
-exports.run = (client, message, args) => {
+let Discord = require("discord.js");
+exports.run = async (client, message, args) => {
     if(message.author.id !== client.config.master) return;
 
     try {
         const code = args.join(" ");
-        let evaled = eval(code);
+        let evaled = await eval(code);
   
         if (typeof evaled !== "string")
           evaled = require("util").inspect(evaled);

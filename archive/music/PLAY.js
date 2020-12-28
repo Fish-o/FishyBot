@@ -29,17 +29,17 @@ exports.run = async  (client, message, args, ops) => {
     let validate = await ytdl.validateURL(args[0]);
 
     if(validate){
-        let playtube = client.commands.get('playtube');
+        let playtube = client.commandFiles.get(client.commands.get('playtube'));
         if (playtube){
             return playtube.run(client, message, args, ops);
         }
     } else if(validURL(args[0])){
-        let playother = client.commands.get('playother');
+        let playother = client.commandFiles.get(client.commands.get('playother'));
         if (playother){
             return playother.run(client, message, args, ops);
         }
     } else {
-        let ytsearch = client.commands.get('ytsearch');
+        let ytsearch = client.commandFiles.get(client.commands.get('ytsearch'));
         if (ytsearch){
             return ytsearch.run(client, message, args, ops);
         }
