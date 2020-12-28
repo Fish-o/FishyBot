@@ -1,4 +1,4 @@
-const Discord = module.require('discord.js');
+const Discord = require('discord.js');
 
 const axios = require('axios');
 
@@ -21,6 +21,7 @@ function doRequest(url, ttl= 10*60*1000) {
                 )
                 let data = r2.data;
                 data.timestamp = Date.now() +ttl
+                resolve(data)
                 cache.set(url, data)
             } else {
                 resolve(cache.get(url))
@@ -95,6 +96,7 @@ let getVrmlStats = async function (client, args){
         const all_team_url = 'https://vrmasterleague.com/Services.asmx/GetTeamPlayersStats?game=echoarena&activeOnly=false&includeRetired=false'
         const matches_url = 'https://vrmasterleague.com/Services.asmx/GetMatchesThisWeek?game=echoarena&max=100'
         
+
 
         // Make request them both at the same time
         let [all_teams, matches] = await Promise.all([
