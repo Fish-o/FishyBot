@@ -5,6 +5,9 @@ function clean(text) {
         return text;
 }
 let Discord = require("discord.js");
+const  User = require('../../database/schemas/User')
+const  Guild = require('../../database/schemas/Guild')
+
 exports.run = async (client, message, args) => {
     if(message.author.id !== client.config.master) return;
 

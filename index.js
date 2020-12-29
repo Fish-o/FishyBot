@@ -750,10 +750,18 @@ Options:
         resolve(err)
     }
 });
+*/
+/*
+new Promise(async(resolve) =>{
+    try{
 
-
-
-
-
+        await User.update({},
+            {$set : {"usernames":{}}},
+            {upsert:false,
+            multi:true}) 
+    }catch(err){
+        resolve(err)
+    }
+});
 
 */
