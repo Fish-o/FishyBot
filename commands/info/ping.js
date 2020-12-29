@@ -30,7 +30,6 @@ exports.conf = {
     },
     aliases: [],
     perms: [
-        "ADMINISTRATOR"
     ]
   };
   

@@ -311,7 +311,7 @@ exports.run = async (client, message, args, DbGuild) =>{
 };
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['joinmessage'],
     perms: [
         "ADMINISTRATOR"

@@ -5,7 +5,7 @@ const Reminder = require('../../database/schemas/Reminder');
 exports.run = async (client, message, args) => {
     if (!args[0]) return message.channel.send("You have to set a length of time to be reminded in!")
     //if (!message.content.includes("?")) return message.reply("Include a ? in your vote!")
-    let member = message.member;
+    let member = message.author;
     
     
     let lenght = ms(args[0]+ " "+ args[1]);

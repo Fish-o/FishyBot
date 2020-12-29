@@ -74,8 +74,8 @@ exports.run = async(client, message, args) => {
   
 exports.conf = {
     enabled: true,
-    guildOnly: false,
-    aliases: ['editreaction', 'addreactions', 'addreaction'],
+    guildOnly: true,
+    aliases: ['editreaction'],
     perms: [
         'ADMINISTRATOR'
     ]

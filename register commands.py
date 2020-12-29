@@ -4,6 +4,7 @@ import json
 from os.path import join, dirname
 from dotenv import load_dotenv
 import requests
+import tkinter as tk
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
@@ -25,15 +26,19 @@ def makeApiCall(url, method='get', data={}):
         decoded = data.content.decode("UTF-8")
         return (json.loads(data.content))
 
-
 user_url = 'https://discordapp.com/api/users/@me'
 
 user = makeApiCall(user_url)
-
+userid = user['id']
 
 base_url = "https://discord.com/api/v8/applications/"+user['id']+"/commands"
-print(makeApiCall(base_url))
-json = {
+
+
+def fetchCommands():
+    return makeApiCall(base_url)
+
+print(json.dumps(fetchCommands()))
+jsond = {
     "name": "echostats",
     "description": "Send a users ignite echo stats",
     "options": [
@@ -45,6 +50,18 @@ json = {
         }
     ]
 }
+
+window = tk.Tk()
+
+greeting = tk.Label(text="Command viewer")
+button = tk.Button(text="Fetch commands")
+
+
+
+
+
+
+
 
 # For authorization, you can use either your bot token 
 

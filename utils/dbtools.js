@@ -1,5 +1,6 @@
 var fs = require('fs');
 
+const  User = require('../database/schemas/User')
 const Guild = require('../database/schemas/Guild');
 
 exports.updatedb = async (query, value, msg = '', channel = null) => {
@@ -52,6 +53,82 @@ exports.recache = async function (client, id=''){
     }
 }
 
+let dbUserCache = {};
+let user_refres_cooldown = 15 * 1000;
+let user_max_cooldown = 10 * 60 * 1000;
+
+exports.getDbUser = async (user) => {
+    return new Promise( async(resolve,reject) => {
+        let discordId = user.id;
+
+        if(user){
+            if(!dbUserCache[discordId]){
+                let newDbUser = await User.findOne({discordId: discordId})
+                if(newDbUser){
+                    newDbUser.timestamp = Date.now();
+                    dbUserCache[discordId] = newDbUser;
+                    resolve(newDbUser)
+                   
+                    return
+                } else{
+                    let dbUser = {
+                        discordId,
+                        discordTag:user.tag,
+                        avatar:user.avatar,
+                        usernames:{},
+                        guilds:[]
+                    }
+                    resolve(dbUser)
+                    let dbData = await User.findOneAndUpdate({discordId:user.id}, dbUser, { upsert: true, setDefaultsOnInsert: true, new:true})
+                    dbData.timestamp = Date.now();
+                    dbUserCache[discordId] = dbData;
+                }
+            } else{
+                if(dbUserCache[discordId].timestamp > Date.now()-user_max_cooldown){
+                    let dbUser = {
+                        discordId,
+                        discordTag:user.tag,
+                        avatar:user.avatar
+                    }
+                    let newDbUser = await User.findOneAndUpdate({discordId:user.id}, dbUser, { upsert: true, setDefaultsOnInsert: true, new:true})
+                    newDbUser.timestamp = Date.now();
+                    if(newDbUser){
+                        dbUserCache[discordId] = newDbUser;
+                        resolve(dbUserCache[discordId])
+                    } else {
+                        resolve(dbUserCache[discordId])
+                        delete dbUserCache[discordId];
+                    }
+                    
+                } else if(dbUserCache[discordId].timestamp > Date.now()-user_refres_cooldown){
+                    resolve(dbUserCache[discordId])
+
+                    let dbUser = {
+                        discordId,
+                        discordTag:user.tag,
+                        avatar:user.avatar
+                    }
+                    let newDbUser = await User.findOneAndUpdate({discordId:user.id}, dbUser, { upsert: true, setDefaultsOnInsert: true, new:true})
+                    if(newDbUser)
+                        dbUserCache[discordId] = newDbUser;
+                    else
+                        delete dbUserCache[discordId];
+                } else{
+                    resolve(dbUserCache[discordId])
+                }
+            }
+        } else{
+            resolve(undefined)
+        }
+    })
+}
+
+
+
+
+
+
+
 let dbGuildCache = {};
 let refres_cooldown = 15 * 1000;
 let max_cooldown = 10 * 60 * 1000;
@@ -70,7 +147,7 @@ exports.getDbGuild = async (id=undefined, focus="normal") => {
                 }
             }else if(focus == 'normal'){
                 if(dbGuildCache[id].timestamp > Date.now()-max_cooldown){
-                    let new_db_guild = Guild.findOne({id: id});
+                    let new_db_guild = await Guild.findOne({id: id});
                     new_db_guild.timestamp = Date.now();
                     if(new_db_guild){
                         dbGuildCache[id] = new_db_guild;

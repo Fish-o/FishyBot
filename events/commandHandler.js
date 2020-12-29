@@ -52,8 +52,52 @@ var very_good_name = async function(client, message) {
     // Ignore all bots and other useless stuff
     if (message.author.bot) return;
     if (message.webhookID) return;
-    if (message.channel instanceof Discord.DMChannel) return message.reply("blub ".repeat(Math.ceil(Math.random()*50)));
-    
+    if (message.channel instanceof Discord.DMChannel) {
+        
+        // Getting guild prefix
+        const guild_prefix = "";
+        // Ignore messages not starting with the prefix from the guild, or the global one
+        if (message.content.indexOf(client.config.prefix) == 0 ){
+            args = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
+            command = args.shift().toLowerCase();
+            if (!command) {
+                command = 'help';
+                args = []
+                //message.reply("blub ".repeat(Math.ceil(Math.random()*50)));
+            };
+        }
+
+        else if (message.content.indexOf(guild_prefix) == 0){   
+            args = message.content.slice(guild_prefix.length).trim().split(/ +/g);
+            command = args.shift().toLowerCase();
+        } 
+        
+        
+        let cmdPath;
+        // Grab the command data from the client.commands 
+        if (client.commands.has(command)) {
+            cmdPath = client.commands.get(command);
+        } else if (client.aliases.has(command)) {
+            cmdPath = client.commands.get(client.aliases.get(command));
+        }
+       
+        const cmd = client.commandFiles.get(cmdPath);
+        // If that command doesn't exist, silently exit and do nothing
+        if (!cmd) return;
+
+        if(cmd.conf.perms[0] || !!cmd.conf.guildOnly){
+            return message.channel.send('This command can only be run in a server')
+        }
+
+        let dbUser;
+        
+        if(!dbUser){
+            dbUser = await client.getDbUser(message.author);
+        }
+        return cmd.run(client, message, args, dbUser)
+
+        
+    }
     var guildID = message.guild.id;
     
 

@@ -129,7 +129,7 @@ exports.run = async (client, message, args, dbGuild) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['xp','showrank','showxp'],
     perms: [
         

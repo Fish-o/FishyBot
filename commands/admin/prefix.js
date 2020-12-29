@@ -18,7 +18,7 @@ exports.run = async (client, message, args) =>{
   
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['changeprefix','change_prefix'],
     perms: [
         'ADMINISTRATOR'

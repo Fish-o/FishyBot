@@ -48,7 +48,7 @@ exports.run = (client, message, args) =>{
 }
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['member_count','member-count','countmember'],
     perms: [
         'MANAGE_MESSAGES'

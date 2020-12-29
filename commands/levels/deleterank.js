@@ -77,7 +77,7 @@ exports.run = async (client, message, args, dbGuild) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['deleteexp', 'deletexp', 'prunerank', 'prunexp', 'resetrank', 'resetexp', 'resetxp'],
     perms: [
         'ADMINISTRATOR'

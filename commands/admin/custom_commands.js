@@ -165,7 +165,7 @@ exports.run = async function (client, message, args, cache_guild) {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['customcommands', 'custom_commands'],
     perms: [
         'ADMINISTRATOR'

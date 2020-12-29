@@ -45,7 +45,7 @@ exports.run = async (client, message, args, guild_cache) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['multiplecmd', 'multiplecommands', 'multcmd', 'multcmds'],
     perms: [
         "ADMINISTRATOR"

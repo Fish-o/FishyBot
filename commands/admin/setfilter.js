@@ -64,7 +64,7 @@ exports.run = async (client, message, args, dbGuild) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['setfiler', 'addfilter'],
     perms: [
         'MANAGE_MESSAGES'

@@ -9,7 +9,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['setlvlspam', 'levelspam', 'setlevelspam'],
     perms: [
         'MANAGE_GUILD'
