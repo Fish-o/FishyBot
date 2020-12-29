@@ -35,7 +35,7 @@ exports.run = async(client, message, args) => {
         if(uuid_cache.has(user_name)){
             if(uuid_cache.get(user_name).ts < Date.now() - uuid_cooldown){
                 let mc_uuid = await axios.get(url_name_uuid+user_name)
-            let jsondata = await mc_uuid.json()
+            let jsondata = await mc_uuid.data
                 uuid_cache.set(user_name, {ts: Date.now(), uuid:jsondata.id})
             }
         } else {
@@ -43,7 +43,7 @@ exports.run = async(client, message, args) => {
             if(mc_uuid.status == 204){
                 uuid_cache.set(user_name, {ts: Date.now(), uuid:undefined})
             } else{
-                let jsondata = await mc_uuid.json()
+                let jsondata = await mc_uuid.data
                 uuid_cache.set(user_name, {ts: Date.now(), uuid:jsondata.id})
         
             }
@@ -58,12 +58,12 @@ exports.run = async(client, message, args) => {
         if(hp_user_cache.has(uuid)){
             if(hp_user_cache.get(uuid).ts < Date.now() - hp_cooldown){
                 let hp_response = await axios.get(`https://api.hypixel.net/player?uuid=${uuid}&key=${api_key}`);
-                let hp_response_json = await hp_response.json()
+                let hp_response_json = await hp_response.data
                 hp_user_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
             }
         } else{
             let hp_response = await axios.get(`https://api.hypixel.net/player?uuid=${uuid}&key=${api_key}`);
-            let hp_response_json = await hp_response.json()
+            let hp_response_json = await hp_response.data
             hp_user_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
         }
 
@@ -78,12 +78,12 @@ exports.run = async(client, message, args) => {
         if(hp_guild_cache.has(uuid)){
             if(hp_guild_cache.get(uuid).ts < Date.now() - hp_cooldown){
                 let hp_response = await axios.get(`https://api.hypixel.net/guild?player=${uuid}&key=${api_key}`);
-                let hp_response_json = await hp_response.json()
+                let hp_response_json = await hp_response.data
                 hp_guild_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
             }
         } else{
             let hp_response = await axios.get(`https://api.hypixel.net/guild?player=${uuid}&key=${api_key}`);
-            let hp_response_json = await hp_response.json()
+            let hp_response_json = await hp_response.data
             hp_guild_cache.set(uuid, {ts: Date.now(), data:hp_response_json})
         }
 
