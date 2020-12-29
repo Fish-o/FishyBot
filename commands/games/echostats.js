@@ -42,7 +42,7 @@ let getEchoStats = async function (client, args, memberId, channel){
             return
         }
         let name = args[0]
-
+        let player_stats;
         if(memberId){
             let member = channel.guild.members.cache.get(memberId);
             if(!member){
@@ -147,7 +147,7 @@ exports.run = async (client, message, args) => {
     message.channel.startTyping()
     let memberid;
     if(message.mentions.members.first()){
-        member = message.mentions.members.first().id;
+        memberid = message.mentions.members.first().id;
     }
     let Embed = await getEchoStats(client, args, memberid, message.channel);
     message.channel.stopTyping()
