@@ -42,7 +42,6 @@ let getEchoStats = async function (client, args, memberId, channel){
             return
         }
         let name = args[0]
-        let player_stats;
         if(memberId){
             let member = channel.guild.members.cache.get(memberId);
             if(!member){
