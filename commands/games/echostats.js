@@ -1,5 +1,7 @@
 const Discord = module.require('discord.js');
+
 const axios = require('axios');
+const  User = require('../../database/schemas/User')
 
 let cache = {}
 let refresh_time = 30*60*1000
@@ -33,17 +35,38 @@ function getPlayerStats(player, token) {
 }
 
 
-let getEchoStats = async function (client, args){
+let getEchoStats = async function (client, args, memberId, channel){
     return new Promise( async(resolve,reject) => {
-        if(!args[0]){
+        if(!args[0] && !memberId){
             resolve(new Discord.MessageEmbed().setColor('RED').setTitle(`Please enter an Echo username`).setTimestamp());
             return
         }
-
+        let name = args[0]
+        let player_stats;
+        if(memberId){
+            let member = channel.guild.members.cache.get(memberId);
+            if(!member){
+                resolve(new Discord.MessageEmbed().setColor('RED').setTitle("Could not find member in server").setTimestamp())
+                return
+            }
+            let [dbUser, dbGuild] = await Promise.all([
+                client.getDbUser(member.user),
+                client.getDbGuild(channel.guild.id)
+            ])
+            if((!dbUser ||  !dbUser.usernames || !dbUser.usernames.Oculus) && (!dbGuild || !dbGuild.usernames.has(memberId) || !dbGuild.usernames.get(memberId).Oculus)){
+                resolve(new Discord.MessageEmbed().setColor('RED').setTitle(`Member "${member.user.tag}" has no Oculus name set`).setDescription(`You can either set a global or a server specific username.\n**Global**: run \`${client.config.prefix}friendme\` in a dm chat with _${client.user.tag}_\n**Server specific**: run \`${client.config.prefix}friendme\` in the server you want to set your Oculus username`).setTimestamp())
+                return;
+            } 
+            if(!(!dbGuild || !dbGuild.usernames.has(memberId) || !dbGuild.usernames.get(memberId).Oculus)){
+                name = dbGuild.usernames.get(memberId).Oculus.split()
+            }
+            else if (!(!dbUser ||  !dbUser.usernames || !dbUser.usernames.Oculus)){
+                name = dbUser.usernames.Oculus.split()
+            }
+        }
         
         // Get data
-        let player_stats = await getPlayerStats(args[0], client.config.igniteapi)
-
+        let player_stats = await getPlayerStats(name, client.config.igniteapi)
         // Return if nothing was found
         if(!player_stats.player || !player_stats.player[0]){
             resolve(new Discord.MessageEmbed().setColor('RED').setTitle("Could not find user in the ignite database").setTimestamp());
@@ -77,6 +100,8 @@ let getEchoStats = async function (client, args){
             { name: 'Stuns Avg', value: Math.round(user_stats.total_stuns / user_stats.game_count*100)/100, inline: true},
             { name: 'Wins', value: `${Math.round(user_stats.total_wins / user_stats.game_count * 100)}%`, inline: true},
         );
+
+        console.log('Made mebed')
         /*Embed.addFields(
             {name: "", value: 
             
@@ -120,17 +145,26 @@ let getEchoStats = async function (client, args){
 }
 exports.run = async (client, message, args) => {
     message.channel.startTyping()
-    let Embed = await getEchoStats(client, args);
+    let memberid;
+    if(message.mentions.members.first()){
+        memberid = message.mentions.members.first().id;
+    }
+    let Embed = await getEchoStats(client, args, memberid, message.channel);
     message.channel.stopTyping()
     message.channel.send(Embed)
     
 }
 
 exports.interaction = async(client, interaction, args) => {
-    
     interaction.channel.startTyping();
     try{
-        let embed = await getEchoStats(client, args[0].value.split());
+        const memberIdMatch = args[0].value.match(/<@.(\d{18})>/)
+        let memberId;
+        if(memberIdMatch){
+            memberId = memberIdMatch[1]
+        }
+        
+        let embed = await getEchoStats(client, args[0].value.split(), memberId, interaction.channel);
         interaction.send(embed)
     }
     catch(err){
