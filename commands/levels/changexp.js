@@ -124,7 +124,7 @@ exports.run = async (client, message, args, dbGuild) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['addexp','changexp','changeexp','changelevel','changelvl'],
     perms: [
         'ADMINISTRATOR'

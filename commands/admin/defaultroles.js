@@ -68,7 +68,7 @@ exports.run = async (client, message, args, db_guild) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['default', 'defaultroles'],
     perms: [
         "MANAGE_ROLES"

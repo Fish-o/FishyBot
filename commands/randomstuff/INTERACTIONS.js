@@ -82,7 +82,7 @@ exports.interaction = async function(client, interaction, args){
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     interaction:{
         options:[
             {

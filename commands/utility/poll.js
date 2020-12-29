@@ -73,7 +73,7 @@ ${users_against.map(user => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: [],
     perms: [
         'MANAGE_MESSAGES'

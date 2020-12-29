@@ -19,6 +19,11 @@ const UserSchema = new mongoose.Schema({
         type: Array,
         required: true,
         default: []
+    },
+    usernames:{
+        type: Object,
+        required: true,
+        defualt:{}
     }
 }, { collection: 'UserData' } )
 

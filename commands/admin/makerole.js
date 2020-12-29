@@ -66,7 +66,7 @@ exports.run = async (client, message, args) => {
 
 exports.conf = {
     enabled: true,
-    guildOnly: false,
+    guildOnly: true,
     aliases: ['createrole','createroles','makeroles'],
     perms: [
         'MANAGE_ROLES'

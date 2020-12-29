@@ -15,6 +15,46 @@ const status = {
 
 exports.run = async (client, message, args, dbGuild) =>{
     
+    if(!message.member){
+        let dbUser = dbGuild;
+        let usernamesObj = dbUser.usernames;
+        let user = message.author;
+
+        var usernames = '';
+        var usernameDict = usernamesObj;
+
+        for(var username in usernameDict){
+            var new_user = ' **'+username+ '**: *' +usernameDict[username] +'* **|**' ;
+            usernames = usernames.concat(new_user);
+        }
+        
+        if(usernames === ''){
+            usernames = 'No global username data,\nadd with !friendme';
+        }
+        
+        else{
+            usernames = usernames.slice(0,-5);
+        }
+
+
+        const embed = new Discord.MessageEmbed()
+            .setDescription(`<@${user.id}>`)
+            .setAuthor(`${user.tag}`, user.displayAvatarURL)
+            .setColor("RANDOM")
+            .setFooter(`ID: ${user.id}`)
+            .setThumbnail(user.displayAvatarURL)
+            .setTimestamp()
+            //.addField("Region",`${region_role_name}`, true)
+            .addField("Usernames",`${usernames}`, true)
+            //.addField('Joined at: ',`${moment(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
+            .addField("Created at: ",`${moment(user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
+            //.addField("Permissions: ", `${permissions.join(', ')}`, true)
+            //.addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
+            //.addField("Acknowledgements: ", `${warnings}`, true);
+            
+        message.channel.send({embed});
+        return
+    }
 
     var permissions = [];
     var warnings = 'None';
@@ -86,7 +126,15 @@ exports.run = async (client, message, args, dbGuild) =>{
         usernames = '';
         usernameDict = dbGuild.usernames.get(member.id);
     }
-    console.log(dbGuild)
+
+    let dbuser = await client.getDbUser(member.user);
+    if(dbuser){
+        usernameDict = {
+            ...dbuser.usernames,
+            ...usernameDict
+            
+        }
+    }
     for(var username in usernameDict){
         var new_user = ' **'+username+ '**: *' +usernameDict[username] +'* **|**' ;
         usernames = usernames.concat(new_user);
@@ -119,7 +167,7 @@ exports.run = async (client, message, args, dbGuild) =>{
         .addField("Region",`${region_role_name}`, true)
         .addField("Usernames",`${usernames}`, true)
         .addField('Joined at: ',`${moment(member.joinedAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
-        //.addField("Created at: ",`${moment(member.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
+        .addField("Created at: ",`${moment(member.user.createdAt).format("dddd, MMMM Do YYYY, HH:mm:ss")}`, true)
         //.addField("Permissions: ", `${permissions.join(', ')}`, true)
         .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
         //.addField("Acknowledgements: ", `${warnings}`, true);

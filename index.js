@@ -629,7 +629,7 @@ const dbtools = require("./utils/dbtools");
 client.getDbGuild = dbtools.getDbGuild;
 client.updatedb = dbtools.updatedb;
 client.recache = dbtools.recache;
-client.dbgetuser = dbtools.dbgetuser;
+client.getDbUser = dbtools.getDbUser;
 
 //client.elevation = dbtests.elevation;
 client.allow_test = dbtools.allow_test;
@@ -695,3 +695,65 @@ let login = async function(){
 }
 login()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+new Promise(async(resolve) =>{
+    try{
+        let cmdmsg = ["**All slash commands (use by typing /commandname)*"];
+        let commands = await client.api.applications(user.id).commands.get();
+        commands.forEach((command) => {
+            cmdmsg.push(
+`Name: **${command.name}**
+Desc: \`${command.description}\`
+Options: 
+`)
+            if(!command.options){
+                return;
+            }
+            command.options.forEach(option =>{
+                let extra = ""
+                if(option.type == 2){
+                    extra+='\n'
+                    extra+=option.options.map(ExtraOption => `  *) (\`${ExtraOption.type}\`): \`${ExtraOption.name}\``).join('\n')+'\n'
+                }
+                cmdmsg[cmdmsg.length-1] = cmdmsg[cmdmsg.length-1] + (`(\`${option.type}\`): \`${option.name}\` ${extra}\n`)
+                
+                if(commands.indexOf(command) == commands.length-1 && command.options.indexOf(option) == command.options.length-1){
+                    message.channel.send(cmdmsg.join('\n\n'))
+                    resolve('^^')
+                }
+            })
+
+        });
+    }catch(err){
+        resolve(err)
+    }
+});
+
+
+
+
+
+
+*/
