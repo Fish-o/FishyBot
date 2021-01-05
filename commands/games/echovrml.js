@@ -277,7 +277,7 @@ let getVrmlStats = async function (client, args){
                 match_text = match_text.concat(`${match.HomeTeam} vs ${match.AwayTeam}\n`)
 
                 if(match.CasterName != ''){
-                    match_text = match_text.concat(`Casted by: [${match.HomeTeam}](${match.channel}) vs \n`)
+                    match_text = match_text.concat(`Casted by: [${match.CasterName}](${match.channel}) vs \n`)
                 }
                 
                 
