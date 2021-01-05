@@ -184,7 +184,7 @@ let getVrmlStats = async function (client, args){
         var time_name = 'gmt'
         var time_modifier = "Europe/England";
         var time_format = "en-GB";
-        if(team.Group=="Americas East"){
+        if(team.Group=="America East"){
             // est
             time_name = 'America/New_York';
             time_modifier = "America/New_York";
@@ -196,7 +196,7 @@ let getVrmlStats = async function (client, args){
             time_modifier = 'Europe/England';
             time_format = "en-GB";
         }
-        else if(team.Group=="Americas West"){
+        else if(team.Group=="America West"){
             //UTC−08:00 PST
             time_name = 'PDT';
             time_modifier = "America/California";
