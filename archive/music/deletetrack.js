@@ -1,3 +1,6 @@
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
+
 exports.run = (client, message, args, ops) => {
     const audioUrl = message.content.split(' ');
     var convertTrack;

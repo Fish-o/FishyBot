@@ -1,3 +1,6 @@
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
+
 
 exports.run = (client, message, args) => {
     function myFunc() {

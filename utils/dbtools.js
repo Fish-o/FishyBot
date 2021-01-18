@@ -2,6 +2,8 @@ var fs = require('fs');
 
 const  User = require('../database/schemas/User')
 const Guild = require('../database/schemas/Guild');
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 
 exports.updatedb = async (query, value, msg = '', channel = null) => {
 
@@ -11,6 +13,7 @@ exports.updatedb = async (query, value, msg = '', channel = null) => {
             channel.send(msg)
         }
     } catch(err){
+        Sentry.captureException(err);
         console.log(err)
         console.log('\nerror in updating db')
     }
@@ -31,27 +34,7 @@ exports.updatedb = async (query, value, msg = '', channel = null) => {
 }
 
 
-exports.recache = async function (client, id=''){
-    try{
 
-        const all_guilds = await Guild.find({})
-        let data = {timestamp:new Date().getTime(),
-            data:all_guilds}
-
-
-        let jsonData = JSON.stringify(data);
-        fs.writeFile(__dirname + '/../jsonFiles/cache.json', jsonData, function(err) {
-            if (err) {
-                console.log(err);
-            }
-        });
-
-    }catch(err){
-        console.log(err)
-        console.log('Error in recache, trying again')
-        client.recache();
-    }
-}
 
 let dbUserCache = {};
 let user_refres_cooldown = 15 * 1000;

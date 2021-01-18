@@ -1,14 +1,18 @@
 const active = new Map();
 const talkedRecently = new Set();
 
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
+
 const Discord = require('discord.js');
 var fs = require("fs");
 
 const MongoClient = require('mongodb').MongoClient;
 
-const  User = require('../database/schemas/User')
+const  User = require('../database/schemas/User');
+const  CommandModel = require('../database/schemas/Command')
 const  Guild = require('../database/schemas/Guild');
-const { relativeTimeRounding } = require('moment');
+
 
 
 
@@ -104,130 +108,37 @@ var very_good_name = async function(client, message) {
     // Getting cache
     var cache_raw = null;
     var cache = null;
-
+    let guild_cache;
     try{
-        cache_raw = fs.readFileSync(__dirname + '/../jsonFiles/cache.json');
-        cache = JSON.parse(cache_raw);
+        guild_cache = await client.getDbGuild(message.guild.id)
         
     } catch(err){
-        client.recache(client)
-        return
+        return;
     }
 
 
     if(!message.guild){console.log(message)}
 
-    // Find guild in cache
-    //if(!cache.data.filter(db_guild => db_guild.id == message.guild.id)){return client.recache(client)}
-
     // If no guild was found, add a new one
-    if(cache.data.find(db_guild => db_guild.id == message.guild.id) == undefined){
-        console.log('not found')
-        const dbGuild = await Guild.findOne({id:message.guild.id});
-        if(!dbGuild){
-            console.log('not found2');
-            const uri = client.config.OLDDBPATH
-            const guild = message.guild;
-            var mongoClient = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
-            mongoClient.connect(err => {
-                if (err) throw err;
-                const collection = mongoClient.db("botdb").collection("v2");
-                collection.findOne({id:message.guild.id}, async function(err, result){
-                    if (err) {console.error(err); throw err};
-                    var db_data = result;
-                    
-                    if(db_data){
-                        let member_list = await guild.members.fetch();
-                        let memberidlist = []
+    if(!guild_cache){
 
-                        
-                        member_list.forEach( async (member)=>{
-                            memberidlist.push(member.id)
-                            await User.findOneAndUpdate({discordId:member.id },{
-                                id:guildID, 
-                                discordTag:member.user.tag,
-                                avatar:member.user.avatar
-                            }, { upsert: true, setDefaultsOnInsert: true })
-                        })
+        client.sendinfo(`[GUILD DB ADD] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
+        
+        guild.members.fetch().then( async (member_list) => {
+            let memberidlist = []
 
-                        let prefix = db_data.prefix
-                        let settings = {"dadjokes":false}
-                        let warns = {}
-                        let usernames = {};
-                        let member_count_channel = undefined;
-                        let logging = undefined;
-                        let joinMsg = undefined;
-                        let custom_commands = undefined
-                        
-                        await Object.keys(db_data.users).forEach(userId=>{
-                            if(db_data.users[userId].data){
-                                if(db_data.users[userId].data.usernames){
-                                    usernames[userId] = db_data.users[userId].data.usernames
-                                }
-                                
-                            }
-                            if(db_data.users[userId].warns){
-                                warns[userId] = db_data.users[userId].warns;
-                            }
-                        })
-
-                        if(db_data.joinMsg){
-                            joinMsg = db_data.joinMsg
-                        }
-
-                        if(db_data.custom_commands){
-                            custom_commands = db_data.custom_commands;
-                        }
-
-                        if(db_data.settings){
-                            settings = db_data.settings;
-                        }
-
-                        if(db_data.member_count_channel){
-                            member_count_channel = db_data.member_count_channel;
-                        }
-                        
-                        if(db_data.logging){
-                            logging = db_data.logging;
-                        }
-
-
-                        await Guild.findOneAndUpdate({id:guildID }, {id:message.guild.id, memberlist:memberidlist,
-                            prefix,
-                            settings,
-                            warns,
-                            usernames,
-                            member_count_channel,
-                            logging,
-                            joinMsg,
-                            custom_commands
-                            
-                        }, { upsert: true, setDefaultsOnInsert: true });
-                        return client.recache()
-
-                    } 
-                    else {
-                        client.sendinfo(`[GUILD DB ADD] ${guild.name} (${guild.id}) added the bot. Owner: ${guild.owner.user.tag} (${guild.owner.user.id})`);
-                        
-                        guild.members.fetch().then( async (member_list) => {
-                            let memberidlist = []
-
-                            member_list.forEach( async (member)=>{
-                                memberidlist.push(member.id)
-                                await User.findOneAndUpdate({discordId:member.id },{
-                                    id:guildID, 
-                                    discordTag:member.user.tag,
-                                    avatar:member.user.avatar
-                                }, { upsert: true, setDefaultsOnInsert: true })
-                            })
-                            await Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist}, { upsert: true, setDefaultsOnInsert: true });
-                            return client.recache();
-                        })
-                    }
-                })
+            member_list.forEach( async (member)=>{
+                memberidlist.push(member.id)
+                await User.findOneAndUpdate({discordId:member.id },{
+                    id:guildID, 
+                    discordTag:member.user.tag,
+                    avatar:member.user.avatar
+                }, { upsert: true, setDefaultsOnInsert: true })
             })
-            
-        }
+            await Guild.findOneAndUpdate({id:guildID }, {id:guildID, memberlist:memberidlist}, { upsert: true, setDefaultsOnInsert: true });
+            return;
+        })
+
         
         console.log(message.guild.name)
     
@@ -235,7 +146,7 @@ var very_good_name = async function(client, message) {
     else{
 
         // Get guild cache
-        let guild_cache = await client.getDbGuild(message.guild.id) //cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
+         //cache.data.find(guild_cache_raw => guild_cache_raw.id == message.guild.id)
         
 
         // Checking for an existing filter and the members permisions
@@ -438,9 +349,33 @@ var very_good_name = async function(client, message) {
         if (talkedRecently.has(message.author.id)) {
             message.channel.send("So fast! Wait a moment please!");
         } else {
-            // Run the command
-            cmd.run(client, message, args, guild_cache, ops);
+        
+            try{
+                // Run the command
+                let responses = cmd.run(client, message, args, guild_cache, ops);
+                if(!responses){
+                    responses = []
+                }else if(responses instanceof Discord.Message){
 
+                }else if(typeof responses === 'object'){
+
+                }else {
+                    responses = []
+                }
+                let dbCommandModel = new CommandModel({
+                    command,
+                    args,
+                    responses,
+
+                    senderId:message.author.id,
+                    messageId:message.id,
+                    channelId:message.channel.id,
+                });
+                dbCommandModel.save()
+            } catch (e) {
+                Sentry.captureException(e);
+                message.channel.send()
+            }
             // Adds the user to the set so that they can't talk for a minute
             talkedRecently.add(message.author.id);
             setTimeout(() => {
@@ -453,7 +388,14 @@ var very_good_name = async function(client, message) {
 //})
 };
 
-exports.event = very_good_name;
+exports.event = async function(client, message){
+    try {
+        very_good_name(client, message)
+    } catch (e) {
+        Sentry.captureException(e);
+    }
+    
+};
 
 exports.conf = {
     event: "message"

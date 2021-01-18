@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
-    message.channel.send(member.user.displayAvatarURL()).catch(console.error);
+    message.channel.send(member.user.displayAvatarURL()).catch(err=>{Sentry.captureException(err);});
 }
 
 exports.conf = {

@@ -3,7 +3,8 @@ const Discord = require('discord.js');
 
 const  User = require('../database/schemas/User')
 const  Guild = require('../database/schemas/Guild')
-
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 const MongoClient = require('mongodb').MongoClient;
 
 
@@ -111,6 +112,7 @@ exports.event = async (client, member) =>{
             try{
                 channel.send(serverembed);
             } catch(err){
+                Sentry.captureException(err);
                 console.log(err);
                 console.log('Error in join message');
             }

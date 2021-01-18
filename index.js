@@ -1,3 +1,7 @@
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
+
+
 const Discord = require('discord.js');
 const moment  = require("moment");
 const axios = require("axios");
@@ -39,6 +43,25 @@ client.xpcooldown = {
 
 }
 client.cachedMessageReactions = new Map();
+
+
+
+
+
+
+
+Sentry.init({
+    dsn: process.env.SENTRY,
+    integrations: [
+        new Tracing.Integrations.Mongo(),
+    ],
+    debug: true,
+    tracesSampleRate: 1.0,
+});
+
+
+
+
 mongoose.connect(client.config.dbpath, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -225,6 +248,7 @@ In: ${reminder.guildName}`);
                     user.send(Embed)
                 }
             }catch(err){
+                Sentry.captureException(err);
                 console.log(err)
                 console.log('Error in reminder to user')
             }
@@ -628,7 +652,6 @@ const dbtools = require("./utils/dbtools");
 
 client.getDbGuild = dbtools.getDbGuild;
 client.updatedb = dbtools.updatedb;
-client.recache = dbtools.recache;
 client.getDbUser = dbtools.getDbUser;
 
 //client.elevation = dbtests.elevation;
@@ -645,7 +668,7 @@ client.sendinfo = function (info){
             client.channels.cache.get(client.config.infochannel).send(info);
         }
     }catch(err){
-        console.log(err)
+        console.log('Failed to send info to the info channel.\nMake sure the info channel is set correctly in the config file\nInfo: '+ info)
     }
 }
 
@@ -693,7 +716,14 @@ let login = async function(){
     console.log('DONE')
     client.login(config.token);
 }
-login()
+
+
+try {
+    login()
+} catch (e) {
+    Sentry.captureException(e);
+}
+
 
 
 
@@ -754,11 +784,9 @@ Options:
 /*
 new Promise(async(resolve) =>{
     try{
-
-        await User.update({},
-            {$set : {"usernames":{}}},
-            {upsert:false,
-            multi:true}) 
+        let Discord = require('discord.js')
+        let s = await message.channel.send('asdf');
+        message.channel.send(s instanceof Discord.Message)
     }catch(err){
         resolve(err)
     }

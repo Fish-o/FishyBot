@@ -114,9 +114,6 @@ exports.run = async function (client, message, args, cache_guild) {
         client.updatedb( {id:message.guild.id}, value, `Added custom command: ${obj.a}!`, message.channel)
     } else if(action == 'del'){
         if(!isNaN(args[0])){
-            var cache_raw = fs.readFileSync(__dirname + '/../../jsonFiles/cache.json');
-            var cache = JSON.parse(cache_raw);
-            const cache_guild = cache.data.find(db_guild => db_guild.id == message.guild.id);
             const cache_guild_custom_commands = cache_guild.custom_commands;
             if(cache_guild_custom_commands.length < parseInt(args[0])){
                 message.channel.send('Index is out to big.')

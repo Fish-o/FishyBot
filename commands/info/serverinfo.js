@@ -4,7 +4,8 @@ var moment = require('moment'); // require
 
 const ChartJsImage = require('chartjs-to-image');
 
-
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 
 exports.run = async (client, message, args) =>{
     message.channel.startTyping(1)
@@ -154,6 +155,7 @@ exports.run = async (client, message, args) =>{
         }*/
         message.channel.send(serverembed);
     }catch(err){
+        Sentry.captureException(err);
         console.log(err)
         console.log('An erro has occured with the serverinfo command')
         message.channel.send('Something has gone wrong!')

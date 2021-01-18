@@ -6,7 +6,8 @@ const axios = require('axios');
 const fs = require('fs');
 var stringSimilarity = require('string-similarity');
 
-
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 
 
 
@@ -312,6 +313,7 @@ exports.interaction = async(client, interaction, args) => {
         interaction.send(embed)
     }
     catch(err){
+        Sentry.captureException(err);
         console.log(err)
         client.sendInfo(`ERROR: echovrml interaction (${Date.now()})`)
         interaction.channel.send('Something has gone wrong with the echovrml command')

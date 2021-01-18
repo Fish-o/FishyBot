@@ -1,4 +1,6 @@
 const ms = require("ms");
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 
 function match(msg, i) {
     if (!msg) return undefined;
@@ -43,6 +45,7 @@ exports.run = async (client, message, args) => {
         });
       });
     }catch(e){
+        Sentry.captureException(e);
       console.log(e.stack);
     }
   }

@@ -1,3 +1,6 @@
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
+
 exports.run = (client, message, args) =>{
     //Pay attention in order to assign a role of a user, the bot needs to be above that role, that means you can't assign an equal or highest role than bot's role
     let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
@@ -5,7 +8,7 @@ exports.run = (client, message, args) =>{
    
 
     if(!rMember) 
-        return message.channel.send("Couldn't find that user, yo.");
+        return message.channel.send("Couldn't find that user.");
 
     let role = args.join(" ").slice(23);
     if(!role) 
@@ -22,7 +25,6 @@ exports.run = (client, message, args) =>{
         rMember.roles.add(gRole.id).catch(console.error);
         
         try{
-            rMember.send(`Congrats, you have been given the role ${gRole.name}`);
             message.channel.send(`The user ${rMember} has a new role ${gRole.name}`);
         }
         catch(e){

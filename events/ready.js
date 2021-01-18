@@ -11,9 +11,6 @@ const Discord = require('discord.js')
 exports.event = async (client) => {
     console.log('\nREADY!\n')
 
-
-    
-    client.recache(client)
     client.sendinfo('Bot gone online')
     console.log('Interections loaded:\n'+client.setInteractions.join('\n'))
     client.user.setStatus('online');

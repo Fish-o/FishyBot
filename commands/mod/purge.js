@@ -1,4 +1,6 @@
 let Discord  = require('discord.js') 
+const Sentry = require("@sentry/node");
+const Tracing = require("@sentry/tracing");
 
 exports.run = async (client, message, args) =>{
     const deleteCount = parseInt(args[0], 10) + 1;
@@ -30,6 +32,7 @@ exports.interaction = async(client, interaction, args)=>{
         console.log(JSON.stringify(r))
     }
     catch(error){
+        Sentry.captureException(error);
         interaction.send(await interaction.error(`Couldn't delete messages`,error))
         
     }
