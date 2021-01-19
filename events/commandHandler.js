@@ -165,7 +165,7 @@ var very_good_name = async function(client, message) {
         }
 
         // Getting guild prefix
-        const guild_prefix = cache.data.filter(db_guild => db_guild.id == message.guild.id)[0].prefix
+        const guild_prefix = guild_cache.prefix;
     
         // Ignore messages not starting with the prefix from the guild, or the global one
         if (message.content.indexOf(client.config.prefix) == 0 ){
@@ -352,29 +352,50 @@ var very_good_name = async function(client, message) {
         
             try{
                 // Run the command
-                let responses = cmd.run(client, message, args, guild_cache, ops);
+                let responses = await cmd.run(client, message, args, guild_cache, ops);
+                let respIds = []
+
                 if(!responses){
                     responses = []
-                }else if(responses instanceof Discord.Message){
-
-                }else if(typeof responses === 'object'){
-
-                }else {
-                    responses = []
+                }else{
+                    responses = await Promise.resolve(responses);
+                    
+                    if(responses instanceof Discord.Message){
+                        respIds = [responses.id];
+                    }else if(typeof responses === 'object'){
+                        responses = await Promise.all(responses);
+                        respIds = responses.map(msg => {return msg.id});
+                    }else {
+                        responses = [];
+                        respIds = [];
+                    }
                 }
+                
                 let dbCommandModel = new CommandModel({
                     command,
                     args,
-                    responses,
+                    responses: respIds,
 
                     senderId:message.author.id,
                     messageId:message.id,
                     channelId:message.channel.id,
+
+                    Timestamp:Date.now(),
                 });
+
+                
                 dbCommandModel.save()
             } catch (e) {
-                Sentry.captureException(e);
-                message.channel.send()
+                let err_data = {
+                    tags:{
+                        user_id:message.author.id,
+                        guild_id:message.guild.id,
+                        guild_name:message.guild.name
+                    }
+                };
+                
+                Sentry.captureException(e, err_data);
+                message.channel.send('Something went wrong in running the command, this issue has been reported. If it keeps happening and/or is realy anoying feel free to contact '+client.config.author)
             }
             // Adds the user to the set so that they can't talk for a minute
             talkedRecently.add(message.author.id);

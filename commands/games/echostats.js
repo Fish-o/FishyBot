@@ -149,9 +149,16 @@ exports.run = async (client, message, args) => {
     if(message.mentions.members.first()){
         memberid = message.mentions.members.first().id;
     }
-    let Embed = await getEchoStats(client, args, memberid, message.channel);
-    message.channel.stopTyping()
-    message.channel.send(Embed)
+    try{
+        let Embed = await getEchoStats(client, args, memberid, message.channel);
+        return message.channel.send(Embed)
+        
+    }catch(err){
+        Sentry.captureException(err);
+    }finally{
+        message.channel.stopTyping()
+    }
+        
     
 }
 

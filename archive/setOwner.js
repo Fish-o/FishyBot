@@ -18,7 +18,7 @@ exports.run = async (client, message, args) => {
     
     if(collected.size >= Math.ceil(admin_members.length/2)){
         message.guild.setOwner(member);
-        message.channel.send('The ownership of this server has been transfered to: '+member)
+        return message.channel.send('The ownership of this server has been transfered to: '+member)
     }
 }
 

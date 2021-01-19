@@ -170,7 +170,7 @@ exports.run = async (client, message, args) => {
     var guildID = message.guild.id;
 
     let embed = await settingsCommand(client, action, command, message.guild.id, message.author.id) ;
-    message.channel.send(embed|| message.error('Something has gone wrong!'));    
+    return message.channel.send(embed|| message.error('Something has gone wrong!'));    
 }
 exports.interaction = async function(client, interaction, args){
     let setting;

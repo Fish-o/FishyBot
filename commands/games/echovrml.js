@@ -322,8 +322,20 @@ exports.interaction = async(client, interaction, args) => {
     }
 }
 exports.run = async(client, message, args) => {
-    let embed = await getVrmlStats(client, args)
-    message.channel.send(embed);
+    message.channel.startTyping();
+    try{
+        let embed = await getVrmlStats(client, args[0].value.split());
+        return message.channel.send(embed)
+    }
+    catch(err){
+        Sentry.captureException(err);
+        console.log(err)
+        client.sendInfo(`ERROR: echovrml interaction (${Date.now()})`)
+        return message.channel.send('Something has gone wrong with the echovrml command')
+    } finally{
+        message.channel.stopTyping()
+    }
+
 }
 
 exports.conf = {

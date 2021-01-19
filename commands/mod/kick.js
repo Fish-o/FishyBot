@@ -37,7 +37,7 @@ exports.run = (client, message, args) => {
     
     member.kick(reason)
         .catch(error => message.channel.send(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-    message.channel.send(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
+    return message.channel.send(`${member.user.tag} has been kicked by ${message.author.tag} because: ${reason}`);
 
 }
 

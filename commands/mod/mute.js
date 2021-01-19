@@ -61,8 +61,12 @@ exports.run = async(client, message, args) => {
   }
   //end of create role
     if(!args[1]){
-        await(tomute.roles.add(muterole.id));
-        message.reply(`${tomute} has been muted for indefinetly`);
+        try{
+            await tomute.roles.add(muterole.id);
+            message.reply(`${tomute} has been muted for indefinetly`);
+        }catch(err){
+            return message.channel.send('Couldn\'t mute because: '+err)   
+        }
     } else{
         let lenght = ms(args[1]+ " "+ args[2]);
         if(lenght){
@@ -85,15 +89,18 @@ exports.run = async(client, message, args) => {
         
     let mutetime = lenght;
     if(!mutetime) return message.reply("You didn't specify a time!");
-
-    await(tomute.roles.add(muterole.id));
-    message.reply(`${tomute} has been muted for ${ms(mutetime)}`);
-
-    setTimeout(function(){
-        tomute.roles.remove(muterole.id);
-        message.channel.send(`${tomute} has been unmuted!`);
-    }, mutetime);
+    try{
+        await tomute.roles.add(muterole.id);
+        message.reply(`${tomute} has been muted for ${ms(mutetime)}`);
+        setTimeout(function(){
+            tomute.roles.remove(muterole.id);
+            message.channel.send(`${tomute} has been unmuted!`);
+        }, mutetime);
+    }catch(err){
+        return message.channel.send('Couldn\'t mute because: '+err)   
     }
+    
+}
 }
 
 exports.conf = {

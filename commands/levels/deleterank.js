@@ -58,15 +58,15 @@ exports.run = async (client, message, args, dbGuild) => {
 
             if(emoji == '✔️'){
                 await Guild.update({id:guild.id}, {['levels.members.'+user.id]: undefined})
-                message.channel.send(`${user.toString()} rank has been reset (prev: lvl ${level}, exp ${exp})`)
+                return message.channel.send(`${user.toString()} rank has been reset (prev: lvl ${level}, exp ${exp})`)
             } else if (emoji == '❌'){
-                message.channel.send('Stopped')
+                return message.channel.send('Stopped')
             } else {
-                message.channel.send('Aborted')
+                return message.channel.send('Aborted')
             }
             msg.delete();
     } else {
-        message.channel.send('Stopped')
+        return message.channel.send('Stopped')
     }
 
 

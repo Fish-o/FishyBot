@@ -54,7 +54,7 @@ exports.run = async (client, message, args) => {
   //if(!mutetime) return message.reply("You didn't specify a time!");
 
   await(tounmute.roles.remove(muterole.id));
-  message.reply(`<@${tounmute.id}> has been unmuted!`);
+  return message.channel.send(`<@${tounmute.id}> has been unmuted!`);
 
   //setTimeout(function(){
   //  tounmute.roles.remove(muterole.id);

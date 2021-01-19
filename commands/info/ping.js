@@ -6,6 +6,7 @@ exports.run = async (client, message, args) => {
 API Latency is \`${Math.round(client.ws.ping)}ms\`.
 Your latency to the bot \`${(beforeTime - message.createdTimestamp )}ms\`.
 `);
+    return msg;
     
 }
 

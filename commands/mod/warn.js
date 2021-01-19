@@ -178,7 +178,7 @@ exports.run = async (client, message, args, dbGuild) => {
     let guild = message.guild;
     
     let embed = await command(client, guild, message.member, action, member.id, reason)|| message.error('Something has gone wrong');
-    message.channel.send(embed); 
+    return message.channel.send(embed); 
     
     
 }

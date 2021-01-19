@@ -1,4 +1,4 @@
-const { Int32 } = require('mongodb');
+
 const mongoose = require('mongoose');
 const MessageSchema = new mongoose.Schema({
     
@@ -17,16 +17,20 @@ const MessageSchema = new mongoose.Schema({
         default:[]
     },
     senderId: { 
-        type: Int32,
+        type: String,
         required: true,
     },
     messageId:{
-        type: Int32,
+        type: String,
         required: true,
     },
     channelId:{
-        type: Int32,
+        type: String,
         required: true,
+    },
+    Timestamp:{
+        type: Date,
+        required: true
     }
 });
 

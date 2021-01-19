@@ -19,7 +19,7 @@ let command = async function(){
 exports.command = command;
 
 exports.run = async (client, message, args) =>{
-    message.channel.send(command())
+    return message.channel.send(await command())
 }
 exports.conf = {
     enabled: true,

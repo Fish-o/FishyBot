@@ -32,29 +32,8 @@ exports.run = (client, message, args) => {
     member.ban({reason: reason})
         .catch(error => message.channel.send(`Sorry ${message.author} I couldn't ban the user`));
 
-    message.channel.send(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
+    return message.channel.send(`${member.user.tag} has been banned by ${message.author.tag} because: ${reason}`);
 
-
-
-    // Make sqlite connection
-    //let db = new sqlite3.Database(config['dbpath'], (err) => {
-    //    if (err) {
-    //        return console.error(err.message);
-    //    }
-    //    console.log('Connected to the SQlite database.');
-    //});
-
-    
-
-    // Close connection
-    //db.close((err) => {
-    //    if (err) {
-    //        return console.error(err.message);
-    //    }
-    //    console.log('Close the database connection.');
-    //});
-
-    
 
     
 }

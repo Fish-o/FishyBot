@@ -84,11 +84,12 @@ let loadEvents = function(){
             files.forEach(file => {
                 const event = require(`./events/${file}`);
                 //let eventName = file.split(".")[0];
-                if(Object.keys(discordEvents).includes(event.conf.event.toUpperCase()) || Object.values(discordEvents).includes(event.conf.event.toLowerCase()))
+                if(Object.keys(discordEvents).includes(event.conf.event.toUpperCase()) || Object.values(discordEvents).includes(event.conf.event))
                     client.on(event.conf.event, event.event.bind(null, client));
-                else
+                else{
+                    console.log('--------------------'+event.conf.event)
                     client.ws.on(event.conf.event, event.event.bind(null, client));
-
+                }
                 if(files.indexOf(file) == files.length-1){
                     resolve()
                 }

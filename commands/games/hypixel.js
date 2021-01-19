@@ -213,7 +213,7 @@ exports.run = async(client, message, args) => {
     }
 
     message.channel.stopTyping();
-    message.channel.send(Embed);
+    return message.channel.send(Embed);
 }
 
 exports.conf = {

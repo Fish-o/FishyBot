@@ -30,11 +30,11 @@ exports.run = (client, message, args) => {
             .setColor('RANDOM')
             .setDescription(Text)
 
-        message.channel.send(Embed)
+        return message.channel.send(Embed)
 
     } else {
         if(!message.mentions.roles.first() && !RoleCache.has(args[0])){
-            message.channel.send('Please mention a valid role')
+            return message.channel.send('Please mention a valid role')
         } else {
             let role = message.mentions.roles.first() || RoleCache.get(args[0]);
             const Embed = new Discord.MessageEmbed()
@@ -45,7 +45,7 @@ exports.run = (client, message, args) => {
             }else{
                 Embed.setDescription(`${role.permissions.toArray().join('\n')}`)
             }
-            message.channel.send(Embed)
+            return message.channel.send(Embed)
         }
     }
     

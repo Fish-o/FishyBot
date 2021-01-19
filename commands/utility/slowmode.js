@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
         return message.channel.send(`The time given (${ms(time)}) exceeded the limit of 6 hours`)
     }
     channel.setRateLimitPerUser(time/1000, `Member ${message.author.name} requested to change the slowmode`);
-    message.channel.send('Set the new slowmode to: '+ ms(time))
+    return message.channel.send('Set the new slowmode to: '+ ms(time))
 }
 
 

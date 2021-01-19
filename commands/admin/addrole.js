@@ -25,11 +25,11 @@ exports.run = (client, message, args) =>{
         rMember.roles.add(gRole.id).catch(console.error);
         
         try{
-            message.channel.send(`The user ${rMember} has a new role ${gRole.name}`);
+            return message.channel.send(`The user ${rMember} has a new role ${gRole.name}`);
         }
         catch(e){
             console.log(e.stack);
-            message.channel.send(`Congrats to <@${rMember.id}>, they have been given the role ${gRole.name}.`)
+            return message.channel.send(`Congrats to <@${rMember.id}>, they have been given the role ${gRole.name}.`)
         }
     }
     

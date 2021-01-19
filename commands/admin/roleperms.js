@@ -93,7 +93,7 @@ exports.run = async (client, message, args, dbguild) => {
             return message.channel.send(`The permission does not seem to be valid. To view all valid permissions, type \`${client.config.prefix}roleperms perms\``)
         }
         console.log(perms)
-        let dbguild =  await Guild.findOneAndUpdate({id:message.guild.id},{['roleperms.'+role.id]: perms })
+        Guild.findOneAndUpdate({id:message.guild.id},{['roleperms.'+role.id]: perms })
         
         
     }
@@ -109,7 +109,7 @@ exports.run = async (client, message, args, dbguild) => {
 
 
     else if(['perms', 'permissions'].includes(args[0].toLowerCase())){
-        message.channel.send('To assign perms, you can iether add `mod` to add moderation perms, or ad perms seperately. \n All perms are: \n\`'+allperms.join(',\n')+ '\`')
+        return message.channel.send('To assign perms, you can iether add `mod` to add moderation perms, or ad perms seperately. \n All perms are: \n\`'+allperms.join(',\n')+ '\`')
     }
 
     

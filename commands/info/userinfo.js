@@ -52,8 +52,8 @@ exports.run = async (client, message, args, dbGuild) =>{
             //.addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
             //.addField("Acknowledgements: ", `${warnings}`, true);
             
-        message.channel.send({embed});
-        return
+        return message.channel.send({embed});
+        
     }
 
     var permissions = [];
@@ -172,7 +172,7 @@ exports.run = async (client, message, args, dbGuild) =>{
         .addField(`Roles [${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `\`${roles.name}\``).length}]`,`${member.roles.cache.filter(r => r.id !== message.guild.id).map(roles => `<@&${roles.id }>`).join(" **|** ") || "No Roles"}`, true)
         //.addField("Acknowledgements: ", `${warnings}`, true);
         
-    message.channel.send({embed});
+    return message.channel.send({embed});
         
 
     

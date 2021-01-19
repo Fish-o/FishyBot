@@ -23,6 +23,14 @@ output
 const fs = require('fs')
 const Discord = require('discord.js');
 exports.run = async function (client, message, args, cache_guild) {
+    let messageResponses = [];
+    if(!args[0]){
+        messageResponses.push(message.channel.send('Please state an action'));
+        return messageResponses;
+    }
+    
+    
+    
     let action = 'new';
     `rand: {r10|20} {r10|20} {r10|20} rand done. w8 5 secs {w5} {user} {mention}`;
 
@@ -44,7 +52,7 @@ exports.run = async function (client, message, args, cache_guild) {
 
 
     if(action == 'new'){
-        message.channel.send("What should be the command name? , type `cancel` at any time to stop\nThe command name supports **regex** (dont need the //), to make it activate only at the beginning of a message use `^commandname`");
+        messageResponses.push(message.channel.send("What should be the command name? , type `cancel` at any time to stop\nThe command name supports **regex** (dont need the //), to make it activate only at the beginning of a message use `^commandname`"));
         var command_name_raw_msg = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
         
         let command_name_raw = command_name_raw_msg.first().content;
@@ -64,7 +72,7 @@ exports.run = async function (client, message, args, cache_guild) {
             var proceed = true;
             var responses = []
             while (!done){
-                message.channel.send("What should the response be? , type `cancel` at any time to stop\nExample command response: `Love meter between {user} and {mention}{w1}calculating...{w2}Their love is {r0|100}%`\n{user} - The user who called the command\n{mention} - the user who was mentioned in the message\n{w3} - waits for 3 seconds before sending the rest of the message\n{r0|100} - returns a random number between 0 and 100");
+                messageResponses.push(message.channel.send("What should the response be? , type `cancel` at any time to stop\nExample command response: `Love meter between {user} and {mention}{w1}calculating...{w2}Their love is {r0|100}%`\n{user} - The user who called the command\n{mention} - the user who was mentioned in the message\n{w3} - waits for 3 seconds before sending the rest of the message\n{r0|100} - returns a random number between 0 and 100"));
                 var command_response_msg = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
                 
                 let command_response = command_response_msg.first().content;
@@ -79,12 +87,15 @@ exports.run = async function (client, message, args, cache_guild) {
                 var addnothermsglooop = true;
 
                 while(addnothermsglooop == true){
-                    message.channel.send("Do you want to add another respons? ( _yes_ or _no_ )");
+                    messageResponses.push(message.channel.send("Do you want to add another respons? ( _yes_ or _no_ )"));
                     var another_msg_raw = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
                     let another_msg = another_msg_raw.first().content;
                     
                     if(another_msg.toLowerCase() == 'cancel'){
-                        proceed = false;addnothermsglooop = false;done = false; return message.channel.send('Stopped')
+                        proceed = false;addnothermsglooop = false;
+                        done = false; 
+                        messageResponses.push(message.channel.send('Stopped'));
+                        return messageResponses;
                     }else if(another_msg.toLowerCase() == 'yes'){
                         addnothermsglooop = false;
                     }else if(another_msg.toLowerCase() == 'no'){
@@ -100,12 +111,16 @@ exports.run = async function (client, message, args, cache_guild) {
                 client.updatedb({id:message.guild.id}, value, `Added custom command!`, message.channel)
 
             }
-        }else return message.channel.send('That command name is invalid!');
+        }else {
+            messageResponses.push(message.channel.send('That command name is invalid!'));
+            return messageResponses
+        } 
     } else if(action == 'data'){
         
         const obj = JSON.parse(args.join(' '))
         if(!obj.a || !Array.isArray(obj.b)){
-            return message.channel.send('That json is invalid!')
+            messageResponses.push(message.channel.send('That json is invalid!'));
+            return messageResponses;
         }
 
 
@@ -116,19 +131,19 @@ exports.run = async function (client, message, args, cache_guild) {
         if(!isNaN(args[0])){
             const cache_guild_custom_commands = cache_guild.custom_commands;
             if(cache_guild_custom_commands.length < parseInt(args[0])){
-                message.channel.send('Index is out to big.')
+                messageResponses.push(message.channel.send('Index is out to big.'))
             } else{
                 const name = Object.keys(cache_guild_custom_commands)[parseInt(args[0])];
 
                 const array = cache_guild_custom_commands[name]
                 
                 if(!name){
-                    message.channel.send('Could not find the command')
+                    messageResponses.push(message.channel.send('Could not find the command'))
                 } else{
                     const locate = "custom_commands."+name;
                     const value = {$unset: {[locate]:""}};
                     client.updatedb( {id:message.guild.id}, value, `Removed custom command: ${name}!`, message.channel)
-                    return;
+                    return messageResponses;
                 }
             }
         }else if(args[0]){
@@ -147,16 +162,20 @@ exports.run = async function (client, message, args, cache_guild) {
             embed.setTitle('All custom commands of this server')
             Object.keys(cache_guild_custom_commands).forEach(obj_key => {
                 if(cache_guild_custom_commands[obj_key] == null){
-                    return message.channel.send('No custom commands found')
+                    messageResponses.push(message.channel.send('No custom commands found'))
+                    return messageResponses;
                 }
                 const indexx = Object.keys(cache_guild_custom_commands).indexOf(obj_key);
                 embed.addField(`[${indexx}]: ${obj_key}`, ` ${cache_guild_custom_commands[obj_key].length} responses`, false)
 
 
             });
-            message.channel.send(embed);
+            messageResponses.push(message.channel.send(embed));
+            return messageResponses;
         }
-    }
+    } 
+    return messageResponses;
+    
 
 }
 

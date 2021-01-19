@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
     const msges =  m + 2.0 * s * (Math.random() + Math.random() + Math.random() - 1.5);
     const rounded =Math.max(5, Math.round(msges))
     var i = 0;                  //  set your counter to 1
-    message.channel.send(`${rounded} messages coming up!`)
+    return message.channel.send(`${rounded} messages coming up!`)
     function myLoop() {         //  create a loop function
         setTimeout(function() { //  call a 3s setTimeout when the loop is called
             try{                    
