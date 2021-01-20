@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 const axios = require('axios');
 
 
-const fs = require('fs');
 var stringSimilarity = require('string-similarity');
 
 const Sentry = require("@sentry/node");

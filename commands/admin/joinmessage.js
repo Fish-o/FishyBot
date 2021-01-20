@@ -1,4 +1,4 @@
-const fs = require('fs');
+
 const Discord = require('discord.js');
 
 const  User = require('../../database/schemas/User')

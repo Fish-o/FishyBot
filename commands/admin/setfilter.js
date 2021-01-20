@@ -72,7 +72,6 @@ exports.conf = {
   };
   
 const path = require("path");
-const { chown } = require('fs');
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"filter",

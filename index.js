@@ -69,10 +69,7 @@ mongoose.connect(client.config.dbpath, {
 })
 
 
-console.log('Checking if cache file exists')
-if(!fs.existsSync(__dirname + '/jsonFiles/cache.json')){
-    fs.closeSync(fs.openSync(__dirname + '/jsonFiles/cache.json', 'w'));
-}
+
 
 
 
