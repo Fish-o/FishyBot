@@ -50,7 +50,7 @@ client.cachedMessageReactions = new Map();
 
 
 
-//Sentry.init({
+/*Sentry.init({
     dsn: process.env.SENTRY,
     integrations: [
         new Tracing.Integrations.Mongo(),
@@ -58,7 +58,7 @@ client.cachedMessageReactions = new Map();
     environment: process.env.ENV || 'Unknown',
     debug: true,
     tracesSampleRate: 1.0,
-});
+});*/
 
 
 
