@@ -30,7 +30,5 @@
         "test": "node index.js"
     },
     "main": "index.js",
-    "devDependencies": {
-        "@sentry/webpack-plugin": "^1.14.0"
-    }
+    "devDependencies": {}
 }
