@@ -27,8 +27,6 @@ exports.event = async (client) => {
             if(channel && channel.type == 'text'){
                 await channel.fetch();
                 let membercount = channel.guild.members.cache.filter(member => !member.user.bot).size;
-                console.log(channel.guild.members.cache.filter(member => !member.user.bot))
-                console.log(membercount)
                 channel.setName(`members ${membercount}`)
             }
 

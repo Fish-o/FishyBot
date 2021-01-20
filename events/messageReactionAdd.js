@@ -12,7 +12,6 @@ exports.event = async (client, reaction, user) => {
                 }
             } 
         } else{
-            console.log('UNicode emoJI')
             reaction = await reaction.fetch();
             if(emojiRoleMappings.hasOwnProperty(reaction.emoji.name)) {
                 let roleId = emojiRoleMappings[reaction.emoji.name];
@@ -32,7 +31,6 @@ exports.event = async (client, reaction, user) => {
             if(msgDocument) {
                 client.cachedMessageReactions.set(id, msgDocument.emojiRoleMappings);
                 let { emojiRoleMappings } = msgDocument;
-                console.log(emojiRoleMappings)
                 addMemberRole(emojiRoleMappings);
             }
         }
