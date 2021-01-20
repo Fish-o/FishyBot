@@ -55,6 +55,7 @@ Sentry.init({
     integrations: [
         new Tracing.Integrations.Mongo(),
     ],
+    environment: process.env.ENV || 'Unknown',
     debug: true,
     tracesSampleRate: 1.0,
 });
