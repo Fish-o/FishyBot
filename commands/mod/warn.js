@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 
 function match(msg, i) {
     if (!msg) return undefined;
@@ -50,7 +50,7 @@ let command = async function(client, guild, author, action, member_id, reason){
                         try{
                             embed.addField(date_time+' - by '+client.users.cache.get(warnings[i]['warner']).tag, 'Reason: ' + warnings[i]['warn']);
                         }catch(err){
-                            Sentry.captureException(err);
+                            //Sentry.captureException(err);
                             embed.addField('failed warning')
                         }
                     }

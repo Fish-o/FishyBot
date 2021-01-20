@@ -13,8 +13,8 @@ function match(msg, i) {
     if (!user) return undefined;
     return user;
 }
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 let Discord = require('discord.js')
 exports.run = (client, message, args) => {
     let member =
@@ -65,7 +65,7 @@ exports.interaction = async (client, interaction, args) => {
         member.kick(reason)
         interaction.send(await interaction.succes(`${member.user.tag} has been kicked`, `By: ${interaction.member}\nReason: ${reason}`));
     }catch(error){
-        Sentry.captureException(error);
+        //Sentry.captureException(error);
         interaction.send(await interaction.error(`Kicking failed`, 'Reason: '+error));
     }
         

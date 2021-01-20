@@ -58,7 +58,7 @@ exports.run = async(client, message, args) => {
                     }
                 }
                 catch(err) {
-                    Sentry.captureException(err);
+                    //Sentry.captureException(err);
                     console.log(err);
                 }
             } 
@@ -68,7 +68,7 @@ exports.run = async(client, message, args) => {
         }
     }
     catch(err) {
-        Sentry.captureException(err);
+        //Sentry.captureException(err);
         console.log(err);
     }
 

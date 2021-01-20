@@ -45,8 +45,8 @@ function sortObject(obj) {
     return arr; // returns array
 }
 
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 
 
 exports.run = async (client, message, args, dbGuild) => {
@@ -122,7 +122,7 @@ exports.run = async (client, message, args, dbGuild) => {
         return message.channel.send(new MessageAttachment(data, "rank.png"));
     }
     catch(err){
-        Sentry.captureException(err);
+        //Sentry.captureException(err);
         message.channel.send('something went wrong, please contact: '+client.config.author)
     } finally{
         message.channel.stopTyping();

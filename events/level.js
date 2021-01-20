@@ -4,8 +4,8 @@ const  Guild = require('../database/schemas/Guild');
 const cooldown = new Set();
 const cooldown_time = 30;
 const Discord = require('discord.js')
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 
 exports.event = async (client, message) =>{
     if(message.partial)
@@ -68,7 +68,7 @@ exports.event = async (client, message) =>{
         }
     }
     catch(err) {
-        Sentry.captureException(err);
+        //Sentry.captureException(err);
         console.log(err)
         console.log('An error has occured with the leveling system')
     }

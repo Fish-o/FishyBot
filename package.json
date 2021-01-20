@@ -4,8 +4,6 @@
     "description": "A crappy discord bot",
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
-        "@sentry/node": "^5.29.2",
-        "@sentry/tracing": "^5.29.2",
         "axios": "^0.21.1",
         "bad-words": "^3.0.3",
         "canvacord": "^5.0.7",

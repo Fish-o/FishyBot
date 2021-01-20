@@ -3,8 +3,8 @@ const Discord = require('discord.js');
 
 const  User = require('../../database/schemas/User')
 const  Guild = require('../../database/schemas/Guild')
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 
 function colourNameToHex(colour){
     var colours = {"aliceblue":"#f0f8ff","antiquewhite":"#faebd7","aqua":"#00ffff","aquamarine":"#7fffd4","azure":"#f0ffff",
@@ -128,7 +128,7 @@ exports.run = async (client, message, args, DbGuild) =>{
         try{
             channel.send(serverembed);
         } catch(err){
-            Sentry.captureException(err);
+            //Sentry.captureException(err);
             console.log(err);
             return message.channel.send('Error in join message');
         }

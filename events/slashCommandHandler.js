@@ -2,8 +2,8 @@
 const Guild = require('../database/schemas/Guild');
 const axios = require('axios');
 const Discord = require('discord.js')
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 
 /*
 
@@ -124,7 +124,7 @@ exports.event = async (client, interaction) => {
                 }
             }
             catch(err){
-                Sentry.captureException(err);
+                //Sentry.captureException(err);
                 console.log(err)
                 return interaction.send("Something went wrong, please contact "+client.config.author);
             }

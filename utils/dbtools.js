@@ -2,8 +2,8 @@
 
 const  User = require('../database/schemas/User')
 const Guild = require('../database/schemas/Guild');
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 
 exports.updatedb = async (query, value, msg = '', channel = null) => {
 
@@ -13,7 +13,7 @@ exports.updatedb = async (query, value, msg = '', channel = null) => {
             channel.send(msg)
         }
     } catch(err){
-        Sentry.captureException(err);
+        //Sentry.captureException(err);
         console.log(err)
         console.log('\nerror in updating db')
     }

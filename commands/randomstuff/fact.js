@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const axios = require('axios');
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+const Ttracing = require("@sentry/tracing");
 
 let command = async function(){
     return new Promise(async (resolve, reject)=>{

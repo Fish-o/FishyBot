@@ -1,5 +1,5 @@
-const Sentry = require("@sentry/node");
-const Tracing = require("@sentry/tracing");
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 
 
 const Discord = require('discord.js');
@@ -50,7 +50,7 @@ client.cachedMessageReactions = new Map();
 
 
 
-Sentry.init({
+//Sentry.init({
     dsn: process.env.SENTRY,
     integrations: [
         new Tracing.Integrations.Mongo(),
@@ -247,7 +247,7 @@ In: ${reminder.guildName}`);
                     user.send(Embed)
                 }
             }catch(err){
-                Sentry.captureException(err);
+                //Sentry.captureException(err);
                 console.log(err)
                 console.log('Error in reminder to user')
             }
@@ -720,7 +720,7 @@ let login = async function(){
 try {
     login()
 } catch (e) {
-    Sentry.captureException(e);
+    //Sentry.captureException(e);
 }
 
 
