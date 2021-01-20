@@ -1,5 +1,5 @@
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 exports.run = async (client, message, args) => {
     console.log(message.mentions)
     console.log(message.mentions.roles)

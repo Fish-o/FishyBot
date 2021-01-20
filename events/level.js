@@ -5,7 +5,7 @@ const cooldown = new Set();
 const cooldown_time = 30;
 const Discord = require('discord.js')
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 
 exports.event = async (client, message) =>{
     if(message.partial)

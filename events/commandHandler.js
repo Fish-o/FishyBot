@@ -2,7 +2,7 @@ const active = new Map();
 const talkedRecently = new Set();
 
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 
 const Discord = require('discord.js');
 var fs = require("fs");

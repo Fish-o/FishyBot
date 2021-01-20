@@ -14,7 +14,7 @@ function match(msg, i) {
     return user;
 }
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 let Discord = require('discord.js')
 exports.run = (client, message, args) => {
     let member =

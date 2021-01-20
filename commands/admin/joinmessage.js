@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 const  User = require('../../database/schemas/User')
 const  Guild = require('../../database/schemas/Guild')
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 
 function colourNameToHex(colour){
     var colours = {"aliceblue":"#f0f8ff","antiquewhite":"#faebd7","aqua":"#00ffff","aquamarine":"#7fffd4","azure":"#f0ffff",

@@ -3,7 +3,7 @@
 const  User = require('../database/schemas/User')
 const Guild = require('../database/schemas/Guild');
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+////const Ttracing = require("@sentry/tracing");
 
 exports.updatedb = async (query, value, msg = '', channel = null) => {
 

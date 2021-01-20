@@ -6,7 +6,7 @@ const  User = require('../../database/schemas/User')
 let cache = {}
 let refresh_time = 30*60*1000
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 function getPlayerStats(player, token) {
     return new Promise(async function (resolve, reject) {
         try{

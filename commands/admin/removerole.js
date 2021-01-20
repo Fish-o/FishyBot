@@ -1,5 +1,5 @@
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 exports.run = (client, message, args) =>{
     let rMember = message.guild.member(message.mentions.users.first()) || message.guild.members.cache.get(args[0]);
 

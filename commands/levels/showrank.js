@@ -46,7 +46,7 @@ function sortObject(obj) {
 }
 
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 
 
 exports.run = async (client, message, args, dbGuild) => {

@@ -1,6 +1,6 @@
 let Discord  = require('discord.js') 
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 
 exports.run = async (client, message, args) =>{
     const deleteCount = parseInt(args[0], 10) + 1;

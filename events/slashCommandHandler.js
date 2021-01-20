@@ -3,7 +3,7 @@ const Guild = require('../database/schemas/Guild');
 const axios = require('axios');
 const Discord = require('discord.js')
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 
 /*
 

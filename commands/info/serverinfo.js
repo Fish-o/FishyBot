@@ -5,7 +5,7 @@ var moment = require('moment'); // require
 const ChartJsImage = require('chartjs-to-image');
 
 //const Ssentry = require("@sentry/node");
-const Ttracing = require("@sentry/tracing");
+//const Ttracing = require("@sentry/tracing");
 
 exports.run = async (client, message, args) =>{
     message.channel.startTyping(1)
