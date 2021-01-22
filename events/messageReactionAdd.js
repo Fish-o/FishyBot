@@ -53,30 +53,26 @@ exports.event = async (client, reaction, user) => {
     }
     let message = reaction.message;
     let MsgId = message.id;
-    
     if(['❌', '❎', '✖️'].includes(reaction.emoji.name)){
-        if(message.member.hasPermission("MANAGE_MESSAGES")){
-            await reaction.message.delete()
-            await CommandModel.update(
-                {channelId: message.channel.id, senderId:user.id, responses:MsgId},
-                { $pull: { 'responses': MsgId } }
-            )
-        }else if(message.author.id == client.user.id){
-            let command_obj = await CommandModel.find({channelId: message.channel.id, senderId:user.id, responses:message.id})
-            if(command_obj && command_obj[0]){
+        if(message.author.id == client.user.id){
+            if(message.member.hasPermission("MANAGE_MESSAGES")){
                 await reaction.message.delete()
                 await CommandModel.updateOne(
                     {channelId: message.channel.id, senderId:user.id, responses:MsgId},
                     { $pull: { 'responses': MsgId } }
-                );
+                )
+            }else{
+                let command_obj = await CommandModel.find({channelId: message.channel.id, senderId:user.id, responses:message.id})
+                if(command_obj && command_obj[0]){
+                    await reaction.message.delete()
+                    await CommandModel.updateOne(
+                        {channelId: message.channel.id, senderId:user.id, responses:MsgId},
+                        { $pull: { 'responses': MsgId } }
+                    );
+                }
             }
-        }else{
-            reaction.remove()
         }
     }
-    
-
-
 };
 
 

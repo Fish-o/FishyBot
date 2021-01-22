@@ -103,8 +103,6 @@ client.commands = new Discord.Collection();
 client.interactions = new Discord.Collection();
 client.aliases = new Discord.Collection();
 
-client.auto_commands = new Discord.Collection();
-client.auto_activations = new Discord.Collection();
 
 
 client.bypass = false;
@@ -194,7 +192,7 @@ let loadCommand = function(user, discordSlashCommands){
     });
 }
 
-let loadAutoCommands = async function(){
+/*let loadAutoCommands = async function(){
     return new Promise((resolve, reject) =>{
         console.log('Loading autocommands');
         fs.readdir("./auto_commands/", (direrr, dirs) =>{
@@ -226,7 +224,7 @@ let loadAutoCommands = async function(){
             })
         })
     })
-}
+}*/
 
 let reminderInterval = setInterval(async function () {
     let time = Date.now();
@@ -708,7 +706,6 @@ let login = async function(){
     user = userdata.data
     let discordSlashCommands = await axios.get(`https://discordapp.com/api/applications/${user.id}/commands`, {headers:{'Authorization': `Bot ${client.config.token}`}})
     await Promise.all([
-        loadAutoCommands(),
         loadCommand(user, discordSlashCommands.data),
         loadEvents()
     ])

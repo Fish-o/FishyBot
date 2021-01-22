@@ -265,26 +265,6 @@ var very_good_name = async function(client, message) {
                     
                 }
             })
-            
-
-
-            // Auto Commands
-            if(await client.allow_test("all_auto", guild_cache)){
-                for (let [activation_key, value] of client.auto_activations) {
-                    if(message.content.toLowerCase().includes(activation_key)){
-                        if(!await client.allow_test(value, guild_cache)){return}
-                        cmd = client.auto_commands.get(value)
-                        // If that command doesn't exist, silently exit and do nothing
-                        if (!cmd) return;
-                        
-                        
-
-
-                        cmd.run(client, message, ops);
-                    }
-                }
-            }
-
         }
 
 

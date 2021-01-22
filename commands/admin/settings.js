@@ -9,7 +9,7 @@ let settingsCommand = async function(client, action, command, guildID, authorID)
     return new Promise(async(resolve, reject)=>{
 
 
-        auto_commands = ['dadjokes']
+       
         if(command == 'global' && authorID == client.config.master){
             const locate_string = "settings."+action
             let guilds = client.guilds.cache
@@ -71,57 +71,7 @@ let settingsCommand = async function(client, action, command, guildID, authorID)
                 resolve(embed)
                 return
             }
-        } else if(command == 'all_auto'){
-            const locate_string = "settings.all_auto"
-            if(action == 'off' || !action){
-                var guildQuery = {id: guildID};
-
-                await Guild.updateOne(guildQuery, {[locate_string]:false});
-                let embed = new Discord.MessageEmbed()
-                    .setTitle('Disabled all autocommands')
-                    .setColor('RED')
-                    .setTimestamp();
-                resolve(embed)
-                return
-            }else if(action == 'on'){
-                var guildQuery = {id: guildID};
-
-                await Guild.updateOne(guildQuery, {[locate_string]:true});
-                let embed = new Discord.MessageEmbed()
-                    .setTitle('Enabled all autocommands')
-                    .setColor('GREEN')
-                    .setTimestamp();
-                resolve(embed)
-                return
-            }
-        } else {
-            auto_commands.forEach(async auto_command => {
-                if(command == auto_command){
-                    const locate_string = `settings.${auto_command}`
-
-                    if(action == 'off' || !action){
-                        var guildQuery = {id: guildID};
-
-                        await Guild.updateOne(guildQuery, {[locate_string]:false}); 
-                        let embed = new Discord.MessageEmbed()
-                            .setTitle(`Disabled the \`${auto_command}\` autocommand`)
-                            .setColor('RED')
-                            .setTimestamp();
-                        resolve(embed)
-                        return
-                    }else if(action == 'on'){
-                        var guildQuery = {id: guildID};
-
-                        await Guild.updateOne(guildQuery, {[locate_string]:true});
-                        let embed = new Discord.MessageEmbed()
-                            .setTitle(`Enabled the \`${auto_command}\` autocommand`)
-                            .setColor('GREEN')
-                            .setTimestamp();
-                        resolve(embed)
-                        return
-                    }
-                }
-            });
+        }  else {
             if(client.commands.has(command)){
                 const locate_string = `settings.${command}`
 
