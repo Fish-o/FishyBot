@@ -49,8 +49,8 @@ exports.run = (client, message, args) => {
                         return message.channel.send(`The region role \` ${key} \` was not found, ask an admin to add: ${Object.keys(client.emoji_data['regions']).join(', ')}`)
                     }
                     member.roles.add(role);
-                    message.channel.send(`Added \`${key}\` to **${message.author.tag}**`)
-                }else{message.channel.send(`Removed region roles for **${message.author.tag}**`)}
+                    return message.channel.send(`Added \`${key}\` to **${message.author.tag}**`)
+                }else{return message.channel.send(`Removed region roles for **${message.author.tag}**`)}
                 /*
                 else{
                     member.roles.remove(Object.keys(client.emoji_data['regions']).filter(key => member.roles.cache.includes(emojiName)))
@@ -64,7 +64,7 @@ exports.run = (client, message, args) => {
                 }*/
             }
             else{
-                message.channel.send('Timed-out')
+                return message.channel.send('Timed-out')
             }   
 
 

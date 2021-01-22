@@ -147,7 +147,7 @@ exports.run = async (client, message, args, db_guild) => {
         match(args.join(" ").toLowerCase(), message.guild);
 
 
-        message.channel.send(await command(client, member, message.member, message.guild, args[0]))
+        return message.channel.send(await command(client, member, message.member, message.guild, args[0]))
     
 
 }

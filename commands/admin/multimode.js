@@ -18,7 +18,7 @@ exports.run = async (client, message, args, guild_cache) => {
         command = args.shift().toLowerCase();
 
 
-        if (!command) message.channel.send(`❗ Something went wrong with the text (No command name found): \`${command_txt}\`\nproceeding to run the other commands`);
+        if (!command) return message.channel.send(`❗ Something went wrong with the text (No command name found): \`${command_txt}\`\nproceeding to run the other commands`);
         if(!client.allow_test(command, guild_cache)){return}
 
         if (client.commandFiles.get(client.commands.has(command))) {

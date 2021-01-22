@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
-
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 
 function match(msg, i) {
     if (!msg) return undefined;
@@ -49,6 +50,7 @@ let command = async function(client, guild, author, action, member_id, reason){
                         try{
                             embed.addField(date_time+' - by '+client.users.cache.get(warnings[i]['warner']).tag, 'Reason: ' + warnings[i]['warn']);
                         }catch(err){
+                            //Sentry.captureException(err);
                             embed.addField('failed warning')
                         }
                     }
@@ -176,7 +178,7 @@ exports.run = async (client, message, args, dbGuild) => {
     let guild = message.guild;
     
     let embed = await command(client, guild, message.member, action, member.id, reason)|| message.error('Something has gone wrong');
-    message.channel.send(embed); 
+    return message.channel.send(embed); 
     
     
 }

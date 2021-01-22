@@ -13,10 +13,11 @@ exports.run = async (client, message, args) => {
 
     if ( action == 'on'){
         channel.setNSFW(true, `Member ${message.author.name} requested to change the nsfw mode`)
-        message.channel.send('Set nsfw mode '+ action)
+        return message.channel.send('Set nsfw mode '+ action)
     } else if ( action == 'off'){
+        
         channel.setNSFW(false, `Member ${message.author.name} requested to change the nsfw mode`)
-        message.channel.send('Set nsfw mode '+ action)
+        return message.channel.send('Set nsfw mode '+ action)
     }else {
         message.channel.send('Something went wrong')
         console.log('Something went wrong with set nsfw');

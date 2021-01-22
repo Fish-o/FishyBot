@@ -10,8 +10,7 @@ exports.run = async (client, message, args) =>{
     
     await Guild.findOneAndUpdate({id: message.guild.id}, {prefix: args.join(' ')});
 
-    message.channel.send('Changed **prefix** to `'+args.join(' ')+'`')
-    client.recache(client)
+    return message.channel.send('Changed **prefix** to `'+args.join(' ')+'`')
 
       
 }

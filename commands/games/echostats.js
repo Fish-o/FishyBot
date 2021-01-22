@@ -5,7 +5,8 @@ const  User = require('../../database/schemas/User')
 
 let cache = {}
 let refresh_time = 30*60*1000
-
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 function getPlayerStats(player, token) {
     return new Promise(async function (resolve, reject) {
         try{
@@ -148,9 +149,16 @@ exports.run = async (client, message, args) => {
     if(message.mentions.members.first()){
         memberid = message.mentions.members.first().id;
     }
-    let Embed = await getEchoStats(client, args, memberid, message.channel);
-    message.channel.stopTyping()
-    message.channel.send(Embed)
+    try{
+        let Embed = await getEchoStats(client, args, memberid, message.channel);
+        return message.channel.send(Embed)
+        
+    }catch(err){
+        //Sentry.captureException(err);
+    }finally{
+        message.channel.stopTyping()
+    }
+        
     
 }
 
@@ -167,6 +175,7 @@ exports.interaction = async(client, interaction, args) => {
         interaction.send(embed)
     }
     catch(err){
+        //Sentry.captureException(err);
         console.log(err)
         client.sendInfo(`ERROR: echostats interaction (${Date.now()})`)
         interaction.channel.send('Something has gone wrong with the echo stats command')

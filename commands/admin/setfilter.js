@@ -12,7 +12,7 @@ exports.run = async (client, message, args, dbGuild) => {
         }
 
         await Guild.findOneAndUpdate({id:message.guild.id}, {['filters.'+channel.id]: undefined})
-        message.channel.send('Removed the filter')
+        return message.channel.send('Removed the filter')
     }
 
     else if(['set', 'change'].includes(args[0].toLowerCase())){
@@ -34,7 +34,7 @@ exports.run = async (client, message, args, dbGuild) => {
         }
         if(!isValid) return message.channel.send('The entered regex is not valid')
         await Guild.findOneAndUpdate({id:message.guild.id}, {['filters.'+channel.id]:regextxt})
-        message.channel.send('Changed the filter!')
+        return message.channel.send('Changed the filter!')
 
     }
 
@@ -43,9 +43,9 @@ exports.run = async (client, message, args, dbGuild) => {
         //let dbGuild = await client.getDbGuild(message.guild.id)
         if(channelMention){
             if(dbGuild.filters[channelMention.id]){
-                message.channel.send(`The filter for channel ${channelMention} is: _${dbGuild.filters[channelMention.id]}_`)
+                return message.channel.send(`The filter for channel ${channelMention} is: _${dbGuild.filters[channelMention.id]}_`)
             }else{
-                message.channel.send(`No filter set up for the channel ${channelMention}`)
+                return message.channel.send(`No filter set up for the channel ${channelMention}`)
             }
         }else{
             let text = 'All filters for this server:\n'
@@ -56,7 +56,7 @@ exports.run = async (client, message, args, dbGuild) => {
                     }
                 }
             })
-            message.channel.send(text)
+            return message.channel.send(text)
         }
     }
     
@@ -72,7 +72,6 @@ exports.conf = {
   };
   
 const path = require("path");
-const { chown } = require('fs');
 exports.help = {
     category: __dirname.split(path.sep).pop(),
     name:"filter",

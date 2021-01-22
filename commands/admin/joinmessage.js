@@ -1,9 +1,10 @@
-const fs = require('fs');
+
 const Discord = require('discord.js');
 
 const  User = require('../../database/schemas/User')
 const  Guild = require('../../database/schemas/Guild')
-
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 
 function colourNameToHex(colour){
     var colours = {"aliceblue":"#f0f8ff","antiquewhite":"#faebd7","aqua":"#00ffff","aquamarine":"#7fffd4","azure":"#f0ffff",
@@ -38,6 +39,7 @@ function colourNameToHex(colour){
 
 
 exports.run = async (client, message, args, DbGuild) =>{
+    let messageResponses = [];
     var action = ''
     if(args[0]){
         var text = args.join(' ')
@@ -51,13 +53,16 @@ exports.run = async (client, message, args, DbGuild) =>{
             if(jsondata.y == true){
                 new_channel_id = message.channel.id
             } else {
-                message.channel.send("In what channel should it be, type `cancel` at any time to stop");
+                messageResponses.push(message.channel.send("In what channel should it be, type `cancel` at any time to stop"));
                 var new_channel_raw_msg = await message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000})
                
                 let new_channel_raw = new_channel_raw_msg.first().content;
 
                 if(!new_channel_raw_msg.first().mentions.channels.first()){
-                    if(new_channel_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')};
+                    if(new_channel_raw.toLowerCase() == 'cancel'){
+                        messageResponses.push(message.channel.send('Stopped'));
+                        return messageResponses;
+                    };
                 }
                 new_channel_id = new_channel_raw_msg.first().mentions.channels.first().id;
                 
@@ -75,8 +80,8 @@ exports.run = async (client, message, args, DbGuild) =>{
                 }
             }
             await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
-            message.channel.send('Changed the message!')
-            return
+            messageResponses.push(message.channel.send('Changed the message!'))
+            return messageResponses;
 
         } else {
             var action = args[0].toLowerCase()
@@ -123,8 +128,9 @@ exports.run = async (client, message, args, DbGuild) =>{
         try{
             channel.send(serverembed);
         } catch(err){
+            //Sentry.captureException(err);
             console.log(err);
-            message.channel.send('Error in join message');
+            return message.channel.send('Error in join message');
         }
         /*
             .setColor("#ff0000")
@@ -140,12 +146,14 @@ exports.run = async (client, message, args, DbGuild) =>{
     else if(action == 'edit' ||action == 'embed' ){
         if(!args[0]){
 
-            message.channel.send("In what channel should it be, type `cancel` at any time to stop");
+            messageResponses.push(message.channel.send("In what channel should it be, type `cancel` at any time to stop"));
             message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(new_channel_raw_msg => {
                 let new_channel_raw = new_channel_raw_msg.first().content;
 
                 if(!new_channel_raw_msg.first().mentions.channels.first()){
-                    if(new_channel_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')};
+                    if(new_channel_raw.toLowerCase() == 'cancel'){
+                        messageResponses.push(message.channel.send('Stopped'))
+                    };
                 }
                 const new_channel_id = new_channel_raw_msg.first().mentions.channels.first().id;
 
@@ -154,21 +162,32 @@ exports.run = async (client, message, args, DbGuild) =>{
 
 
                 
-                message.channel.send("What color should it be, enter a color name or a hex code");
+                messageResponses.push(message.channel.send("What color should it be, enter a color name or a hex code"));
                 message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(color_raw_msg => {
                     var color_raw = color_raw_msg.first().content
                     const hex = colourNameToHex(color_raw)
-                    if(hex == false) {return message.channel.send("Stopped, not a valid color name or hex code")}
+                    if(hex == false) {
+                        return messageResponses.push(message.channel.send("Stopped, not a valid color name or hex code"))
+                    }
                     const color = hex;
 
 
-                    message.channel.send("What is going to be the tile (use {name} to insert the new members name)")
+                    messageResponses.push(message.channel.send("What is going to be the tile (use {name} to insert the new members name)"));
                     message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(title_bold_raw_msg => {
                         let title_bold_raw = title_bold_raw_msg.first().content;
 
-                        if(title_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
-                        if(!title_bold_raw){return message.channel.send('Stopped')};
-                        if(title_bold_raw.length >= 1000){return message.channel.send('Stopped, the message must be under 1000 characters long')};
+                        if(title_bold_raw.toLowerCase() == 'cancel'){
+                            messageResponses.push(message.channel.send('Stopped'))
+                            return messageResponses;
+                        }
+                        if(!title_bold_raw){
+        	                messageResponses.push(message.channel.send('Stopped'))
+                            return messageResponses;
+                        };
+                        if(title_bold_raw.length >= 1000){
+                            messageResponses.push(message.channel.send('Stopped, the message must be under 1000 characters long'))
+                            return messageResponses;
+                        };
                         const title_bold = title_bold_raw;
 
 
@@ -176,13 +195,23 @@ exports.run = async (client, message, args, DbGuild) =>{
 
 
 
-                        message.channel.send("What is going to be the tile's description")
+                        messageResponses.push(message.channel.send("What is going to be the tile's description"))
                         message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(title_small_raw_msg => {
                             let title_small_raw = title_small_raw_msg.first().content;
 
-                            if(title_small_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
-                            if(!title_small_raw){return message.channel.send('Stopped')};
-                            if(title_small_raw.length >= 2000){return message.channel.send('Stopped, the message must be under 2000 characters long')};
+                            if(title_small_raw.toLowerCase() == 'cancel'){
+                                messageResponses.push(message.channel.send('Stopped'));
+                                return messageResponses;
+                            }
+                            if(!title_small_raw){
+                                messageResponses.push(message.channel.send('Stopped'));
+                                return messageResponses;
+                            };
+
+                            if(title_small_raw.length >= 2000){
+                                messageResponses.push(message.channel.send('Stopped, the message must be under 2000 characters long'));
+                                return messageResponses;
+                            };
                             const title_small = title_small_raw;
 
 
@@ -190,12 +219,18 @@ exports.run = async (client, message, args, DbGuild) =>{
 
 
 
-                            message.channel.send("What is going to be the second blocks title? (type `none` to not have this)")
+                            messageResponses.push(message.channel.send("What is going to be the second blocks title? (type `none` to not have this)"));
                             message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(async second_bold_raw_msg => {
                                 let second_bold_raw = second_bold_raw_msg.first().content;
 
-                                if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
-                                if(!second_bold_raw){return message.channel.send('Stopped')};
+                                if(second_bold_raw.toLowerCase() == 'cancel'){
+                                    messageResponses.push(message.channel.send('Stopped'));
+                                    return messageResponses;
+                                }
+                                if(!second_bold_raw){
+                                    messageResponses.push(message.channel.send('Stopped'));
+                                    return messageResponses;
+                                };
                                 if(second_bold_raw.toLowerCase() == "none"){
                                     
                                     const join_object = {
@@ -208,22 +243,32 @@ exports.run = async (client, message, args, DbGuild) =>{
                                     }
 
                                     await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
-                                    message.channel.send('Changed the message!')
-                                    return;
+                                    messageResponses.push(message.channel.send('Changed the message!'))
+                                    return messageResponses;
                                 }
 
-                                if(second_bold_raw.length >= 1000){return message.channel.send('Stopped, the message must be under 1000 characters long')};
+                                if(second_bold_raw.length >= 1000){
+                                    messageResponses.push(message.channel.send('Stopped, the message must be under 1000 characters long'));
+                                    return messageResponses;
+                                };
                                 const second_bold = second_bold_raw;
 
 
-                                message.channel.send("What is going to be the second blocks description?")
+                                messageResponses.push(message.channel.send("What is going to be the second blocks description?"))
                                 message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then( async second_small_raw_msg => {
                                     let second_small_raw = second_small_raw_msg.first().content;
-
-                                    if(second_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
-                                    if(!second_bold_raw){return message.channel.send('Stopped')};
-                                    if(second_bold_raw.length >= 2000){return message.channel.send('Stopped, the message must be under 2000 characters long')};
-
+                                    if(second_bold_raw.toLowerCase() == 'cancel'){
+                                        messageResponses.push(message.channel.send('Stopped'))
+                                        return messageResponses;
+                                    }
+                                    if(!second_bold_raw){
+                                        messageResponses.push(message.channel.send('Stopped'))
+                                        return messageResponses;
+                                    };
+                                    if(second_bold_raw.length >= 2000){
+                                        messageResponses.push(message.channel.send('Stopped, the message must be under 2000 characters long'))
+                                        return messageResponses;
+                                    };
                                     const second_small = second_small_raw;
 
                                     const join_object = {
@@ -239,7 +284,8 @@ exports.run = async (client, message, args, DbGuild) =>{
                                         }
                                     }
                                     await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
-                                    message.channel.send('Changed the message!')
+                                    messageResponses.push(message.channel.send('Changed the message!'))
+                                    return messageResponses;
                                     //client, {id:message.guild.id}, , 'Changed the message!', message.channel)
 
                                 });
@@ -260,24 +306,36 @@ exports.run = async (client, message, args, DbGuild) =>{
     else if(action == 'message' ||action == 'asdf' ){
         if(!args[0]){
 
-            message.channel.send("In what channel should it be, type `cancel` at any time to stop");
+            messageResponses.push(message.channel.send("In what channel should it be, type `cancel` at any time to stop"));
             message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then(new_channel_raw_msg => {
                 let new_channel_raw = new_channel_raw_msg.first().content;
 
                 if(!new_channel_raw_msg.first().mentions.channels.first()){
-                    if(new_channel_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')};
+                    if(new_channel_raw.toLowerCase() == 'cancel'){
+                        messageResponses.push(message.channel.send('Stopped'))
+                        return messageResponses;
+                    };
                 }
-                if(!new_channel_raw_msg.first().mentions.channels){return message.channel.send("Stopped, please mention a channel")}
+                if(!new_channel_raw_msg.first().mentions.channels){
+                    messageResponses.push(message.channel.send("Stopped, please mention a channel"))
+                    return messageResponses;
+                }
                 const new_channel_id = new_channel_raw_msg.first().mentions.channels.first().id;
 
 
-                message.channel.send("What is going to be the message? (use {name} to insert the new members name)")
+                messageResponses.push(message.channel.send("What is going to be the message? (use {name} to insert the new members name)"))
                 message.channel.awaitMessages(m => m.author.id == message.author.id, {max: 1, time: 120000}).then( async title_bold_raw_msg => {
                     let title_bold_raw = title_bold_raw_msg.first().content;
 
-                    if(title_bold_raw.toLowerCase() == 'cancel'){return message.channel.send('Stopped')}
-                    if(!title_bold_raw){return message.channel.send('Stopped')};
-                    if(title_bold_raw.length >= 2000){return message.channel.send('Stopped, the message must be under 2000 characters long')};
+                    if(title_bold_raw.toLowerCase() == 'cancel'){
+                        messageResponses.push(message.channel.send('Stopped'))
+                        return messageResponses;
+                    }
+                    if(!title_bold_raw){
+                        messageResponses.push(message.channel.send('Stopped'))
+                        return messageResponses;
+                    };
+
                     const title_bold = title_bold_raw;
 
 
@@ -292,7 +350,8 @@ exports.run = async (client, message, args, DbGuild) =>{
                     }
 
                     await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: join_object});
-                    message.channel.send('Changed the message!')
+                    messageResponses.push(message.channel.send('Changed the message!'))
+                    return messageResponses;
 
                 });
             });
@@ -305,9 +364,11 @@ exports.run = async (client, message, args, DbGuild) =>{
     
     else if(action == 'remove'){
         await Guild.findOneAndUpdate({id: message.guild.id}, {joinMsg: undefined});
-        message.channel.send('Deleted the message!')
+        messageResponses.push(message.channel.send('Deleted the message!'));
+        return messageResponses;
 
     }
+    return messageResponses;
 };
 exports.conf = {
     enabled: true,

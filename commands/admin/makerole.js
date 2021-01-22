@@ -52,14 +52,14 @@ exports.run = async (client, message, args) => {
             color: color
         }})
 
-        message.channel.send(`The role ${role} has been created`)
+        return message.channel.send(`The role ${role} has been created`)
         
     } else{
         let role = await message.guild.roles.create({data:{
             permissions:0,
             name:name[1]
         }})
-        message.channel.send(`The role ${role} has been created`)
+        return message.channel.send(`The role ${role} has been created`)
     }
     
 }

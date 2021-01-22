@@ -62,7 +62,7 @@ exports.run = (client, message, args) =>{
         .addField(`Invite`, `[Check the FishyBot website!](https://fishman.live/)`, true)
         .setFooter(`Uptime: ${uptime}`);
 
-    message.channel.send(serverembed);    
+    return message.channel.send(serverembed);    
 
 }
 exports.conf = {

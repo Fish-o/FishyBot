@@ -13,16 +13,17 @@ exports.run = async (client, message, args) =>{
                 let new_channel = await old_channel.clone();
                 new_channel.permissionOverwrites = old_channel.permissionOverwrites
                 old_channel.delete()
-                let msg = await new_channel.send('Cleared the chat!')
-                msg.delete({ timeout: 7500 })
+                let msg2 = await new_channel.send('Cleared the chat!')
+                msg2.delete({ timeout: 7500 })
+                return;
 
             } else if (emoji == '❌'){
-                message.channel.send('Stopped')
+                return [message.channel.send('Stopped'), msg]
             } else {
-                message.channel.send('Aborted')
+                return [message.channel.send('Aborted'), msg]
             }
     } else {
-        message.channel.send('Stopped')
+        return [message.channel.send('Stopped'), msg]
     }
   
     

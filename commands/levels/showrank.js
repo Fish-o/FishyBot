@@ -45,7 +45,8 @@ function sortObject(obj) {
     return arr; // returns array
 }
 
-
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 
 
 exports.run = async (client, message, args, dbGuild) => {
@@ -71,10 +72,10 @@ exports.run = async (client, message, args, dbGuild) => {
         
         
             let data = await canvacordrank.build();
-            message.channel.send(new MessageAttachment(data, "rank.png"));
+            let msg = message.channel.send(new MessageAttachment(data, "rank.png"));
 
             message.channel.stopTyping();
-            return
+            return msg;
         } else if(user.bot){
             message.channel.stopTyping();
             return message.channel.send('Bots dont have ranks')
@@ -118,9 +119,10 @@ exports.run = async (client, message, args, dbGuild) => {
         
         
         let data = await canvacordrank.build();
-        message.channel.send(new MessageAttachment(data, "rank.png"));
+        return message.channel.send(new MessageAttachment(data, "rank.png"));
     }
     catch(err){
+        //Sentry.captureException(err);
         message.channel.send('something went wrong, please contact: '+client.config.author)
     } finally{
         message.channel.stopTyping();

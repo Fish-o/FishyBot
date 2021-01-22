@@ -3,10 +3,10 @@ const Discord = require('discord.js');
 const axios = require('axios');
 
 
-const fs = require('fs');
 var stringSimilarity = require('string-similarity');
 
-
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 
 
 
@@ -312,6 +312,7 @@ exports.interaction = async(client, interaction, args) => {
         interaction.send(embed)
     }
     catch(err){
+        //Sentry.captureException(err);
         console.log(err)
         client.sendInfo(`ERROR: echovrml interaction (${Date.now()})`)
         interaction.channel.send('Something has gone wrong with the echovrml command')
@@ -320,8 +321,20 @@ exports.interaction = async(client, interaction, args) => {
     }
 }
 exports.run = async(client, message, args) => {
-    let embed = await getVrmlStats(client, args)
-    message.channel.send(embed);
+    message.channel.startTyping();
+    try{
+        let embed = await getVrmlStats(client, args[0].value.split());
+        return message.channel.send(embed)
+    }
+    catch(err){
+        //Sentry.captureException(err);
+        console.log(err)
+        client.sendInfo(`ERROR: echovrml interaction (${Date.now()})`)
+        return message.channel.send('Something has gone wrong with the echovrml command')
+    } finally{
+        message.channel.stopTyping()
+    }
+
 }
 
 exports.conf = {

@@ -69,6 +69,7 @@ ${users_against.map(user => {
 
     pollTopic.edit(EndEmbed)
     })
+    return pollTopic
 }
 
 exports.conf = {

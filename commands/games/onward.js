@@ -9,7 +9,8 @@ const axios = require('axios');
 
 var stringSimilarity = require('string-similarity');
 
-
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 
 
 
@@ -286,7 +287,7 @@ exports.run = async(client, message, args) => {
     embed.setTimestamp()
     
     // Send the embed!
-    message.channel.send(embed);
+    return message.channel.send(embed);
 
 }
 

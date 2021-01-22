@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const fs = require('fs');
 
 
 function sortOnKeys(dict) {
@@ -174,7 +173,7 @@ exports.run = async (client, message, args) => {
 
 
     let r = await helpFunc(client, args);
-    if(r) message.channel.send(r);
+    if(r) return message.channel.send(r);
     
 }
 

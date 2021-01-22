@@ -20,7 +20,7 @@ exports.run = async (client, message, args) => {
     if(!args[0]){
         return message.channel.send('You need to ask a question to the magical 8 ball!')
     }
-    message.channel.send(await command(args.join(' ')))
+    return message.channel.send(await command(args.join(' ')))
 }
 
 exports.conf = {

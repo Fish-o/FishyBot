@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const fs = require('fs');
+
 
 
 exports.run = (client, message, args) => {
@@ -30,11 +30,16 @@ exports.run = (client, message, args) => {
 [Index][0]`
         let commands_string = ``;
 
-        client.commands.forEach(c=>{if(c.help.category != 'debug'){cats[c.help.category] = [];}})
+        client.commands.forEach(c_path=>{
+            let c = client.commandFiles.get(c_path);
+            if(c.help.category != 'debug'){
+                cats[c.help.category] = [];
+            }
+        })
 
 
-        client.commands.forEach(c=>{
-            //console.log(c.help.category)
+        client.commands.forEach(c_path=>{
+            let c = client.commandFiles.get(c_path);
             if(c.help.category != 'debug'){
                 cats[c.help.category].push({name:c.help.name,
                                             desc:c.help.description,
@@ -63,15 +68,13 @@ exports.run = (client, message, args) => {
             commands_string = commands_string.concat(cat_string)
         })
 
-        commands_string
-
-
-		message.channel.send(`[FishyBot](https://discord.com/users/${client.config.master}/)\n\n${index_string} ${commands_string}`, {code: "markdown"});
+		return message.channel.send(`[FishyBot](https://fishman.live/)\n\n${index_string} ${commands_string}`, {code: "markdown"});
 	} else {
-	  let command = args[0];
+      let command = args[0];
+      console.log('asdfasdf')
 	  if(client.commands.has(command)) {
 		command = client.commandFiles.get(client.commands.get(command));
-		message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${client.config.prefix+command.help.usage}`, {code: "asciidoc"});
+		return message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${client.config.prefix+command.help.usage}`, {code: "asciidoc"});
 	  }
 	}
 

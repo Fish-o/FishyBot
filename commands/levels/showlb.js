@@ -95,7 +95,7 @@ exports.run = async (client, message, args, dbGuild) => {
         })
     }
     if(msg){
-        message.channel.send(msg)
+        return message.channel.send(msg)
     }
     
 }

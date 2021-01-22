@@ -1,4 +1,5 @@
 const MessageModel = require('../database/schemas/Message');
+const  CommandModel = require('../database/schemas/Command')
 exports.event = async (client, reaction, user) => {
     let addMemberRole = async (emojiRoleMappings) => {
         if(reaction.emoji.id){
@@ -11,7 +12,6 @@ exports.event = async (client, reaction, user) => {
                 }
             } 
         } else{
-            console.log('UNicode emoJI')
             reaction = await reaction.fetch();
             if(emojiRoleMappings.hasOwnProperty(reaction.emoji.name)) {
                 let roleId = emojiRoleMappings[reaction.emoji.name];
@@ -31,18 +31,47 @@ exports.event = async (client, reaction, user) => {
             if(msgDocument) {
                 client.cachedMessageReactions.set(id, msgDocument.emojiRoleMappings);
                 let { emojiRoleMappings } = msgDocument;
-                console.log(emojiRoleMappings)
                 addMemberRole(emojiRoleMappings);
             }
         }
         catch(err) {
+            //Sentry.captureException(err);
             console.log(err);
         }
     }
     else {
-        console.log('Should add da emoji')
         let emojiRoleMappings = client.cachedMessageReactions.get(reaction.message.id);
         addMemberRole(emojiRoleMappings);
+    }
+
+
+
+
+
+    if(reaction.message.partial){
+        await reaction.message.fetch();
+    }
+    let message = reaction.message;
+    let MsgId = message.id;
+    if(['❌', '❎', '✖️'].includes(reaction.emoji.name)){
+        if(message.author.id == client.user.id){
+            if(message.member.hasPermission("MANAGE_MESSAGES")){
+                await reaction.message.delete()
+                await CommandModel.updateOne(
+                    {channelId: message.channel.id, senderId:user.id, responses:MsgId},
+                    { $pull: { 'responses': MsgId } }
+                )
+            }else{
+                let command_obj = await CommandModel.find({channelId: message.channel.id, senderId:user.id, responses:message.id})
+                if(command_obj && command_obj[0]){
+                    await reaction.message.delete()
+                    await CommandModel.updateOne(
+                        {channelId: message.channel.id, senderId:user.id, responses:MsgId},
+                        { $pull: { 'responses': MsgId } }
+                    );
+                }
+            }
+        }
     }
 };
 

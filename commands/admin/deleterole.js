@@ -1,3 +1,5 @@
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 exports.run = async (client, message, args) => {
     console.log(message.mentions)
     console.log(message.mentions.roles)
@@ -26,18 +28,18 @@ exports.run = async (client, message, args) => {
                     }
                 })
                 if(!failed[0]){
-                    message.channel.send(`All roles succesfully deleted! (_${succes.join("_, _")}_) `)
+                    return message.channel.send(`All roles succesfully deleted! (_${succes.join("_, _")}_) `)
                 }else{
-                    message.channel.send(`Not all roles were deleted.\n Roles deleted: _${succes.join("_, _")}_ \nRoles failed: ${failed.join(', ')}`)
+                    return message.channel.send(`Not all roles were deleted.\n Roles deleted: _${succes.join("_, _")}_ \nRoles failed: ${failed.join(', ')}`)
                 }
 
             } else if (emoji == '❌'){
-                message.channel.send('Stopped')
+                return message.channel.send('Stopped')
             } else {
-                message.channel.send('Aborted')
+                return message.channel.send('Aborted')
             }
     } else {
-        message.channel.send('Stopped')
+        return message.channel.send('Stopped')
     }
 
     

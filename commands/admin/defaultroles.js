@@ -28,7 +28,7 @@ exports.run = async (client, message, args, db_guild) => {
 
     if(lowercase.includes('clear')){
         await Guild.findOneAndUpdate({id:message.guild.id}, {defaultroles:[]});
-        message.channel.send('Removed all default roles, people with the role will still have it.')
+        return message.channel.send('Removed all default roles, people with the role will still have it.')
         
 
     } else if(lowercase.includes('add')){
@@ -37,7 +37,7 @@ exports.run = async (client, message, args, db_guild) => {
         }
         const role = message.mentions.roles.first()
         await Guild.findOneAndUpdate({id:message.guild.id}, {$push: {defaultroles: role.id}})
-        message.channel.send(`Added the role: \`${role.name}\` as a default role`)
+        return message.channel.send(`Added the role: \`${role.name}\` as a default role`)
 
 
     } else if(lowercase.includes('set')){       
@@ -46,7 +46,7 @@ exports.run = async (client, message, args, db_guild) => {
         }
         const role = message.mentions.roles.first()
         await Guild.findOneAndUpdate({id:message.guild.id}, {defaultroles: [role.id]})
-        message.channel.send(`\`${role.name}\` has been set as the default role`)
+        return  message.channel.send(`\`${role.name}\` has been set as the default role`)
 
 
     } else if(lowercase.includes('list')){
@@ -54,11 +54,11 @@ exports.run = async (client, message, args, db_guild) => {
         if(wrong.length > 0){
             await Guild.findOneAndUpdate({id: message.guild.id}, {defaultroles: ok} )
         }
-        message.channel.send(`Current default roles are: \`${names.join('`, `')|| 'none'}\``)
+        return message.channel.send(`Current default roles are: \`${names.join('`, `')|| 'none'}\``)
         
 
     } else{
-        message.channel.send(`Please enter a valid action (clear/list/add/set)`)
+        return message.channel.send(`Please enter a valid action (clear/list/add/set)`)
     }
 
 

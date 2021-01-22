@@ -4,7 +4,7 @@ exports.run = async (client, message, args) => {
     let channel = message.mentions.channels.first() || message.channel;
     
     channel.lockPermissions(`Member ${message.author.name} requested to sync perms`);
-    message.channel.send(`Sync the perms of the channel called \`${channel.name}\``)
+    return message.channel.send(`Sync the perms of the channel called \`${channel.name}\``)
 
     
 }

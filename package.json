@@ -29,5 +29,6 @@
     "scripts": {
         "test": "node index.js"
     },
-    "main": "index.js"
+    "main": "index.js",
+    "devDependencies": {}
 }

@@ -34,6 +34,7 @@ exports.event = async (client, reaction, user) => {
             }
         }
         catch(err) {
+            //Sentry.captureException(err);
             console.log(err);
         }
     }

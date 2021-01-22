@@ -52,8 +52,8 @@ exports.run = async (client, message, args) => {
         .setTitle('A Reminder has been set!')
         .addField('Wait time', ms(lenght))
         .addField('Message', args.join(' '))
-        .addField('User', member)
-    message.channel.send(Embed);
+        .addField('User', member);
+    return message.channel.send(Embed);
     
 }
 

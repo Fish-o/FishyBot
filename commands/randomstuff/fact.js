@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const axios = require('axios');
-
+//const Ssentry = require("@sentry/node");
+//const Ttracing = require("@sentry/tracing");
 
 let command = async function(){
     return new Promise(async (resolve, reject)=>{
@@ -36,7 +37,7 @@ let command = async function(){
 };
 exports.command = command;
 exports.run = async (client, message, args) => {
-    message.channel.send(await command())
+    return message.channel.send(await command())
 }
 exports.conf = {
     enabled: true,

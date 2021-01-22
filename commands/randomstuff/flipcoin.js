@@ -14,7 +14,7 @@ exports.run = (client, message, args) =>{
 
     var randomIndex = Math.floor(Math.random() * flipcoin.length); 
 
-    message.channel.send(`<@${member.user.id}> `+ flipcoin[randomIndex]);
+    return message.channel.send(`<@${member.user.id}> `+ flipcoin[randomIndex]);
 }
 
 exports.conf = {

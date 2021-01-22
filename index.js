@@ -1,3 +1,7 @@
+//const Ssentry = require("@sentry/node");
+////const Ttracing = require("@sentry/tracing");
+
+
 const Discord = require('discord.js');
 const moment  = require("moment");
 const axios = require("axios");
@@ -39,16 +43,33 @@ client.xpcooldown = {
 
 }
 client.cachedMessageReactions = new Map();
+
+
+
+
+
+
+
+/*Sentry.init({
+    dsn: process.env.SENTRY,
+    integrations: [
+        new Tracing.Integrations.Mongo(),
+    ],
+    environment: process.env.ENV || 'Unknown',
+    debug: true,
+    tracesSampleRate: 1.0,
+});*/
+
+
+
+
 mongoose.connect(client.config.dbpath, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
 
 
-console.log('Checking if cache file exists')
-if(!fs.existsSync(__dirname + '/jsonFiles/cache.json')){
-    fs.closeSync(fs.openSync(__dirname + '/jsonFiles/cache.json', 'w'));
-}
+
 
 
 
@@ -61,11 +82,12 @@ let loadEvents = function(){
             files.forEach(file => {
                 const event = require(`./events/${file}`);
                 //let eventName = file.split(".")[0];
-                if(Object.keys(discordEvents).includes(event.conf.event.toUpperCase()) || Object.values(discordEvents).includes(event.conf.event.toLowerCase()))
+                if(Object.keys(discordEvents).includes(event.conf.event.toUpperCase()) || Object.values(discordEvents).includes(event.conf.event))
                     client.on(event.conf.event, event.event.bind(null, client));
-                else
+                else{
+                    console.log('--------------------'+event.conf.event)
                     client.ws.on(event.conf.event, event.event.bind(null, client));
-
+                }
                 if(files.indexOf(file) == files.length-1){
                     resolve()
                 }
@@ -81,8 +103,6 @@ client.commands = new Discord.Collection();
 client.interactions = new Discord.Collection();
 client.aliases = new Discord.Collection();
 
-client.auto_commands = new Discord.Collection();
-client.auto_activations = new Discord.Collection();
 
 
 client.bypass = false;
@@ -172,7 +192,7 @@ let loadCommand = function(user, discordSlashCommands){
     });
 }
 
-let loadAutoCommands = async function(){
+/*let loadAutoCommands = async function(){
     return new Promise((resolve, reject) =>{
         console.log('Loading autocommands');
         fs.readdir("./auto_commands/", (direrr, dirs) =>{
@@ -204,7 +224,7 @@ let loadAutoCommands = async function(){
             })
         })
     })
-}
+}*/
 
 let reminderInterval = setInterval(async function () {
     let time = Date.now();
@@ -225,6 +245,7 @@ In: ${reminder.guildName}`);
                     user.send(Embed)
                 }
             }catch(err){
+                //Sentry.captureException(err);
                 console.log(err)
                 console.log('Error in reminder to user')
             }
@@ -628,7 +649,6 @@ const dbtools = require("./utils/dbtools");
 
 client.getDbGuild = dbtools.getDbGuild;
 client.updatedb = dbtools.updatedb;
-client.recache = dbtools.recache;
 client.getDbUser = dbtools.getDbUser;
 
 //client.elevation = dbtests.elevation;
@@ -645,7 +665,7 @@ client.sendinfo = function (info){
             client.channels.cache.get(client.config.infochannel).send(info);
         }
     }catch(err){
-        console.log(err)
+        console.log('Failed to send info to the info channel.\nMake sure the info channel is set correctly in the config file\nInfo: '+ info)
     }
 }
 
@@ -686,14 +706,20 @@ let login = async function(){
     user = userdata.data
     let discordSlashCommands = await axios.get(`https://discordapp.com/api/applications/${user.id}/commands`, {headers:{'Authorization': `Bot ${client.config.token}`}})
     await Promise.all([
-        loadAutoCommands(),
         loadCommand(user, discordSlashCommands.data),
         loadEvents()
     ])
     console.log('DONE')
     client.login(config.token);
 }
-login()
+
+
+try {
+    login()
+} catch (e) {
+    //Sentry.captureException(e);
+}
+
 
 
 
@@ -754,11 +780,9 @@ Options:
 /*
 new Promise(async(resolve) =>{
     try{
-
-        await User.update({},
-            {$set : {"usernames":{}}},
-            {upsert:false,
-            multi:true}) 
+        let Discord = require('discord.js')
+        let s = await message.channel.send('asdf');
+        message.channel.send(s instanceof Discord.Message)
     }catch(err){
         resolve(err)
     }
