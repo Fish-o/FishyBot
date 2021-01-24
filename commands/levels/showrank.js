@@ -85,7 +85,7 @@ exports.run = async (client, message, args, dbGuild) => {
         //let dbGuild = await Guild.findOne({id:message.guild.id});
 
         if(!(user.id in dbGuild.levels.members)){
-            dbGuild =  await Guild.update({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
+            dbGuild =  await Guild.updateOne({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
         }
 
         const dbUserLevelData = dbGuild.levels.members[user.id];

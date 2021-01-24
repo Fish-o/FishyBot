@@ -58,7 +58,7 @@ exports.run = async (client, message, args, dbGuild) => {
     const guild = message.guild;
     //const dbGuild = await Guild.findOne({id:guild.id})
     if(!(user.id in dbGuild.levels.members)){
-        dbGuild = await Guild.update({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
+        dbGuild = await Guild.updateOne({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
     }
     const dbUserLevelData = dbGuild.levels.members[user.id];
     let level = dbUserLevelData.level;
@@ -104,7 +104,7 @@ exports.run = async (client, message, args, dbGuild) => {
             var emoji = collected.first().emoji.toString();
 
             if(emoji == '✔️'){
-                await Guild.update({id:guild.id}, {['levels.members.'+user.id]: {level:newLvl, exp:newExp}})
+                await Guild.updateOne({id:guild.id}, {['levels.members.'+user.id]: {level:newLvl, exp:newExp}})
                 return message.channel.send('Done!')
             } else if (emoji == '❌'){
                 return message.channel.send('Stopped')

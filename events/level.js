@@ -31,7 +31,7 @@ exports.event = async (client, message) =>{
                 return;
             } else {
                 if(!(member.id in dbGuild.levels.members)){
-                    return await Guild.update({id:guild.id}, {['levels.members.'+member.id]: {level:1, exp:1}})
+                    return await Guild.updateOne({id:guild.id}, {['levels.members.'+member.id]: {level:1, exp:1}})
                 }
 
 
@@ -45,7 +45,7 @@ exports.event = async (client, message) =>{
 
                     level = level+1
                     exp = 1
-                    await Guild.update({id:guild.id}, {['levels.members.'+member.id]: {level, exp}})
+                    await Guild.updateOne({id:guild.id}, {['levels.members.'+member.id]: {level, exp}})
 
                     let lvlUpMsg = dbGuild.levels.lvlUpMsg || `Congratulations {member}, you leveled up to level {level}`;
                     lvlUpMsg = lvlUpMsg.replace(/\{member\}/g, `<@${member.id}>`)
@@ -62,7 +62,7 @@ exports.event = async (client, message) =>{
                         message.channel.send(lvlUpMsg)
                     }
                 } else{
-                    await Guild.update({id:guild.id}, {$inc: {['levels.members.'+member.id+'.exp']: 1}})
+                    await Guild.updateOne({id:guild.id}, {$inc: {['levels.members.'+member.id+'.exp']: 1}})
                 }
             }
         }
