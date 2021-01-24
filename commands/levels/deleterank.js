@@ -25,7 +25,7 @@ exports.run = async (client, message, args, dbGuild) => {
         match(args.join(" ").toLowerCase(), message.guild)
 
     if(!user){
-        await Guild.update({id:guild.id}, {$pull: {'levels.members': user.id}})
+        await Guild.updateOne({id:guild.id}, {$pull: {'levels.members': user.id}})
     }
     if(user.bot){
         return message.channel.send('You can not change the xp of a bot')
@@ -36,7 +36,7 @@ exports.run = async (client, message, args, dbGuild) => {
     const guild = message.guild;
     //const dbGuild = await Guild.findOne({id:guild.id})
     if(!(user.id in dbGuild.levels.members)){
-        dbGuild = await Guild.update({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
+        dbGuild = await Guild.updateOne({id:guild.id}, {['levels.members.'+user.id]: {level:1, exp:1}}, {new: true})
     }
     const dbUserLevelData = dbGuild.levels.members[user.id];
     let level = dbUserLevelData.level;
@@ -57,7 +57,7 @@ exports.run = async (client, message, args, dbGuild) => {
             var emoji = collected.first().emoji.toString();
 
             if(emoji == '✔️'){
-                await Guild.update({id:guild.id}, {['levels.members.'+user.id]: undefined})
+                await Guild.updateOne({id:guild.id}, {['levels.members.'+user.id]: undefined})
                 return message.channel.send(`${user.toString()} rank has been reset (prev: lvl ${level}, exp ${exp})`)
             } else if (emoji == '❌'){
                 return message.channel.send('Stopped')

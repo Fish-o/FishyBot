@@ -376,6 +376,7 @@ var very_good_name = async function(client, message) {
                 
                 //Sentry.captureException(e, err_data);
                 message.channel.send('Something went wrong in running the command, this issue has been reported. If it keeps happening and/or is realy anoying feel free to contact '+client.config.author)
+                console.log(e)
             }
             // Adds the user to the set so that they can't talk for a minute
             talkedRecently.add(message.author.id);
