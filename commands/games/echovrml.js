@@ -241,15 +241,15 @@ let getVrmlStats = async function (client, args){
         
 
         // Set the description
-        const description = `Games played: ${stats.GP}\nWins: ${stats.W}\nLosses: ${stats.L}\nPoints: ${stats.PTS}\nMMR: ${stats.MMR}`
+        const description = `Games played: ${stats.gp}\nWins: ${stats.w}\nLosses: ${stats.l}\nPoints: ${stats.pts}\nMMR: ${stats.mmr}\nRank: ${stats.rank}`
 
         // Create the embed
         const embed = new Discord.MessageEmbed()
 
         // Set some static stuff for the embed
         embed.setColor('#0099ff')
-        embed.setTitle(stats.Name)
-        embed.setAuthor(stats.DivisionName, stats.DivisionLogo)
+        embed.setTitle(stats.name)
+        embed.setAuthor(stats.divisionName, stats.divisionLogo)
             
         embed.setThumbnail(logos[0].Logo)
         embed.setDescription(description)
