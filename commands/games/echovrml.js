@@ -116,16 +116,16 @@ let getVrmlStats = async function (client, args){
         
 
         // Find team in the team list
-        let team = all_teams.TeamPlayers.find(team => team.Name == team_name)
+        let team = all_teams.find(team => team.name == team_name)
 
 
         // If no team was found, look if argument is player in a team
         if(!team){
-            all_teams.TeamPlayers.forEach(TeamPlayer_team => {
-                let player = TeamPlayer_team.Players.find(player => player.Name.toLowerCase() == team_name.toLowerCase() )
+            all_teams.forEach(TeamPlayer_team => {
+                let player = TeamPlayer_team.players.find(player => player.name.toLowerCase() == team_name.toLowerCase() )
 
                 if(player){
-                    team_name = TeamPlayer_team.Name;
+                    team_name = TeamPlayer_team.name;
                     team_name_url = team_name.split(' ').join('%20');
                     team = TeamPlayer_team;
                 }
@@ -137,8 +137,8 @@ let getVrmlStats = async function (client, args){
         // If still no team was found, get the team that is most simular to the team name enterd
         if(!team){
             let all_team_names = []
-            all_teams.TeamPlayers.forEach(TeamPlayer =>{
-                all_team_names.push(TeamPlayer.Name)
+            all_teams.forEach(TeamPlayer =>{
+                all_team_names.push(TeamPlayer.name)
             })
             let ratings = stringSimilarity.findBestMatch(team_name, all_team_names);
             if(ratings.bestMatch.rating <= 0.25){
@@ -147,7 +147,7 @@ let getVrmlStats = async function (client, args){
             }
             team_name = ratings.bestMatch.target
             team_name_url = team_name.split(' ').join('%20')
-            team = all_teams.TeamPlayers.find(team => team.Name == team_name)
+            team = all_teams.find(team => team.name == team_name)
             //message.channel.send(`Could not find exact team, going with: \`${team_name}\` (${Math.round(ratings.bestMatch.rating*100)}% sure)`)
         }
 
@@ -156,7 +156,7 @@ let getVrmlStats = async function (client, args){
             return
         }
         
-        const players = team.Players
+        const players = team.players
 
         
         // Get the logo and stats
@@ -174,7 +174,7 @@ let getVrmlStats = async function (client, args){
         }
 
         // Find in the list of matches the ones from the enterd team
-        var team_matches = matches.filter(match => match.HomeTeam == team_name || match.AwayTeam == team_name)
+        var team_matches = matches.filter(match => match.homeTeam == team_name || match.awayTeam == team_name)
         
 
 
@@ -184,25 +184,25 @@ let getVrmlStats = async function (client, args){
         var time_name = 'gmt'
         var time_modifier = "Europe/England";
         var time_format = "en-GB";
-        if(team.Group=="America East"){
+        if(team.group=="America East"){
             // est
             time_name = 'America/New_York';
             time_modifier = "America/New_York";
             time_format = "en-US";
         }
-        else if(team.Group=="Europe"){
+        else if(team.group=="Europe"){
             //GMT
             time_name = 'GMT';
             time_modifier = 'Europe/England';
             time_format = "en-GB";
         }
-        else if(team.Group=="America West"){
+        else if(team.group=="America West"){
             //UTC−08:00 PST
             time_name = 'PDT';
             time_modifier = "America/California";
             time_format = "en-US";
             
-        }else if(team.Group=="Oceania/Asia"){
+        }else if(team.group=="Oceania/Asia"){
             //UTC+10:00
             time_name = "AEST"
             time_modifier = "Australia/Victoria"
@@ -222,7 +222,7 @@ let getVrmlStats = async function (client, args){
 
         // Go thru all the matches a team has, and format the time to the teams location
         team_matches.forEach(team_match =>{
-            var raw_date_time = team_match.DateScheduled
+            var raw_date_time = team_match.dateScheduled
             var [raw_date, raw_time] = raw_date_time.split(' ')
 
             var [year, month, day] = raw_date.split('-')
@@ -234,7 +234,7 @@ let getVrmlStats = async function (client, args){
             
             var converted = time_object.toLocaleString(time_format, options)
 
-            team_match.DateScheduled = converted//.concat(' '+!vrml team Team Intergalactic)
+            team_match.dateScheduled = converted//.concat(' '+!vrml team Team Intergalactic)
 
 
         })
@@ -257,11 +257,11 @@ let getVrmlStats = async function (client, args){
         // This spaghetti monster makes the team players look nice
         let team_members = "";//"```"
         players.forEach(player => {
-            if(player.Role == 'Team Owner'){
-                team_members = team_members.concat(`${player.Name}, ${player.Nationality},  Owner \n`)
+            if(player.roleName == 'Team Owner'){
+                team_members = team_members.concat(`${player.name}, ${player.country},  Owner \n`)
             }
             else{
-                team_members = team_members.concat(`${player.Name}, ${player.Nationality} \n`)
+                team_members = team_members.concat(`${player.name}, ${player.country} \n`)
             }
         });
         team_members = team_members.slice(0, -2)
@@ -273,11 +273,11 @@ let getVrmlStats = async function (client, args){
             var print = false;
             team_matches.forEach(match => {
                 print = true
-                match_text = match_text.concat(`[${match.DateScheduled}]\n`)
-                match_text = match_text.concat(`${match.HomeTeam} vs ${match.AwayTeam}\n`)
+                match_text = match_text.concat(`[${match.dateScheduled}]\n`)
+                match_text = match_text.concat(`${match.homeTeam} vs ${match.awayTeam}\n`)
 
                 if(match.CasterName != ''){
-                    match_text = match_text.concat(`Casted by: [${match.CasterName}](${match.channel}) vs \n`)
+                    match_text = match_text.concat(`Casted by: [${match.casterName}](${match.channel}) vs \n`)
                 }
                 
                 
@@ -321,6 +321,9 @@ exports.interaction = async(client, interaction, args) => {
     }
 }
 exports.run = async(client, message, args) => {
+    if(!args?.[0]){
+        return message.channel.send("Please provide a team or team member as argument")
+    }
     message.channel.startTyping();
     try{
         let embed = await getVrmlStats(client, args[0].value.split());
@@ -364,6 +367,12 @@ exports.help = {
     usage: "echovrml [team / team member]"
 };
 
+asdf = {
+    name:"logon",
+    description:"log the bot onto the server",
+    options: [
 
+    ]
+}
 
 
