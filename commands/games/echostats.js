@@ -134,7 +134,7 @@ let getEchoStats = async function (client, args, memberId, channel){
         if(!Array.isArray(vrml_stats)){
 
             Embed.addFields(
-                { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type !echo ${vrml_stats.team_name}, or !echo ${player_name} to get more info`},
+                { name: 'Vrml', value: `${player_name} is part of ${vrml_stats.team_name}, type /echovrml ${vrml_stats.team_name}, or /echovrml ${player_name} to get more info`},
             );
         }
 
